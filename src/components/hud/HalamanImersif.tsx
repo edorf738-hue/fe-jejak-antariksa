@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent, type ReactNode } from "react";
+import { useEffect, useRef, useState, useSyncExternalStore, type KeyboardEvent, type ReactNode } from "react";
 import type { DataBenda } from "@/data";
 import { IMERSIF_COPY } from "@/data";
 import { KartuDataBenda } from "./KartuDataBenda";
@@ -43,6 +43,24 @@ const POSISI_TITIK = [
   "left-[61%] top-[40%] md:left-[47.5%] md:top-[52.5%] lg:left-[22.5%] lg:top-[71.2%]",
 ];
 
+const QUERY_GERAK = "(prefers-reduced-motion: reduce)";
+
+/** True bila pengguna meminta gerak dikurangi; dipakai agar Jeda Gerak otomatis aktif (handoff bagian 3). */
+function useGerakDikurangi() {
+  return useSyncExternalStore(
+    (ubah) => {
+      const mq = window.matchMedia(QUERY_GERAK);
+      mq.addEventListener("change", ubah);
+      return () => mq.removeEventListener("change", ubah);
+    },
+    () => window.matchMedia(QUERY_GERAK).matches,
+    () => false,
+  );
+}
+
+const FOKUSABLE =
+  'a[href], button:not([disabled]), input, select, textarea, [tabindex]:not([tabindex="-1"])';
+
 export function HalamanImersif({
   gambar,
   scenePlaceholder = false,
@@ -56,13 +74,54 @@ export function HalamanImersif({
 }: HalamanImersifProps) {
   const [panel, setPanel] = useState<PanelJenis | null>(null);
   const [bendaIdx, setBendaIdx] = useState<number | null>(null);
-  const [paused, setPaused] = useState(false);
+  // null = ikut preferensi sistem; true/false = pilihan pengguna lewat tombol Jeda Gerak.
+  const [jedaPengguna, setJedaPengguna] = useState<boolean | null>(null);
+  const gerakDikurangi = useGerakDikurangi();
+  const paused = jedaPengguna ?? gerakDikurangi;
   const akar = useRef<HTMLDivElement>(null);
+  /** Jenis panel yang terakhir dibuka: tombol pemicunya mendapat kembali fokus saat panel ditutup. */
+  const pemicu = useRef<PanelJenis | null>(null);
   const bendaAktif = bendaIdx === null ? null : benda[bendaIdx];
   const story = varian === "story";
 
+  // Fokus: ke panel saat dibuka, kembali ke tombol pemicu saat ditutup.
+  useEffect(() => {
+    if (panel) {
+      akar.current?.querySelector<HTMLElement>("aside[role=dialog]")?.focus();
+    } else if (pemicu.current) {
+      akar.current?.querySelector<HTMLElement>(`[data-panel="${pemicu.current}"]`)?.focus();
+    }
+  }, [panel]);
+
+  function bukaPanel(jenis: PanelJenis) {
+    pemicu.current = jenis;
+    setPanel(jenis);
+  }
+
   function onKeyDown(e: KeyboardEvent) {
-    if (e.key === "Escape" && panel) setPanel(null);
+    if (!panel) return;
+    if (e.key === "Escape") {
+      setPanel(null);
+      return;
+    }
+    if (e.key !== "Tab") return;
+    // Kurung fokus di dalam panel (penting di tablet/mobile saat panel menutupi layar).
+    const dialog = akar.current?.querySelector<HTMLElement>("aside[role=dialog]");
+    const item = dialog ? [...dialog.querySelectorAll<HTMLElement>(FOKUSABLE)] : [];
+    if (!dialog || item.length === 0) return;
+    const pertama = item[0];
+    const terakhir = item[item.length - 1];
+    const aktifEl = document.activeElement;
+    if (!dialog.contains(aktifEl) || aktifEl === dialog) {
+      e.preventDefault();
+      (e.shiftKey ? terakhir : pertama).focus();
+    } else if (e.shiftKey && aktifEl === pertama) {
+      e.preventDefault();
+      terakhir.focus();
+    } else if (!e.shiftKey && aktifEl === terakhir) {
+      e.preventDefault();
+      pertama.focus();
+    }
   }
 
   function toggleFullscreen() {
@@ -150,14 +209,14 @@ export function HalamanImersif({
               }`}
             >
               {jenisPanel.map((j) => (
-                <TombolPanel key={j} jenis={j} aktif={panel === j} onClick={() => setPanel(j)} />
+                <TombolPanel key={j} jenis={j} aktif={panel === j} onClick={() => bukaPanel(j)} />
               ))}
             </div>
           )}
 
           <KontrolScene
             paused={paused}
-            onTogglePause={() => setPaused((p) => !p)}
+            onTogglePause={() => setJedaPengguna(!paused)}
             onToggleFullscreen={toggleFullscreen}
             className={`hud-masuk absolute right-0 [--hud-delay:1.4s] ${
               story ? "top-[191px]" : "top-[218px]"

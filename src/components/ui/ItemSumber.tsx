@@ -16,7 +16,7 @@ export function ItemSumber({ judul, penerbit, url, diakses }: Sumber) {
         href={url}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-body-large break-all text-aksen-informasi-normal hover:text-aksen-informasi-normal-hover"
+        className="text-body-large inline-block break-all py-2 text-aksen-informasi-normal hover:text-aksen-informasi-normal-hover"
       >
         {url}
         <span className="sr-only"> (buka di tab baru)</span>

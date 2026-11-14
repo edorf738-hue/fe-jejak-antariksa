@@ -6,6 +6,8 @@ import { Button } from "@/components/ui";
  * padding 28, radius 28, fill #111827 @ 78% + blur 14, garis 1,5 px Aksen Informasi;
  * judul 32/40 dan tombol Tutup (Secondary) sebaris; isi bisa digulir. Di tablet dan
  * mobile panel penuh menutupi scene. Penempatan diatur oleh halaman yang memakainya.
+ * Fokus dipindahkan ke panel saat dibuka, dikurung di dalamnya (Tab), dan dikembalikan ke
+ * tombol pemicu saat ditutup: semuanya diatur `HalamanImersif`.
  */
 type PanelProps = {
   judul: string;
@@ -21,9 +23,10 @@ export function Panel({ judul, onTutup, labelTutup = "Tutup", children, classNam
   return (
     <aside
       role="dialog"
-      aria-modal="false"
+      aria-modal="true"
       aria-labelledby={headingId}
-      className={`flex w-full flex-col gap-4 overflow-hidden rounded-[28px] border-[1.5px] border-aksen-informasi-normal bg-bg-secondary-normal/80 p-7 backdrop-blur-[14px] ${className}`}
+      tabIndex={-1}
+      className={`flex w-full flex-col gap-4 overflow-hidden rounded-[28px] border-[1.5px] border-aksen-informasi-normal bg-bg-secondary-normal/80 outline-none p-7 backdrop-blur-[14px] ${className}`}
     >
       <header className="flex shrink-0 items-center justify-between gap-4">
         <h2 id={headingId} className="text-heading-card text-text-primary-normal">

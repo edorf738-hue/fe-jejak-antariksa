@@ -4,6 +4,28 @@ Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 
 ## Entri
 
+### [2026-11-15] Aksesibilitas dan responsif (audit dan perbaikan)
+- **Tugas / klaim:** Responsif dan aksesibilitas (PEMBAGIAN_TUGAS bagian 4, Pace nomor 9)
+- **Branch / PR:** `pace-dev` (semua pekerjaan Pace bertumpuk di satu branch; sebelumnya `feat/ui-animasi`) / belum dibuka
+- **Yang dikerjakan:**
+  - **Audit otomatis** (skrip di konsol, iframe pada lebar 320, 768, 1024, 1920) untuk `/`, `/story`, `/story/1`, `/source`, `/journey-map`, `/journey-map/moon`, `/resources/mars`: scroll horizontal, tombol/tautan tanpa nama aksesibel, gambar tanpa alt, id ganda, urutan heading, jumlah `h1` dan `main`, `tabindex` positif, area sentuh < 44 px.
+  - **Temuan dan perbaikan:** (1) tautan logo 42 px lebar -> `min-w-11`; (2) tautan URL di Entri Sumber dan Item Sumber 30 px tinggi -> `py-2` (44+); (3) **`loading.tsx` di Peta Perjalanan membuat halaman dirender dengan state Memuat + `h1` ganda** (isi sebenarnya ikut streaming): file itu **dihapus**; `PanelStatus` varian Memuat tetap ada untuk pemakaian nanti.
+  - **Focus management panel** (`HalamanImersif`): fokus pindah ke panel saat dibuka, Tab/Shift+Tab dikurung di dalam panel, Escape menutup, fokus kembali ke tombol pemicu (`data-panel`). Panel kini `aria-modal="true"`.
+  - **Jeda Gerak otomatis** aktif bila `prefers-reduced-motion` (pengguna tetap bisa mengubahnya).
+  - **Tautan lompat** "Lewati ke konten" di layout situs (`#konten`); `role="status"` di Sumber yang mengumumkan jumlah entri hasil filter.
+  - **Kontras hero:** eyebrow hero Beranda dan header halaman memakai Text Primary (rekomendasi handoff bagian 8, sebelumnya Text Secondary, terburuk 3,5:1 di atas foto). Ini menyimpang dari Figma.
+- **File dibuat/diubah:** `src/components/hud/{HalamanImersif,Panel,TombolPanel}.tsx`, `src/components/ui/{Logo,EntriSumber,ItemSumber,PageHeader}.tsx`, `src/app/(site)/{layout.tsx,page.tsx,source/SumberDaftar.tsx}`; dihapus `src/app/(site)/journey-map/[kategori]/loading.tsx`.
+- **Cara menguji:** buka `/resources/mars`, fokuskan tombol Misi Terkait dengan Tab, Enter; Tab berulang tetap di dalam panel; Escape menutup dan fokus kembali ke tombol. Tab dari awal halaman situs menampilkan "Lewati ke konten".
+- **Hasil uji:** lint, tsc, dan build lolos. Setelah perbaikan: tanpa area sentuh < 44 px (selain Titik Info yang sedang beranimasi), satu `h1` per halaman, tanpa scroll horizontal di 320 dan 1024, tautan lompat ada. Focus trap dan pengembalian fokus diuji lewat peristiwa keyboard di build produksi (fokus ke panel, Tab dari elemen terakhir dan Shift+Tab dari pertama dicegah keluar, Escape mengembalikan fokus). Kontras dihitung untuk pasangan token di atas latar solid: semua >= 6,6:1 kecuali Text Secondary Dark (disabled) 3,9-5,3:1. **Belum diuji:** pembaca layar sungguhan (VoiceOver/NVDA), perangkat sentuh nyata, mode reduced-motion sungguhan, kontras di atas foto/scene (hasil terburuk handoff belum diukur ulang), navigasi keyboard penuh dari Tab fisik.
+- **Keputusan teknis & alasan:**
+  - Panel memakai focus trap di semua ukuran layar walau di desktop tidak menutup layar; lebih sederhana dan konsisten, dan aman bagi pengguna keyboard.
+  - Halaman 404 dan galat global belum ditambah karena copy belum ada.
+- **Belum selesai / catatan untuk orang lain:**
+  - Edo dan Zhafran: kanvas 3D harus punya alternatif teks/kontrol keyboard (hotspot sebagai tombol sudah dipenuhi di placeholder `TitikInfoPlaceholder`; HotspotLayer asli perlu mempertahankannya).
+  - Menyentuh file bersama `layout.tsx` (grup site) dan komponen `ui/`: Dhika perlu diberi tahu.
+  - Uji nyata: pembaca layar dan perangkat sentuh perlu dilakukan sebelum demo.
+- **Status:** Review
+
 ### [2026-11-15] Animasi (HUD, latar) dan state Kosong/Memuat/Galat
 - **Tugas / klaim:** Animasi HUD dan state loading/kosong/galat (PEMBAGIAN_TUGAS bagian 4, Pace nomor 8)
 - **Branch / PR:** `feat/ui-animasi` (bertumpuk di atas `feat/ui-imersif`) / belum dibuka

@@ -33,6 +33,10 @@ export function SumberDaftar({ entri }: { entri: Record<KategoriSumber, Entri[]>
         <p className="text-body-large text-text-secondary-normal">{catatan.isi}</p>
       </aside>
 
+      <p role="status" className="sr-only">
+        Menampilkan {tampil.reduce((n, k) => n + entri[k].length, 0)} entri
+      </p>
+
       {tampil.length === 0 && <PanelStatus varian="kosong" {...STATUS_COPY.sumberKosong} />}
 
       {tampil.map((k) => (

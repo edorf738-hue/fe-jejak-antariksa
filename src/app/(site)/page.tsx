@@ -34,7 +34,7 @@ export default function Home() {
         <Container className="relative mt-auto pb-14 md:pb-[72px] lg:mt-0 lg:pb-0 lg:pt-[318px]">
           <div className="flex flex-col items-center gap-4 text-center lg:gap-9">
             <div className="flex flex-col items-center gap-4 lg:gap-1">
-              <p className="text-eyebrow-15 uppercase text-text-secondary-normal md:text-eyebrow-20">
+              <p className="text-eyebrow-15 uppercase text-text-primary-normal md:text-eyebrow-20">
                 {hero.eyebrow}
               </p>
               <h1

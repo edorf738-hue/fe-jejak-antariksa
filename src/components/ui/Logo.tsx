@@ -15,7 +15,7 @@ export function Logo({ className = "" }: { className?: string }) {
     <Link
       href="/"
       aria-label="NASA Space Apps Challenge, ke Beranda"
-      className={`inline-flex shrink-0 items-center ${className}`}
+      className={`inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center ${className}`}
     >
       <Image
         src="/images/logo-space-apps.png"

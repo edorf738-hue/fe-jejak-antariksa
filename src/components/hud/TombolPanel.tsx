@@ -30,6 +30,7 @@ export function TombolPanel({ jenis, aktif = false, onClick, className }: Tombol
       variant="secondary"
       iconLeft={icon}
       onClick={onClick}
+      data-panel={jenis}
       aria-pressed={aktif}
       className={className}
     >
