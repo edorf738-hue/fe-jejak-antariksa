@@ -1,13 +1,20 @@
+import type { ReactNode } from "react";
+
 /**
  * Kartu Misi (FIGMA_HANDOFF bagian 3): properti `Nama`, `Wahana`, `Peluncuran`,
- * `Status`. Teks berasal dari data (`misi` di content-data.json); null berarti
- * misi belum terisi dan ditampilkan sebagai TBD.
+ * `Status`; state Default, Hover, Focus. Dipakai di Peta Perjalanan (Misi Terkait)
+ * dan panel Misi Terkait di halaman imersif. Teks berasal dari data (`misi` di
+ * content-data.json); null berarti misi belum terisi dan tampil sebagai TBD.
+ * Bila `onPilih` diberikan, kartu menjadi tombol pilihan (`terpilih` = state Hover/Selected:
+ * fill Archive Slate, garis 2 px Aksen Informasi Hover).
  */
 type KartuMisiProps = {
   nama?: string;
   wahana?: string;
   peluncuran?: string;
   status?: string;
+  terpilih?: boolean;
+  onPilih?: () => void;
   className?: string;
 };
 
@@ -16,21 +23,31 @@ export function KartuMisi({
   wahana = "TBD",
   peluncuran = "TBD",
   status = "TBD",
+  terpilih = false,
+  onPilih,
   className = "",
 }: KartuMisiProps) {
-  return (
-    <article
-      className={`flex flex-col gap-3 rounded-card bg-archive-slate-normal p-5 ${className}`}
-    >
-      <h3 className="font-heading text-xl font-bold text-text-primary-normal">{nama}</h3>
-      <dl className="grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-sm">
-        <dt className="text-text-secondary-normal">Wahana</dt>
-        <dd className="text-text-primary-normal">{wahana}</dd>
-        <dt className="text-text-secondary-normal">Peluncuran</dt>
-        <dd className="text-text-primary-normal">{peluncuran}</dd>
-        <dt className="text-text-secondary-normal">Status</dt>
-        <dd className="text-text-primary-normal">{status}</dd>
-      </dl>
-    </article>
+  const isi: ReactNode = (
+    <>
+      <span className="text-eyebrow-15 text-aksen-warisan-normal">MISI</span>
+      <span className="text-heading-card text-text-primary-normal">{nama}</span>
+      <span className="text-body-large text-text-secondary-normal">Wahana: {wahana}</span>
+      <span className="text-body-large text-text-secondary-normal">Peluncuran: {peluncuran}</span>
+      <span className="text-body-large text-text-secondary-normal">Status: {status}</span>
+    </>
   );
+  const kelas = `flex w-full flex-col items-start gap-3 break-words rounded-card p-7 text-left transition-colors duration-150 ${
+    terpilih
+      ? "border-2 border-aksen-informasi-normal-hover bg-archive-slate-normal"
+      : "border border-archive-slate-normal bg-bg-secondary-normal hover:border-aksen-informasi-dark"
+  } ${className}`;
+
+  if (onPilih) {
+    return (
+      <button type="button" onClick={onPilih} aria-pressed={terpilih} className={`${kelas} cursor-pointer`}>
+        {isi}
+      </button>
+    );
+  }
+  return <article className={kelas}>{isi}</article>;
 }

@@ -6,7 +6,6 @@ export { KontrolScene } from "./KontrolScene";
 export { Panel } from "./Panel";
 export {
   ItemGaleri,
-  ItemSumber,
   KartuFakta,
   PanelFakta,
   PanelGaleri,

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { LatarArsip, PageHeader } from "@/components/ui";
+import { LatarBerulang, PageHeader } from "@/components/ui";
 import { getEntriSumber, SOURCE_COPY } from "@/data";
 import { SumberDaftar } from "./SumberDaftar";
 
@@ -14,7 +14,7 @@ export default function SourcePage() {
     <>
       <PageHeader {...SOURCE_COPY.header} gambar="/images/source/header-sumber.webp" />
       <div className="relative flex-1">
-        <LatarArsip />
+        <LatarBerulang gambar="/images/source/latar-arsip.webp" />
         <SumberDaftar entri={getEntriSumber()} />
       </div>
     </>

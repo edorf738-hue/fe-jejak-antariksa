@@ -1,4 +1,4 @@
-import { Icon, KartuMisi } from "@/components/ui";
+import { ItemSumber, KartuMisi } from "@/components/ui";
 import type { Fakta, Misi, Sumber } from "@/data";
 
 /**
@@ -77,28 +77,6 @@ export function PanelGaleri({ galeri }: { galeri: (string | null)[] }) {
         <ItemGaleri key={keterangan ?? `tbd-${i}`} keterangan={keterangan} />
       ))}
     </>
-  );
-}
-
-/** Item Sumber: `Judul`, `Meta`, `URL`. Tautan keluar membuka tab baru. */
-export function ItemSumber({ judul, penerbit, url, diakses }: Sumber) {
-  return (
-    <article className="flex flex-col gap-1 rounded-card bg-archive-slate-normal p-5">
-      <h3 className="text-base font-bold text-text-primary-normal">{judul}</h3>
-      <p className="text-sm text-text-secondary-normal">
-        {penerbit} · Diakses: {diakses ?? "TBD"}
-      </p>
-      <a
-        href={url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-flex min-h-11 items-center gap-2 break-all text-sm text-aksen-informasi-normal hover:text-aksen-informasi-normal-hover"
-      >
-        <span>{url}</span>
-        <Icon name="tautan-keluar" size={16} />
-        <span className="sr-only">(buka di tab baru)</span>
-      </a>
-    </article>
   );
 }
 

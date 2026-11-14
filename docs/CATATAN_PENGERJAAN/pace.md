@@ -4,6 +4,33 @@ Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 
 ## Entri
 
+### [2026-11-15] Peta Perjalanan (Journey Map), Source, dan Cerita (Pengantar), dari Figma
+Tiga butir dikerjakan di tiga branch bertumpuk (`feat/ui-story`, lalu `feat/ui-source`, lalu `feat/ui-journey-map`); entri ini ditulis di branch terakhir dan mencakup ketiganya.
+- **Tugas / klaim:** Story Pengantar (butir 4), Journey Map (butir 5), Source (butir 6) di PEMBAGIAN_TUGAS bagian 4
+- **Branch / PR:** `feat/ui-story` -> `feat/ui-source` -> `feat/ui-journey-map` / belum dibuka (rebase berurutan setelah fondasi, HUD, Home dimerge)
+- **Yang dikerjakan:**
+  - **Cerita** `/story`: `PageHeader`, `KartuBab`, daftar 4 bab dari content-data.json (`ringkasan`), tombol "Mulai dari Bab 1" (`/story/1`, belum ada).
+  - **Sumber** `/source`: `EntriSumber`, filter kategori (Semua/Referensi/Gambar/Model 3D, client component `SumberDaftar`), catatan verifikasi, tiga kelompok entri, latar arsip.
+  - **Peta Perjalanan** `/journey-map` (redirect ke `/journey-map/moon`) dan `/journey-map/[moon|mars|deep-space]`: `PenandaDestinasi` (peta simbolis), Misi Terkait (`KartuMisi` kini sesuai Figma dan bisa dipilih), `PanelBaris` (Detail Misi dan Kronologi), `ItemSumber`, latar peta bintang (`LatarBerulang`, dipakai juga oleh Sumber). Memilih misi mengganti Panel Detail Misi.
+  - Pemuat data: `src/data/{story,source,journey}.ts`; `Misi` kini punya field opsional (misi belum lengkap tampil TBD).
+  - Perubahan HUD: `ItemSumber` di panel Sumber memakai komponen `ui/ItemSumber` (gaya Figma: baris bergaris bawah); `KartuMisi` di panel Misi Terkait ikut tata letak Figma.
+- **File dibuat/diubah:** `src/app/(site)/{story,source,journey-map}/**`, `src/components/ui/{PageHeader,KartuBab,EntriSumber,ItemSumber,KartuMisi,PanelBaris,PenandaDestinasi,LatarBerulang}`, `src/components/hud/PanelKonten.tsx`, `src/data/*`, `public/images/{story,source,journey-map}/**`.
+- **Cara menguji:** `npm run lint`, `npm run build`; buka `/story`, `/source`, `/journey-map/moon|mars|deep-space` di 1440, 768, 390 dan bandingkan dengan frame Figma.
+- **Hasil uji:** lint dan build lolos. Tinggi halaman build produksi dibandingkan dengan frame Figma: Cerita 1468/1420/1980 (Figma 1460/1412/1972), Peta Perjalanan Moon 3548/4603/6023 (Figma 3548/4603/6023, sama persis), Mars 3286 (sama), tanpa scroll horizontal; posisi header, peta, dan panel cocok. Filter Sumber dan pemilihan misi diuji lewat klik. Belum diuji: Mars dan Deep Space tablet/mobile, frame Source tablet (Figma tidak diambil; mengikuti pola Cerita tablet), keyboard menyeluruh, pembaca layar, perangkat nyata, panel Kosong/Memuat/Galat Journey Map dan Source (frame state belum dibuat).
+- **Keputusan teknis & alasan:**
+  - Halaman Sumber menampilkan semua 8 `sumber` dari content-data.json sebagai Referensi (Figma draf hanya 3); data jadi acuan sesuai handoff bagian 5a.
+  - Kredit Gambar dan Kredit Model 3D belum ada di content-data.json: disalin dari Figma ke `src/data/source.ts` dan **diusulkan masuk ke content-data.json** (Dhika).
+  - Pemetaan sumber per tujuan Peta Perjalanan (`INDEKS_SUMBER` di `src/data/journey.ts`) adalah usulan menurut topik; Moon cocok dengan Figma. Perlu dikonfirmasi tim konten.
+  - Gambar penanda destinasi di Figma membawa cincin di dalam gambar; dipotong ke lingkaran dalam dan cincinnya dibuat dengan CSS agar state Default/Hover/Selected bisa berganti.
+  - Latar Arsip dan Peta Bintang dibuat dari potongan berulang (CSS) mengikuti Figma; handoff menyarankan satu lapisan tetap yang bergerak pelan: belum.
+- **Belum selesai / catatan untuk orang lain:**
+  - Rute `/story/1..4` dan `/resources/<slug>` belum ada (butir 7): tombol Mulai dari Bab 1, Kartu Bab, dan kartu Beranda masih 404.
+  - Animasi (geser pelan latar peta bintang) belum dibuat (butir 8).
+  - Kolom "Sumber" pada Panel Detail Misi memakai sumber pertama tujuan; belum ada pemetaan per misi di data.
+  - Panel Kronologi punya judul tetap per tujuan (usulan dari handoff bagian 5a), bukan dari data.
+  - Gambar header (2000 px) dan latar masih resolusi Figma; hasil generate AI harus dicatat di halaman Source (alat, tanggal, prompt).
+- **Status:** Review
+
 ### [2026-11-15] Beranda (Home): hero, Pengantar, Pilih Lingkungan, dari Figma
 - **Tugas / klaim:** Home (PEMBAGIAN_TUGAS bagian 4, Pace nomor 3)
 - **Branch / PR:** `feat/ui-home` (bertumpuk di atas `feat/ui-hud`, yang bertumpuk di atas `feat/ui-fondasi`) / belum dibuka

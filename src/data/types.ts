@@ -43,9 +43,11 @@ export type Misi = {
   wahana: string;
   peluncuran: string;
   status: string;
-  tiba: string;
-  tujuan: string;
-  temuan: string;
+  /** Field berikut tidak selalu ada (misi yang belum lengkap): tampil sebagai TBD. */
+  tiba?: string;
+  tujuan?: string;
+  temuan?: string;
+  catatan?: string;
 };
 
 export type Kategori = {
