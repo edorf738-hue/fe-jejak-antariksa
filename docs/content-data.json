@@ -12,7 +12,8 @@
       "dataBenda.fakta": 70,
       "misi.status": 50,
       "catatan": "Batas dari ukuran kartu di Figma (mobile 342 px). Lebih panjang dari ini akan menambah tinggi kartu dan bisa menutup hotspot."
-    }
+    },
+    "catatanStruktur": "Cerita terdiri dari 4 bab. Bab 5 dihapus dari desain."
   },
   "bab": [
     {
@@ -174,18 +175,6 @@
           "sumber": "NASA"
         }
       ]
-    },
-    {
-      "id": 5,
-      "judul": "Penutup",
-      "status": "belum ada materi",
-      "narasi": "TBD",
-      "hotspot": [
-        "TBD",
-        "TBD",
-        "TBD"
-      ],
-      "dataBenda": null
     }
   ],
   "resources": {
@@ -404,8 +393,7 @@
     "1": "NASA berdiri pada 1958 dan mulai menyiapkan jalan menuju Apollo 11.",
     "2": "Pada 20 Juli 1969, Eagle mendarat di Laut Ketenangan dan manusia menjejak Bulan.",
     "3": "Dua rover kembar, Spirit dan Opportunity, mencari jejak air di Mars sejak 2004.",
-    "4": "Voyager 1 dan 2 terbang ke ruang antarbintang membawa Golden Record.",
-    "5": "TBD"
+    "4": "Voyager 1 dan 2 terbang ke ruang antarbintang membawa Golden Record."
   },
   "detailMisiTambahan": {
     "Bulan": {
