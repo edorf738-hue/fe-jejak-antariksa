@@ -1,26 +1,271 @@
 @import "tailwindcss";
 
+/*
+ * Token desain: sumber kebenaran adalah Figma (lihat docs/FIGMA_HANDOFF.md bagian 2).
+ * Konvensi nama warna: --color-<family>-<level>, huruf kecil, spasi -> "-", " :" -> "-".
+ * Di Tailwind menjadi utilitas, contoh: bg-bg-primary-normal, text-text-primary-normal,
+ * border-archive-slate-normal, hover:bg-aksen-informasi-normal-hover.
+ */
+@theme static {
+  /* bg-primary: latar halaman */
+  --color-bg-primary-light: #e6e7e7;
+  --color-bg-primary-light-hover: #dadadb;
+  --color-bg-primary-light-active: #b2b3b6;
+  --color-bg-primary-normal: #080b12;
+  --color-bg-primary-normal-hover: #070a10;
+  --color-bg-primary-normal-active: #06090e;
+  --color-bg-primary-dark: #06080e;
+  --color-bg-primary-dark-hover: #05070b;
+  --color-bg-primary-dark-active: #040508;
+  --color-bg-primary-darker: #030406;
+
+  /* bg-secondary: permukaan kartu */
+  --color-bg-secondary-light: #e7e8e9;
+  --color-bg-secondary-light-hover: #dbdcdf;
+  --color-bg-secondary-light-active: #b5b7bc;
+  --color-bg-secondary-normal: #111827;
+  --color-bg-secondary-normal-hover: #0f1623;
+  --color-bg-secondary-normal-active: #0e131f;
+  --color-bg-secondary-dark: #0d121d;
+  --color-bg-secondary-dark-hover: #0a0e17;
+  --color-bg-secondary-dark-active: #080b12;
+  --color-bg-secondary-darker: #06080e;
+
+  /* archive-slate: kartu terpilih, garis */
+  --color-archive-slate-light: #e9eaeb;
+  --color-archive-slate-light-hover: #dedfe1;
+  --color-archive-slate-light-active: #babdc2;
+  --color-archive-slate-normal: #202a3a;
+  --color-archive-slate-normal-hover: #1d2634;
+  --color-archive-slate-normal-active: #1a222e;
+  --color-archive-slate-dark: #18202c;
+  --color-archive-slate-dark-hover: #131923;
+  --color-archive-slate-dark-active: #0e131a;
+  --color-archive-slate-darker: #0b0f14;
+
+  /* text-primary: teks utama */
+  --color-text-primary-light: #fefefd;
+  --color-text-primary-light-hover: #fdfdfc;
+  --color-text-primary-light-active: #fbfaf8;
+  --color-text-primary-normal: #f3f0e8;
+  --color-text-primary-normal-hover: #dbd8d1;
+  --color-text-primary-normal-active: #c2c0ba;
+  --color-text-primary-dark: #b6b4ae;
+  --color-text-primary-dark-hover: #92908b;
+  --color-text-primary-dark-active: #6d6c68;
+  --color-text-primary-darker: #555451;
+
+  /* text-secondary: teks sekunder */
+  --color-text-secondary-light: #f6f7f9;
+  --color-text-secondary-light-hover: #f2f3f6;
+  --color-text-secondary-light-active: #e4e7ec;
+  --color-text-secondary-normal: #a8b1c2;
+  --color-text-secondary-normal-hover: #979faf;
+  --color-text-secondary-normal-active: #868e9b;
+  --color-text-secondary-dark: #7e8592;
+  --color-text-secondary-dark-hover: #656a74;
+  --color-text-secondary-dark-active: #4c5057;
+  --color-text-secondary-darker: #3b3e44;
+
+  /* aksen-warisan: label, catatan */
+  --color-aksen-warisan-light: #fbf6ef;
+  --color-aksen-warisan-light-hover: #f9f2e6;
+  --color-aksen-warisan-light-active: #f3e4cc;
+  --color-aksen-warisan-normal: #d9a85b;
+  --color-aksen-warisan-normal-hover: #c39752;
+  --color-aksen-warisan-normal-active: #ae8649;
+  --color-aksen-warisan-dark: #a37e44;
+  --color-aksen-warisan-dark-hover: #826537;
+  --color-aksen-warisan-dark-active: #624c29;
+  --color-aksen-warisan-darker: #4c3b20;
+
+  /* aksen-informasi: tombol utama, tautan */
+  --color-aksen-informasi-light: #f1f8fb;
+  --color-aksen-informasi-light-hover: #eaf4f9;
+  --color-aksen-informasi-light-active: #d3e9f2;
+  --color-aksen-informasi-normal: #72b8d5;
+  --color-aksen-informasi-normal-hover: #67a6c0;
+  --color-aksen-informasi-normal-active: #5b93aa;
+  --color-aksen-informasi-dark: #568aa0;
+  --color-aksen-informasi-dark-hover: #446e80;
+  --color-aksen-informasi-dark-active: #335360;
+  --color-aksen-informasi-darker: #28404b;
+
+  /* aksen-visual: progres bab */
+  --color-aksen-visual-light: #f4f5fa;
+  --color-aksen-visual-light-hover: #eef0f7;
+  --color-aksen-visual-light-active: #dce0ee;
+  --color-aksen-visual-normal: #8d9bc9;
+  --color-aksen-visual-normal-hover: #7f8cb5;
+  --color-aksen-visual-normal-active: #717ca1;
+  --color-aksen-visual-dark: #6a7497;
+  --color-aksen-visual-dark-hover: #555d79;
+  --color-aksen-visual-dark-active: #3f465a;
+  --color-aksen-visual-darker: #313646;
+
+  /* Font (dimuat lewat next/font di layout.tsx) */
+  --font-heading: var(--font-space-grotesk), ui-sans-serif, system-ui, sans-serif;
+  --font-eyebrow: var(--font-rajdhani), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* Radius: kartu 24, tombol/chip/navbar berbentuk pill (100) */
+  --radius-card: 24px;
+  --radius-pill: 100px;
+
+  /* Breakpoint: tablet 768 (md), desktop 1024+ (lg). Frame Figma: 390 / 768 / 1440 */
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+
+  /* Lebar maksimum konten (frame desktop 1440) */
+  --container-page: 1440px;
+}
+
+/*
+ * Layout dasar per breakpoint (FIGMA_HANDOFF bagian 1).
+ * Mobile 390: padding 24, jarak section 40.
+ * Tablet 768: padding 40, jarak section 48.
+ * Desktop 1440: padding 86, jarak section 56.
+ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --page-padding: 24px;
+  --section-gap: 40px;
+  --navbar-offset: 104px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
+@media (min-width: 768px) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --page-padding: 40px;
+    --section-gap: 48px;
+    --navbar-offset: 124px;
   }
 }
 
+@media (min-width: 1024px) {
+  :root {
+    --page-padding: 86px;
+    --section-gap: 56px;
+    --navbar-offset: 164px;
+  }
+}
+
+html {
+  background: var(--color-bg-primary-normal);
+  color-scheme: dark;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--color-bg-primary-normal);
+  color: var(--color-text-primary-normal);
+  font-family: var(--font-body);
+}
+
+/* Fokus terlihat di semua elemen interaktif (aksesibilitas wajib) */
+:focus-visible {
+  outline: 2px solid var(--color-aksen-informasi-normal);
+  outline-offset: 3px;
+}
+
+/*
+ * Text style (FIGMA_HANDOFF bagian 2). Ukuran bertanda "usulan" di Figma
+ * belum disetujui designer: text-hero-36, text-heading-section, text-heading-card.
+ */
+@utility text-hero-90 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 90px;
+  line-height: 100px;
+  letter-spacing: 0.05em;
+}
+@utility text-hero-70 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 70px;
+  line-height: 80px;
+  letter-spacing: 0;
+}
+@utility text-hero-36 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 36px;
+  line-height: 42px;
+  letter-spacing: 0.05em;
+}
+@utility text-eyebrow-20 {
+  font-family: var(--font-eyebrow);
+  font-weight: 600;
+  font-size: 20px;
+  line-height: normal;
+  letter-spacing: 0.4em;
+}
+@utility text-eyebrow-15 {
+  font-family: var(--font-eyebrow);
+  font-weight: 600;
+  font-size: 15px;
+  line-height: normal;
+  letter-spacing: 0.4em;
+}
+@utility text-heading-section {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 48px;
+  line-height: 56px;
+  letter-spacing: 0;
+}
+@utility text-heading-card {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 32px;
+  line-height: 40px;
+  letter-spacing: 0;
+}
+@utility text-body-large {
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 30px;
+  letter-spacing: 0;
+}
+@utility text-button-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: normal;
+  letter-spacing: 0;
+}
+@utility text-nav-link {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 20px;
+  line-height: normal;
+  letter-spacing: 0;
+}
+@utility text-nav-link-active {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 20px;
+  line-height: normal;
+  letter-spacing: 0;
+}
+
+/* Padding horizontal halaman mengikuti breakpoint */
+@utility px-page {
+  padding-inline: var(--page-padding);
+}
+
+/* Jarak antar-section mengikuti breakpoint (40 / 48 / 56) */
+@utility gap-section {
+  gap: var(--section-gap);
+}
+
+/* Gerak dimatikan bila pengguna memilih prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }
