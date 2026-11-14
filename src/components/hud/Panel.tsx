@@ -1,35 +1,39 @@
 import type { ReactNode } from "react";
-import { IconButton } from "@/components/ui";
+import { Button } from "@/components/ui";
 
 /**
- * Panel kaca (Fakta, Misi Terkait, Galeri, Sumber). Di desktop berada di kanan
- * scene; di tablet dan mobile penuh lebar menutupi scene. Penempatan (absolute
- * atau fixed) diatur oleh halaman yang memakainya. Fill 95% (lebih pekat dari
- * kartu kaca biasa) agar teks tetap terbaca saat menutupi scene dan dok. Tombol Tutup memanggil `onTutup`.
+ * Panel (Fakta, Misi Terkait, Galeri, Sumber) di atas scene. Figma: lebar 440, tinggi 564,
+ * padding 28, radius 28, fill #111827 @ 78% + blur 14, garis 1,5 px Aksen Informasi;
+ * judul 32/40 dan tombol Tutup (Secondary) sebaris; isi bisa digulir. Di tablet dan
+ * mobile panel penuh menutupi scene. Penempatan diatur oleh halaman yang memakainya.
  */
 type PanelProps = {
   judul: string;
   onTutup: () => void;
+  /** Label tombol Tutup. */
+  labelTutup?: string;
   children: ReactNode;
   className?: string;
 };
 
-export function Panel({ judul, onTutup, children, className = "" }: PanelProps) {
+export function Panel({ judul, onTutup, labelTutup = "Tutup", children, className = "" }: PanelProps) {
   const headingId = `panel-${judul.toLowerCase().replace(/\s+/g, "-")}`;
   return (
     <aside
       role="dialog"
       aria-modal="false"
       aria-labelledby={headingId}
-      className={`flex max-h-full w-full flex-col gap-5 rounded-card bg-bg-secondary-normal/95 p-6 backdrop-blur-[24px] shadow-[0_0_0_1.5px_var(--color-archive-slate-normal)] md:w-[420px] ${className}`}
+      className={`flex w-full flex-col gap-4 overflow-hidden rounded-[28px] border-[1.5px] border-aksen-informasi-normal bg-bg-secondary-normal/80 p-7 backdrop-blur-[14px] ${className}`}
     >
-      <header className="flex items-center justify-between gap-4">
+      <header className="flex shrink-0 items-center justify-between gap-4">
         <h2 id={headingId} className="text-heading-card text-text-primary-normal">
           {judul}
         </h2>
-        <IconButton icon="tutup" label={`Tutup panel ${judul}`} onClick={onTutup} />
+        <Button variant="secondary" onClick={onTutup} aria-label={`${labelTutup} panel ${judul}`}>
+          {labelTutup}
+        </Button>
       </header>
-      <div className="flex flex-col gap-4 overflow-y-auto">{children}</div>
+      <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto">{children}</div>
     </aside>
   );
 }

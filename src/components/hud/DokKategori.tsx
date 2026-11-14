@@ -1,8 +1,9 @@
-import Link from "next/link";
+import { Button } from "@/components/ui";
 
 /**
- * Dok tab kategori di halaman Resources (Mars, Moon, Deep Space). Berupa
- * navigasi antar halaman, jadi memakai tautan dengan aria-current (bukan role tab).
+ * Dok Kategori halaman Resources (Mars, Moon, Deep Space): glass radius 28, padding 16/24,
+ * tombol berjajar di tengah (Primary = aktif, Secondary = lainnya), lebar 700 di desktop
+ * dan penuh di bawah itu. Berupa navigasi antar halaman, jadi memakai tautan dan aria-current.
  */
 type DokKategoriProps = {
   items: { label: string; href: string }[];
@@ -15,24 +16,19 @@ export function DokKategori({ items, aktifHref, className = "" }: DokKategoriPro
   return (
     <nav
       aria-label="Kategori"
-      className={`glass inline-flex w-full items-center justify-center gap-1 rounded-pill p-2 shadow-[0_0_0_1.5px_var(--color-archive-slate-normal)] md:w-auto ${className}`}
+      className={`glass flex w-full flex-wrap items-center justify-center gap-3 rounded-[28px] border border-archive-slate-normal p-4 md:px-6 lg:w-[700px] ${className}`}
     >
       {items.map((item) => {
         const aktif = item.href === aktifHref;
         return (
-          <Link
+          <Button
             key={item.href}
             href={item.href}
+            variant={aktif ? "primary" : "secondary"}
             aria-current={aktif ? "page" : undefined}
-            className={[
-              "flex min-h-11 flex-1 items-center justify-center rounded-pill px-5 py-2 transition-colors duration-150 md:flex-none md:px-8",
-              aktif
-                ? "text-nav-link-active bg-[#0067b2]/20 text-text-primary-normal"
-                : "text-nav-link text-text-secondary-normal hover:text-text-primary-normal",
-            ].join(" ")}
           >
             {item.label}
-          </Link>
+          </Button>
         );
       })}
     </nav>

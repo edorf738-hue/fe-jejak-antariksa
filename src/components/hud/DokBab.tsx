@@ -1,66 +1,77 @@
-import { Button } from "@/components/ui";
 import Link from "next/link";
+import { Button } from "@/components/ui";
 
 /**
- * Dok Navigasi Bab (dok bawah halaman imersif Story): Sebelumnya, Navigasi Bab
- * (stepper 1-4, warna Aksen Visual = progres bab), Berikutnya.
- * Di Bab 4 tombol berikutnya berlabel "Daftar Bab" dan kembali ke Cerita; karena
- * itu tujuan tiap tombol diberikan lewat props, bukan dihitung di sini.
+ * Dok Navigasi Bab (dok bawah halaman imersif Story): Navigasi Bab (stepper dengan
+ * penanda 44 px, garis penghubung, label bab) dan tombol bab berikutnya (Primary,
+ * `Ikon Kanan`), ditambah Sebelumnya (Secondary) mulai Bab 2. Figma: glass #111827 @ 62%
+ * + blur 12, radius 28, padding 16/24. Di mobile label bab disembunyikan dan tombol
+ * berada di bawah stepper selebar penuh.
+ *
+ * Tujuan tiap tautan diberikan lewat props: Bab 4 berlabel "Daftar Bab" dan kembali ke Cerita.
  */
 type DokBabProps = {
   /** Bab aktif (1-4). */
   aktif: number;
-  jumlahBab?: number;
-  /** Tautan ke bab n. */
+  /** Label singkat tiap bab, mis. ["Awal", "Bulan", "Mars", "Deep Space"]. */
+  label: readonly string[];
   hrefBab: (bab: number) => string;
-  /** Tujuan Sebelumnya; kosong = tombol nonaktif (Bab 1). */
+  /** Tujuan Sebelumnya; kosong = tidak ditampilkan (Bab 1). */
   hrefSebelumnya?: string;
   hrefBerikutnya: string;
-  labelBerikutnya?: string;
+  labelBerikutnya: string;
   className?: string;
 };
 
 export function DokBab({
   aktif,
-  jumlahBab = 4,
+  label,
   hrefBab,
   hrefSebelumnya,
   hrefBerikutnya,
-  labelBerikutnya = "Berikutnya",
+  labelBerikutnya,
   className = "",
 }: DokBabProps) {
   return (
     <div
-      className={`glass flex w-full items-center justify-between gap-3 rounded-pill p-2 shadow-[0_0_0_1.5px_var(--color-archive-slate-normal)] ${className}`}
+      className={`glass flex w-full flex-col gap-3 rounded-[28px] border border-archive-slate-normal p-4 md:flex-row md:items-center md:gap-6 md:px-6 ${className}`}
     >
-      {hrefSebelumnya ? (
-        <Button href={hrefSebelumnya} variant="secondary" iconLeft="panah-kiri" className="max-md:px-3">
-          <span className="max-md:sr-only">Sebelumnya</span>
-        </Button>
-      ) : (
-        <Button variant="secondary" iconLeft="panah-kiri" disabled className="max-md:px-3">
-          <span className="max-md:sr-only">Sebelumnya</span>
-        </Button>
-      )}
-
-      <nav aria-label="Navigasi bab">
-        <ol className="flex items-center gap-2">
-          {Array.from({ length: jumlahBab }, (_, i) => i + 1).map((bab) => {
+      <nav aria-label="Navigasi bab" className="min-w-0 flex-1">
+        <ol className="flex items-start gap-3">
+          {label.map((nama, i) => {
+            const bab = i + 1;
             const sekarang = bab === aktif;
             return (
-              <li key={bab}>
+              <li key={bab} className="contents">
+                {i > 0 && (
+                  <span aria-hidden="true" className="flex h-11 min-w-0 flex-1 items-center">
+                    <span className="h-0.5 flex-1 bg-archive-slate-normal" />
+                  </span>
+                )}
                 <Link
                   href={hrefBab(bab)}
                   aria-current={sekarang ? "step" : undefined}
-                  aria-label={`Bab ${bab}`}
-                  className={[
-                    "flex size-11 items-center justify-center rounded-full font-heading text-base font-bold transition-colors duration-150",
-                    sekarang
-                      ? "bg-aksen-visual-normal text-bg-primary-normal"
-                      : "text-text-secondary-normal hover:bg-archive-slate-normal hover:text-text-primary-normal",
-                  ].join(" ")}
+                  aria-label={`Bab ${bab}: ${nama}`}
+                  className="flex shrink-0 flex-col items-center gap-2.5"
                 >
-                  {bab}
+                  <span
+                    className={`text-button-label flex size-11 items-center justify-center rounded-full ${
+                      sekarang
+                        ? "bg-aksen-informasi-normal text-bg-primary-normal"
+                        : "border-[1.5px] border-text-secondary-dark text-text-secondary-normal"
+                    }`}
+                  >
+                    {bab}
+                  </span>
+                  <span
+                    className={`hidden md:block ${
+                      sekarang
+                        ? "text-button-label text-text-primary-normal"
+                        : "text-nav-link text-text-secondary-normal"
+                    }`}
+                  >
+                    {nama}
+                  </span>
                 </Link>
               </li>
             );
@@ -68,9 +79,16 @@ export function DokBab({
         </ol>
       </nav>
 
-      <Button href={hrefBerikutnya} iconRight="panah-kanan" className="max-md:px-3">
-        <span className="max-md:sr-only">{labelBerikutnya}</span>
-      </Button>
+      <div className="flex gap-3 md:shrink-0">
+        {hrefSebelumnya && (
+          <Button href={hrefSebelumnya} variant="secondary" iconLeft="panah-kiri" className="flex-1 md:flex-none">
+            Sebelumnya
+          </Button>
+        )}
+        <Button href={hrefBerikutnya} iconRight="panah-kanan" className="flex-1 md:flex-none">
+          {labelBerikutnya}
+        </Button>
+      </div>
     </div>
   );
 }

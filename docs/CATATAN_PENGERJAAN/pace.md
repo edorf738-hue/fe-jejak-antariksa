@@ -4,6 +4,29 @@ Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 
 ## Entri
 
+### [2026-11-15] Kerangka halaman imersif: Story Bab 1-4 dan Resources
+- **Tugas / klaim:** Halaman imersif (kerangka) (PEMBAGIAN_TUGAS bagian 4, Pace nomor 7)
+- **Branch / PR:** `feat/ui-imersif` (bertumpuk di atas `feat/ui-journey-map`) / belum dibuka
+- **Yang dikerjakan:**
+  - Rute `/story/[bab]` (1-4) dan `/resources/[kategori]` (mars, moon, deep-space) di route group `(imersif)` (tanpa Navbar). Satu komponen client `HalamanImersif` (`src/components/hud/`) menyusun lapisan scene, gradien, HUD, dan panel; state: panel terbuka, benda terpilih, jeda gerak, layar penuh (Fullscreen API), Escape menutup panel.
+  - Komponen HUD disesuaikan dengan Figma yang baru terbaca: `KartuNarasi`, `KartuDataBenda` (eyebrow DATA BENDA, baris Kategori/Deskripsi/Fakta + sumber), `Panel` (440x564, tombol Tutup), `DokBab` (Navigasi Bab + tombol bab; Sebelumnya mulai Bab 2), `DokKategori`, `TombolPanel` (tanpa fill), utilitas `glass` (62% + blur 12), Tombol Ikon glass (70% + blur 12, garis Text Secondary), `Button` menerima `aria-current` pada tautan.
+  - `src/components/hud/ScenePlaceholder.tsx`: `LatarScene` (gambar + tiga gradien), `Objek3DPlaceholder`, `TitikInfoPlaceholder` (dengan denyut 2 dtk, mati bila `prefers-reduced-motion`), `PenandaPlaceholder`. **Ini pengganti sementara** untuk SceneCanvas (Edo), ObjectViewer dan HotspotLayer (Zhafran).
+  - Data: `src/data/imersif.ts` (`getBabImersif`, `getResourcesImersif`, `IMERSIF_COPY`), label bab di `STORY_COPY.labelBab`. Halaman uji `/ui-kit/hud` dihapus (digantikan halaman asli).
+- **File dibuat/diubah:** `src/app/(imersif)/**`, `src/components/hud/*`, `src/components/ui/{Button,IconButton}`, `src/app/globals.css`, `src/data/{imersif,story,index}.ts`, `public/images/imersif/bab-1-bumi.webp`.
+- **Cara menguji:** `npm run lint`, `npm run build`, buka `/story/1..4` dan `/resources/mars|moon|deep-space` di 1440x900, 768x1024, 390x844; klik titik info, tombol panel, kontrol scene, dok.
+- **Hasil uji:** lint dan build lolos. Build produksi diukur terhadap Figma: panel desktop tepat di x 914, y 57, 440x564; kontrol scene bergeser ke x 742 saat panel terbuka; tablet kontrol di x 684, y 152; mobile dok 342 lebar, narasi di bawah, tombol panel dan kontrol di posisi Figma; tanpa scroll horizontal. Belum diuji: Bab 2-4 dan Moon/Deep Space secara visual (data sama), frame panel Fakta/Galeri/Sumber desktop dibandingkan piksel, keyboard menyeluruh, focus trap, pembaca layar, perangkat nyata.
+- **Keputusan teknis & alasan:**
+  - HUD berada di lapisan selaras konten (padding 24/40/86, maks 1440) dengan jangkar atas/kanan/bawah, bukan posisi piksel dari kiri atas, agar tetap rapi di tinggi layar berbeda.
+  - Latar scene memakai gambar yang sama dengan kartu Beranda (Bab 2-4, Resources) dan gambar konsep Figma untuk Bab 1; tanpa efek parallax (overscan 111%) yang ada di Figma.
+  - Bab 1 memakai data Moon untuk Misi Terkait, Sumber, dan Fakta (belum ada data khusus Bab 1).
+  - Titik Info statis memakai 3 posisi ilustrasi per ukuran layar (bukan posisi benda di scene), karena posisi asli menunggu proyeksi 3D.
+- **Belum selesai / catatan untuk orang lain:**
+  - Edo dan Zhafran: ganti `LatarScene` / `TitikInfoPlaceholder` / `Objek3DPlaceholder` dengan komponen asli; kontrak props `onResetCamera`, `onTogglePause` di `KontrolScene` tersedia (kini hanya `onTogglePause` dan layar penuh yang tersambung). Garis penghubung hotspot ke objek belum dibuat (bagian HotspotLayer).
+  - Fokus: focus trap panel dan pengembalian fokus ke tombol pemicu belum dibuat (butir 9). Animasi masuk HUD (butir 8) belum.
+  - Panel Galeri Mars kosong karena content-data.json belum punya galeri Mars ("Belum ada data.").
+  - Perilaku kembali (Story ke Cerita, Resources ke Beranda) masih usulan tim.
+- **Status:** Review
+
 ### [2026-11-15] Peta Perjalanan (Journey Map), Source, dan Cerita (Pengantar), dari Figma
 Tiga butir dikerjakan di tiga branch bertumpuk (`feat/ui-story`, lalu `feat/ui-source`, lalu `feat/ui-journey-map`); entri ini ditulis di branch terakhir dan mencakup ketiganya.
 - **Tugas / klaim:** Story Pengantar (butir 4), Journey Map (butir 5), Source (butir 6) di PEMBAGIAN_TUGAS bagian 4

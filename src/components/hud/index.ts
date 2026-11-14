@@ -1,5 +1,6 @@
 export { DokBab } from "./DokBab";
 export { DokKategori } from "./DokKategori";
+export { HalamanImersif } from "./HalamanImersif";
 export { KartuDataBenda } from "./KartuDataBenda";
 export { KartuNarasi } from "./KartuNarasi";
 export { KontrolScene } from "./KontrolScene";

@@ -4,3 +4,4 @@ export * from "./home";
 export * from "./story";
 export * from "./source";
 export * from "./journey";
+export * from "./imersif";

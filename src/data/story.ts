@@ -8,6 +8,8 @@ export const STORY_COPY = {
     deskripsi: "Ikuti kisah eksplorasi bab demi bab.",
   },
   daftar: { judul: "Daftar Bab", ctaMulai: "Mulai dari Bab 1" },
+  /** Label singkat di Navigasi Bab (stepper), dari Figma `Navigasi Bab`. */
+  labelBab: ["Awal", "Bulan", "Mars", "Deep Space"],
 } as const;
 
 export type BabRingkas = { nomor: string; judul: string; ringkasan: string; href: string };

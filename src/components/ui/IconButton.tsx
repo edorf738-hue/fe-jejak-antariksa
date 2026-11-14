@@ -25,7 +25,7 @@ export type IconButtonTone = "glass" | "outline";
 
 const TONES: Record<IconButtonTone, string> = {
   glass:
-    "bg-bg-secondary-normal/80 backdrop-blur-[24px] shadow-[0_0_0_1.5px_var(--color-archive-slate-normal)] " +
+    "bg-bg-secondary-normal/70 backdrop-blur-[12px] shadow-[0_0_0_1.5px_var(--color-text-secondary-normal)] " +
     "hover:bg-archive-slate-normal/90 hover:shadow-[0_0_0_1.5px_var(--color-aksen-informasi-normal)]",
   outline:
     "shadow-[0_0_0_1.5px_var(--color-text-secondary-normal)] " +

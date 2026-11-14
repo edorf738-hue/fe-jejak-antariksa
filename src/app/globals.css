@@ -254,13 +254,13 @@ body {
 }
 
 /*
- * Fill kaca untuk komponen HUD di atas canvas 3D: #111827 @ 70% + blur 24
- * (Figma memakai 62-78% dan blur 24-28; variabel Figma tidak membawa opasitas).
+ * Fill kaca untuk komponen HUD di atas canvas 3D (FIGMA frame Story/Resources):
+ * #111827 @ 62% + blur 12. Variabel Figma tidak membawa opasitas, jadi belum jadi token.
  */
 @utility glass {
-  background-color: color-mix(in srgb, var(--color-bg-secondary-normal) 70%, transparent);
-  backdrop-filter: blur(24px);
-  -webkit-backdrop-filter: blur(24px);
+  background-color: color-mix(in srgb, var(--color-bg-secondary-normal) 62%, transparent);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
 }
 
 /* Jarak antar-section mengikuti breakpoint (40 / 48 / 56) */

@@ -22,6 +22,8 @@ type ButtonOwnProps = {
   disabled?: boolean;
   /** Fill kaca + blur, untuk tombol yang berada di atas scene 3D (Tombol Panel, Dok). */
   glass?: boolean;
+  /** Untuk tautan di dalam navigasi (mis. tab kategori, langkah bab). */
+  "aria-current"?: "page" | "step" | boolean;
   className?: string;
   children: ReactNode;
 };
@@ -77,6 +79,7 @@ export function Button({
   loading = false,
   disabled = false,
   glass = false,
+  "aria-current": ariaCurrent,
   className = "",
   children,
   href,
@@ -118,7 +121,7 @@ export function Button({
       );
     }
     return (
-      <Link href={href} className={classes}>
+      <Link href={href} aria-current={ariaCurrent} className={classes}>
         {content}
       </Link>
     );
@@ -128,6 +131,7 @@ export function Button({
     <button
       {...rest}
       type={type}
+      aria-current={ariaCurrent}
       disabled={inactive}
       aria-busy={loading || undefined}
       className={classes}

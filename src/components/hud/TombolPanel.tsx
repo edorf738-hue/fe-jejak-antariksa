@@ -28,7 +28,6 @@ export function TombolPanel({ jenis, aktif = false, onClick, className }: Tombol
   return (
     <Button
       variant="secondary"
-      glass
       iconLeft={icon}
       onClick={onClick}
       aria-pressed={aktif}
