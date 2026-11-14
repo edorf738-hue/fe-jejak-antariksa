@@ -8,12 +8,17 @@ import { IconButton } from "./IconButton";
 import { Logo } from "./Logo";
 
 /**
- * Navbar (desktop, 1268x100, efek glass) dan Navbar Ringkas (tablet/mobile,
+ * Navbar (desktop, 1268x100, tanpa fill, garis tipis; logo di kiri, tautan mulai dari
+ * garis tengah navbar seperti di Figma) dan Navbar Ringkas (tablet/mobile,
  * varian Menu Tertutup/Terbuka). Satu komponen: daftar tautan dirender sekali dan
  * berubah menjadi menu turun di bawah breakpoint `lg` (1024).
  *
  * Resources tidak ada di navbar; saat di Resources, "Beranda" ditandai aktif
  * (usulan di FIGMA_HANDOFF bagian 7), karena itu `Beranda` punya `alsoActiveOn`.
+ *
+ * Posisi `absolute` (ikut menggulir bersama halaman), sesuai Figma: navbar berada
+ * di atas hero, bukan menempel di layar. Halaman dengan hero menariknya ke atas
+ * dengan margin negatif sebesar --navbar-offset.
  */
 export const NAV_ITEMS = [
   { label: "Beranda", href: "/", alsoActiveOn: ["/resources"] },
@@ -51,16 +56,16 @@ export function Navbar() {
   return (
     <header
       onKeyDown={onKeyDown}
-      className="fixed inset-x-0 top-0 z-50 pt-4 md:pt-6 lg:pt-10"
+      className="absolute inset-x-0 top-0 z-50 pt-6 lg:pt-[57px]"
     >
       <Container>
         <div className="relative">
-          {/* Lapisan kaca dipisah dari konten agar menu turun bisa punya blur sendiri. */}
+          {/* Pill: Figma tanpa fill (rgba 255,255,255,0), hanya garis tipis di atas hero. */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 rounded-pill bg-bg-secondary-normal/70 shadow-[0_0_0_1.5px_var(--color-archive-slate-normal)] backdrop-blur-[24px]"
+            className="absolute inset-0 rounded-pill shadow-[0_0_0_1.5px_var(--color-archive-slate-normal)]"
           />
-          <div className="relative flex h-16 items-center justify-between gap-4 px-3 lg:h-[100px] lg:px-8">
+          <div className="relative flex h-[72px] items-center justify-between gap-4 px-4 lg:grid lg:h-[100px] lg:grid-cols-2 lg:gap-0 lg:px-8">
             <Logo />
 
             <nav
@@ -72,10 +77,10 @@ export function Navbar() {
                 "absolute inset-x-0 top-full mt-3 rounded-card bg-bg-secondary-normal/90 p-3",
                 "shadow-[0_0_0_1.5px_var(--color-archive-slate-normal)] backdrop-blur-[24px]",
                 // Baris tautan (desktop)
-                "lg:static lg:mt-0 lg:block lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none lg:backdrop-blur-none",
+                "lg:static lg:-ml-[13px] lg:mt-0 lg:block lg:rounded-none lg:bg-transparent lg:p-0 lg:shadow-none lg:backdrop-blur-none",
               ].join(" ")}
             >
-              <ul className="flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-2">
+              <ul className="flex flex-col gap-1 lg:flex-row lg:items-center lg:gap-[14px]">
                 {NAV_ITEMS.map((item) => {
                   const active = isActive(item, pathname);
                   return (
@@ -84,7 +89,7 @@ export function Navbar() {
                         href={item.href}
                         aria-current={active ? "page" : undefined}
                         className={[
-                          "flex min-h-11 items-center rounded-pill px-6 py-2 transition-colors duration-150",
+                          "flex min-h-11 items-center rounded-pill px-[13px] transition-colors duration-150 max-lg:px-5",
                           // Fill pill aktif: #0067b2 @ 20% (belum menjadi token di Figma).
                           active
                             ? "text-nav-link-active bg-[#0067b2]/20 text-text-primary-normal"
@@ -106,6 +111,7 @@ export function Navbar() {
               aria-expanded={open}
               aria-controls="navigasi-utama"
               onClick={() => setOpenedOn(open ? null : pathname)}
+              tone="outline"
               className="lg:hidden"
             />
           </div>

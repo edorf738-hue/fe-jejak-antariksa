@@ -40,7 +40,7 @@ type ButtonAsLink = ButtonOwnProps & {
 export type ButtonProps = ButtonAsButton | ButtonAsLink;
 
 const BASE =
-  "text-button-label inline-flex min-h-12 select-none items-center justify-center gap-2 " +
+  "text-button-label inline-flex min-h-11 select-none items-center justify-center py-4 " +
   "rounded-pill transition-colors duration-150 " +
   "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-aksen-informasi-normal";
 
@@ -53,8 +53,8 @@ const VARIANTS: Record<ButtonVariant, { enabled: string; disabled: string }> = {
   },
   secondary: {
     enabled:
-      "text-text-primary-normal shadow-[0_0_0_1.5px_var(--color-aksen-informasi-normal)] " +
-      "hover:bg-aksen-informasi-dark/40 hover:shadow-[0_0_0_1.5px_var(--color-aksen-informasi-normal-hover)] " +
+      "text-text-primary-normal shadow-[0_0_0_1.5px_var(--color-text-secondary-normal)] " +
+      "hover:bg-aksen-informasi-dark/40 hover:shadow-[0_0_0_1.5px_var(--color-aksen-informasi-normal)] " +
       "active:bg-aksen-informasi-dark/60",
     disabled:
       "text-text-secondary-dark shadow-[0_0_0_1.5px_var(--color-archive-slate-normal)]",
@@ -84,7 +84,8 @@ export function Button({
   ...rest
 }: ButtonProps & { type?: ButtonHTMLAttributes<HTMLButtonElement>["type"] }) {
   const inactive = disabled || loading;
-  const padding = iconLeft || iconRight ? "px-5" : "px-8";
+  // Figma: padding horizontal 32; tombol panel ber-ikon memakai 20 dan gap 8.
+  const padding = iconLeft || iconRight ? "gap-2 px-5" : "gap-[10px] px-8";
   const classes = [
     BASE,
     padding,

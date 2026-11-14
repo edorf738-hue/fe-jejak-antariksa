@@ -4,6 +4,31 @@ Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 
 ## Entri
 
+### [2026-11-15] Beranda (Home): hero, Pengantar, Pilih Lingkungan, dari Figma
+- **Tugas / klaim:** Home (PEMBAGIAN_TUGAS bagian 4, Pace nomor 3)
+- **Branch / PR:** `feat/ui-home` (bertumpuk di atas `feat/ui-hud`, yang bertumpuk di atas `feat/ui-fondasi`) / belum dibuka
+- **Yang dikerjakan:**
+  - Halaman `/` (`src/app/(site)/page.tsx`) dari frame Figma `Home — Desktop` (47:1365), `Home — Tablet` (91:98), `Home — Mobile` (91:144): hero foto + overlay gradien, headline, deskripsi, dua CTA, bagian Pengantar, bagian Pilih Lingkungan (3 kartu), latar Bima Sakti (desktop).
+  - Komponen baru `KartuLingkungan` (`src/components/ui/`) dan teks Beranda di `src/data/home.ts` (`HOME_COPY`, `getKartuLingkungan`; nama kategori diambil dari content-data.json).
+  - Aset Figma diunduh ke `public/images/` (hero WebP, 3 gambar kartu JPG, logo PNG, latar Bima Sakti WebP hasil ekspor node 137:3805).
+  - Penyesuaian komponen fondasi agar cocok Figma: `Button` (tinggi 56, gap 10, garis Secondary memakai Text Secondary), `Navbar` (posisi `absolute`, tanpa fill, 72 px di tablet/mobile, 100 px di desktop, tautan mulai dari garis tengah navbar), `Logo` (kini memakai gambar logo Space Apps Challenge), `IconButton` (prop `tone="outline"` untuk tombol Menu).
+- **File dibuat/diubah:** `src/app/(site)/page.tsx`, `src/components/ui/{KartuLingkungan,Button,IconButton,Navbar,Logo,index}`, `src/data/{home,index}.ts`, `public/images/**`.
+- **Cara menguji:** `npm run lint`, `npm run build`, buka `/` di 1440, 768, 390 dan bandingkan dengan frame Figma.
+- **Hasil uji:** lint dan build lolos. Posisi diukur terhadap Figma di build produksi: desktop hero 849, eyebrow y 318, headline 348, CTA 680, Pengantar 929, Pilih Lingkungan 1190, kartu 404 lebar (selisih 0-2 px); tablet hero 720 dan kartu 334; mobile hero 760 dan kartu 342; tanpa scroll horizontal. Menu Navbar Ringkas diuji buka/tutup. Belum diuji dengan keyboard menyeluruh, pembaca layar, atau perangkat nyata; state hover/focus kartu tidak dicocokkan dengan Figma (hanya ada Default di frame Home).
+- **Keputusan teknis & alasan:**
+  - Navbar `absolute` (bukan fixed) karena di Figma ia berada di atas hero dan tanpa fill; hero ditarik ke atas dengan margin negatif `--navbar-offset`.
+  - Latar Bima Sakti dipasang sebagai satu gambar hasil ekspor (46 bintang, kabut, pita galaksi sudah menyatu), CSS background hanya di `lg` agar tidak diunduh di tablet/mobile; sesuai Figma, hanya frame desktop yang punya latar.
+  - Headline "Ditinggal Bukan Berarti Dilupakan" tetap kandidat copy (UI_UX_GUIDELINE bagian 4).
+  - Tinggi tombol 56 mengubah Button milik fondasi; tombol ber-ikon (Tombol Panel) tetap padding 20 dan gap 8 sesuai handoff.
+- **Belum selesai / catatan untuk orang lain:**
+  - Animasi Beranda (Figma punya gerak pada latar Bima Sakti dan bintang) belum dibuat; masuk butir 8. `get_motion_context` belum dipanggil.
+  - Tautan CTA dan kartu mengarah ke `/story`, `/journey-map`, `/resources/<slug>` yang belum ada (404 sampai butir 4, 5, 7).
+  - Gambar hero (1634x963) dan latar (ekspor 2x) masih resolusi Figma; produksi butuh versi lebih besar (handoff bagian 7). Foto hero: asal dan lisensi belum tercatat (keputusan #9 dan #7), dan semua gambar AI harus dicatat di halaman Source.
+  - Kontras eyebrow dan deskripsi hero terhadap foto sudah diperingatkan di handoff bagian 8 (rekomendasi: gelapkan overlay atau pakai Text Primary); belum diubah karena mengikuti Figma.
+  - Logo masih PNG hasil ekstrak; minta SVG resmi dari panitia. Posisi logo di desktop kini sejajar tepi dalam navbar (Figma: x=252, catatan handoff menyebut belum sejajar).
+  - Menyentuh file bersama `globals.css`? Tidak di entri ini. Mengubah komponen `ui/` fondasi: Dhika perlu diberi tahu.
+- **Status:** Review
+
 ### [2026-11-15] HUD: kartu, tombol panel, panel, dok, kontrol scene + pemuat data
 - **Tugas / klaim:** HUD (PEMBAGIAN_TUGAS bagian 4, Pace nomor 2) dan pemuat data `src/data/`
 - **Branch / PR:** `feat/ui-hud` (bertumpuk di atas `feat/ui-fondasi`, rebase setelah fondasi dimerge) / belum dibuka

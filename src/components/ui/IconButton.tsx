@@ -11,13 +11,29 @@ import { Icon, type IconName } from "./Icon";
  * `label` wajib: tombol ikon tanpa teks harus punya nama aksesibel (aria-label).
  * `IconLink` adalah versi tautan (mis. Tombol Kembali).
  */
-const ICON_BUTTON_CLASS =
+const ICON_BUTTON_BASE =
   "inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full " +
-  "bg-bg-secondary-normal/80 text-text-primary-normal backdrop-blur-[24px] " +
-  "shadow-[0_0_0_1.5px_var(--color-archive-slate-normal)] transition-colors duration-150 " +
-  "hover:bg-archive-slate-normal/90 hover:shadow-[0_0_0_1.5px_var(--color-aksen-informasi-normal)] " +
+  "text-text-primary-normal transition-colors duration-150 " +
   "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-aksen-informasi-normal " +
   "disabled:cursor-not-allowed disabled:text-text-secondary-dark";
+
+/**
+ * `glass` (default): kaca di atas scene 3D. `outline`: tanpa fill, garis Text
+ * Secondary, untuk tombol Menu Navbar Ringkas di atas hero (Figma "Tombol Menu").
+ */
+export type IconButtonTone = "glass" | "outline";
+
+const TONES: Record<IconButtonTone, string> = {
+  glass:
+    "bg-bg-secondary-normal/80 backdrop-blur-[24px] shadow-[0_0_0_1.5px_var(--color-archive-slate-normal)] " +
+    "hover:bg-archive-slate-normal/90 hover:shadow-[0_0_0_1.5px_var(--color-aksen-informasi-normal)]",
+  outline:
+    "shadow-[0_0_0_1.5px_var(--color-text-secondary-normal)] " +
+    "hover:bg-archive-slate-normal/60 hover:shadow-[0_0_0_1.5px_var(--color-aksen-informasi-normal)]",
+};
+
+const iconButtonClass = (tone: IconButtonTone, className: string) =>
+  `${ICON_BUTTON_BASE} ${TONES[tone]} ${className}`;
 
 type IconProps = {
   icon: IconName;
@@ -25,6 +41,7 @@ type IconProps = {
   label: string;
   /** Ukuran ikon dalam tombol (grid 24). */
   iconSize?: number;
+  tone?: IconButtonTone;
 };
 
 type IconButtonProps = IconProps &
@@ -34,6 +51,7 @@ export function IconButton({
   icon,
   label,
   iconSize = 24,
+  tone = "glass",
   className = "",
   type = "button",
   ...rest
@@ -42,7 +60,7 @@ export function IconButton({
     <button
       type={type}
       aria-label={label}
-      className={`${ICON_BUTTON_CLASS} ${className}`}
+      className={iconButtonClass(tone, className)}
       {...rest}
     >
       <Icon name={icon} size={iconSize} />
@@ -57,11 +75,12 @@ export function IconLink({
   icon,
   label,
   iconSize = 24,
+  tone = "glass",
   className = "",
   ...rest
 }: IconLinkProps) {
   return (
-    <Link aria-label={label} className={`${ICON_BUTTON_CLASS} ${className}`} {...rest}>
+    <Link aria-label={label} className={iconButtonClass(tone, className)} {...rest}>
       <Icon name={icon} size={iconSize} />
     </Link>
   );
