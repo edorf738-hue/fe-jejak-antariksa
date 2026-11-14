@@ -22,6 +22,7 @@ Backend belum ada di daftar tim. Data memakai `docs/content-data.json` sebagai m
 - **Jangan commit folder `NASA/` (materi mentah) maupun file `.env`.** Berkas 3D yang dipakai di web ditaruh di tempat yang disepakati (bagian 8, keputusan 3), bukan berkas mentahnya.
 - **Aksesibilitas wajib:** semantic HTML, fokus terlihat, area sentuh minimal 44 px, `aria-label` untuk tombol ikon, hormati `prefers-reduced-motion`.
 - **Status tugas:** `Todo`, `In Progress`, `Review`, `Done`, `Blocked` (sesuai `SPRINT.md`).
+- **Catatan pengerjaan wajib:** setiap pekerjaan yang diubah ke repo dicatat di file pribadi di [`CATATAN_PENGERJAAN/`](CATATAN_PENGERJAAN/README.md) (satu orang satu file, entri terbaru di atas) sebelum PR dibuka. Dhika memakainya untuk mengecek tumpang tindih sebelum merge.
 
 ## 3. Pembagian folder (agar tidak bentrok saat merge)
 | Folder | Pemilik | Isi |
@@ -172,5 +173,6 @@ Periksa juga secara manual: dua tombol, dua loader model, dua pemuat data, dua d
 - [ ] Keyboard, fokus terlihat, area sentuh 44 px, `aria-label` pada tombol ikon.
 - [ ] **Tidak ada isi kembar dengan branch lain** (cek file tumpang tindih dan ekspor ganda, bagian 7a) dan PR sudah di-rebase ke `main` terbaru.
 - [ ] Tugas ada di tabel klaim dan PR tidak membuat ulang komponen milik orang lain.
+- [ ] PR punya **entri catatan pengerjaan** di `CATATAN_PENGERJAAN/<nama>.md`, dan hasil merge dicatat Dhika di `merge-log.md`.
 - [ ] Tidak ada berkas besar atau mentah yang ikut ter-commit; tidak menyentuh folder milik orang lain tanpa koordinasi.
 - [ ] Dokumen yang relevan diperbarui.
