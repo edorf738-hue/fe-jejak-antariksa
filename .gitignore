@@ -39,3 +39,6 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+NASA
+# Materi mentah NASA (251 MB), jangan di-commit
+/NASA/

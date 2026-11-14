@@ -1,0 +1,296 @@
+{
+  "_meta": {
+    "sumber": "Dokumen di NASA/NASA History (Apollo11_*, 03_Spirit_Opportunity, 04_Artefak, 05_Lokasi). Teks sama dengan yang tampil di Figma (halaman Prototype).",
+    "aturan": "Nilai 'TBD' sengaja dikosongkan karena belum ada di sumber atau masih 'perlu dicek'. Jangan diisi dari perkiraan. Tanggal akses ('diakses') belum dicatat.",
+    "pratinjau3d": "Saat hotspot dibuka, benda tampil langsung sebagai objek 3D tanpa card (komponen Objek 3D) dan deskripsinya di kartu terpisah. Di Figma objek masih placeholder \"MODEL 3D: TBD\". Field dataBenda.model3d menunjuk file model; null berarti belum ada.",
+    "batasKarakter": {
+      "narasi": 90,
+      "hotspot": 24,
+      "dataBenda.nama": 24,
+      "dataBenda.kategori": 40,
+      "dataBenda.deskripsi": 60,
+      "dataBenda.fakta": 70,
+      "misi.status": 50,
+      "catatan": "Batas dari ukuran kartu di Figma (mobile 342 px). Lebih panjang dari ini akan menambah tinggi kartu dan bisa menutup hotspot."
+    }
+  },
+  "bab": [
+    {
+      "id": 1,
+      "judul": "Awal Eksplorasi",
+      "status": "sebagian",
+      "narasi": "NASA berdiri pada 1958. Apollo 11 hasil proses panjang, bukan keberhasilan tiba-tiba.",
+      "hotspot": [
+        "Berdirinya NASA",
+        "Apollo 8 dan 10",
+        "Target Kennedy"
+      ],
+      "dataBenda": {
+        "nama": "Berdirinya NASA",
+        "kategori": "Sejarah",
+        "deskripsi": "Undang-undang pendirian NASA ditandatangani 29 Juli 1958.",
+        "fakta": "NASA mulai beroperasi 1 Oktober 1958",
+        "sumber": "NASA — Asal-usul NASA"
+      },
+      "catatan": "Hotspot 2 dan 3 belum punya isi data benda (hanya judul)."
+    },
+    {
+      "id": 2,
+      "judul": "Eksplorasi Bulan",
+      "status": "lengkap",
+      "narasi": "Pada 20 Juli 1969, Eagle mendarat di Laut Ketenangan. Manusia pertama mendarat di Bulan.",
+      "hotspot": [
+        "Tahap turun Eagle",
+        "Plakat peringatan",
+        "Bendera Amerika"
+      ],
+      "dataBenda": {
+        "nama": "Tahap turun Eagle",
+        "kategori": "Ditinggalkan di Bulan",
+        "deskripsi": "Bagian bawah pendarat Eagle, lebar 4,2 m.",
+        "fakta": "Massa kering 2.034 kg",
+        "sumber": "NSSDCA",
+        "model3d": {
+          "file": "Apollo Lunar Module.glb",
+          "jenis": "model umum",
+          "catatan": "Bukan model khusus Eagle. Tulis 'model umum' di web."
+        }
+      },
+      "catatan": "Model Apollo Lunar Module adalah model umum, bukan khusus Eagle. Tulis 'model umum' di web."
+    },
+    {
+      "id": 3,
+      "judul": "Eksplorasi Mars",
+      "status": "teks saja",
+      "narasi": "Dua rover kembar mendarat di Mars pada Januari 2004 untuk mencari jejak air.",
+      "hotspot": [
+        "Rover Spirit",
+        "Rover Opportunity",
+        "Heat Shield Rock"
+      ],
+      "dataBenda": {
+        "nama": "Rover Spirit",
+        "kategori": "Ditinggalkan di Mars, nonaktif",
+        "deskripsi": "Mendarat di Gusev Crater pada 3 Januari 2004.",
+        "fakta": "Menempuh 7,73 km",
+        "sumber": "NASA Science",
+        "model3d": null,
+        "model3dCatatan": "Belum ada file di repo. Sumber yang disebut dokumen: 'Spirit and Opportunity' (.blend 12 MB, perlu diekspor ke .glb) dan MER Opportunity (MER-B, .glb 36 KB, kemungkinan sederhana). Satu model rover bisa dipakai untuk keduanya."
+      },
+      "catatan": "Belum ada gambar atau model 3D rover. Tanggal peluncuran dan pendaratan Opportunity punya dua versi (NASA Science vs NSSDCA)."
+    },
+    {
+      "id": 4,
+      "judul": "Eksplorasi Deep Space",
+      "status": "tanpa dokumen sejarah",
+      "narasi": "Voyager 1 dan 2 diluncurkan pada 1977 dan kini berada di ruang antarbintang.",
+      "hotspot": [
+        "Voyager 1",
+        "Voyager 2",
+        "Golden Record"
+      ],
+      "dataBenda": {
+        "nama": "Voyager 1",
+        "kategori": "Masih beroperasi",
+        "deskripsi": "Diluncurkan 5 September 1977.",
+        "fakta": "Antarbintang sejak 2012",
+        "sumber": "NASA Science",
+        "model3d": {
+          "file": "Voyager Probe (B).glb",
+          "jenis": "model umum",
+          "catatan": "Voyager 1 dan 2 memakai model yang sama. Versi (antenna) tanpa tekstur dan lebih ringan."
+        }
+      },
+      "catatan": "Data jarak dan kecepatan Voyager 2 belum ada. Posisi terkini berubah tiap hari, tulis tanggal pengambilan data."
+    },
+    {
+      "id": 5,
+      "judul": "Penutup",
+      "status": "belum ada materi",
+      "narasi": "TBD",
+      "hotspot": [
+        "TBD",
+        "TBD",
+        "TBD"
+      ],
+      "dataBenda": null
+    }
+  ],
+  "resources": {
+    "Mars": {
+      "ringkasan": "Rover kembar mencari jejak air di Mars sejak 2004.",
+      "pakaiBab": 3
+    },
+    "Moon": {
+      "ringkasan": "Tranquility Base: lokasi pendaratan Eagle pada 20 Juli 1969.",
+      "pakaiBab": 2
+    },
+    "Deep Space": {
+      "ringkasan": "Voyager 1 dan 2 melaju di ruang antarbintang membawa Golden Record.",
+      "pakaiBab": 4
+    },
+    "faktaMars": [
+      {
+        "isi": "Opportunity menempuh 45,16 km, Spirit 7,73 km.",
+        "sumber": "NASA Science"
+      },
+      {
+        "isi": "Opportunity menemukan mineral hematit; Spirit menemukan goethite dan tanah 90 persen silika.",
+        "sumber": "NASA Science"
+      },
+      {
+        "isi": "Spirit terjebak di tanah lunak pada 1 Mei 2009; komunikasi terakhir 22 Maret 2010.",
+        "sumber": "NASA Science"
+      }
+    ]
+  },
+  "misi": {
+    "Bulan": [
+      {
+        "nama": "Apollo 11",
+        "wahana": "Columbia dan Eagle",
+        "peluncuran": "16 Juli 1969",
+        "status": "Selesai, mendarat di Bumi 24 Juli 1969",
+        "tiba": "20 Juli 1969 (waktu Amerika), Sea of Tranquility",
+        "tujuan": "Mendaratkan manusia di Bulan dan membawanya kembali ke Bumi",
+        "temuan": "Membawa pulang 21,55 kg sampel batuan dan tanah Bulan"
+      },
+      {
+        "nama": "Apollo 8",
+        "wahana": "TBD",
+        "peluncuran": "TBD",
+        "status": "Misi sebelum Apollo 11 (sumber: NASA)"
+      },
+      {
+        "nama": "Apollo 10",
+        "wahana": "TBD",
+        "peluncuran": "TBD",
+        "status": "Misi sebelum Apollo 11 (sumber: NASA)"
+      }
+    ],
+    "Mars": [
+      {
+        "nama": "Spirit",
+        "wahana": "Rover Spirit",
+        "peluncuran": "10 Juni 2003",
+        "status": "Komunikasi terakhir 22 Maret 2010",
+        "tiba": "3 Januari 2004, Gusev Crater",
+        "tujuan": "Mencari jejak air di Mars",
+        "temuan": "Mineral goethite dan tanah 90 persen silika, berkaitan dengan air"
+      },
+      {
+        "nama": "Opportunity",
+        "wahana": "Rover Opportunity (MER-B)",
+        "peluncuran": "8 Juli 2003 (UT)",
+        "status": "Kontak terakhir 10 Juni 2018",
+        "catatan": "NASA Science menulis 7 Juli 2003; pilih satu dan beri keterangan zona waktu."
+      },
+      null
+    ],
+    "Deep Space": [
+      {
+        "nama": "Voyager 1",
+        "wahana": "Voyager 1",
+        "peluncuran": "5 September 1977",
+        "status": "Masih beroperasi (misi diperpanjang)",
+        "tiba": "Masuk ruang antarbintang Agustus 2012",
+        "tujuan": "TBD",
+        "temuan": "Membawa Golden Record: salam 55 bahasa, 115 gambar"
+      },
+      {
+        "nama": "Voyager 2",
+        "wahana": "Voyager 2",
+        "peluncuran": "20 Agustus 1977",
+        "status": "Masih beroperasi (misi diperpanjang)"
+      },
+      null
+    ]
+  },
+  "lokasi": [
+    {
+      "nama": "Tranquility Base",
+      "benda": "Bulan",
+      "lintang": "0,67416° LU",
+      "bujur": "23,47314° BT",
+      "sumber": "NSSDCA"
+    },
+    {
+      "nama": "Gusev Crater (Spirit)",
+      "benda": "Mars",
+      "lintang": "14,572° LS",
+      "bujur": "175,478° BT",
+      "sumber": "NSSDCA"
+    },
+    {
+      "nama": "Meridiani Planum (Opportunity)",
+      "benda": "Mars",
+      "lintang": "1,946° LS",
+      "bujur": "354,473° BT",
+      "sumber": "NSSDCA"
+    },
+    {
+      "nama": "Titik berhenti Spirit dan Opportunity",
+      "benda": "Mars",
+      "lintang": null,
+      "bujur": null,
+      "catatan": "Sumber tidak menyebut koordinat. Jangan mengarang."
+    }
+  ],
+  "sumber": [
+    {
+      "judul": "NASA — Apollo 11 Mission Overview",
+      "penerbit": "NASA",
+      "url": "https://www.nasa.gov/missions/apollo/apollo-11/apollo-11-mission-overview/",
+      "diakses": null
+    },
+    {
+      "judul": "NASA — Apollo 11 (halaman misi)",
+      "penerbit": "NASA",
+      "url": "https://www.nasa.gov/mission/apollo-11",
+      "diakses": null
+    },
+    {
+      "judul": "NSSDCA — Eagle, EASEP, LRRR",
+      "penerbit": "NASA (NSSDCA)",
+      "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C",
+      "diakses": null
+    },
+    {
+      "judul": "NASA Science — Mars Exploration Rovers",
+      "penerbit": "NASA",
+      "url": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/",
+      "diakses": null
+    },
+    {
+      "judul": "NSSDCA — Spirit",
+      "penerbit": "NASA (NSSDCA)",
+      "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2003-027A",
+      "diakses": null
+    },
+    {
+      "judul": "NSSDCA — Opportunity",
+      "penerbit": "NASA (NSSDCA)",
+      "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2003-032A",
+      "diakses": null
+    },
+    {
+      "judul": "NASA Science — Voyager 1",
+      "penerbit": "NASA",
+      "url": "https://science.nasa.gov/mission/voyager/voyager-1/",
+      "diakses": null
+    },
+    {
+      "judul": "NASA Science — Where Are They Now",
+      "penerbit": "NASA",
+      "url": "https://science.nasa.gov/mission/voyager/where-are-they-now/",
+      "diakses": null
+    }
+  ],
+  "ringkasanBab": {
+    "1": "NASA berdiri pada 1958 dan mulai menyiapkan jalan menuju Apollo 11.",
+    "2": "Pada 20 Juli 1969, Eagle mendarat di Laut Ketenangan dan manusia menjejak Bulan.",
+    "3": "Dua rover kembar, Spirit dan Opportunity, mencari jejak air di Mars sejak 2004.",
+    "4": "Voyager 1 dan 2 terbang ke ruang antarbintang membawa Golden Record.",
+    "5": "TBD"
+  }
+}

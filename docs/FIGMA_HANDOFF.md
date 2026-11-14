@@ -65,26 +65,70 @@ Ukuran bertanda "usulan" belum disetujui designer.
 | Entri Sumber | — | `Kategori`, `Judul`, `Meta`, `URL`, `Atribusi` |
 | Kartu Fakta | — | `Isi`, `Sumber` |
 | Item Galeri | — | `Keterangan`; gambar = fill `Gambar` |
+| Titik Info (hotspot di scene 3D) | `State` Default, Hover, Aktif, Focus | `Label` |
+| Kartu Narasi (panel kaca mengambang) | — | `Eyebrow`, `Judul`, `Isi`, `Petunjuk` |
+| Kartu Data Benda (panel kaca mengambang) | — | `Nama`, `Kategori`, `Deskripsi`, `Fakta` (kartu teks saja, tanpa viewer) |
+| Objek 3D (placeholder benda, tanpa card) | — | boolean `Cincin Putar`; teks `Keterangan`, `Penanda Placeholder`. Di produksi diganti kanvas 3D benda yang bisa diputar; cincin putus-putus hanya penanda placeholder |
+| Ikon | `Nama` = Menu, Tutup, Panah Kiri/Kanan/Atas/Bawah, Tautan Keluar, Info, Peringatan, Cari, Setel Ulang Kamera, Layar Penuh, Putar, Jeda, Misi, Sumber, Galeri (17) | warna = stroke terikat token (default Text Primary/Normal; ubah per instance) |
+
+**Ikon:** grid 24 px, garis 1,5 px, ujung dan sambungan membulat. Dipakai di Navbar Ringkas (Menu/Tutup), Kartu Bab (Panah Kanan 32 px), Kartu Lingkungan (`Tautan` = teks + Panah Kanan 20 px), dan Button (properti boolean `Ikon Kiri` / `Ikon Kanan`, default mati; label "Bab 3" tanpa karakter panah). Ikon dekoratif disembunyikan dari pembaca layar; ikon yang berdiri sendiri sebagai tombol butuh nama aksesibel (`aria-label`) dan area sentuh minimal 44 px. Tombol panel di scene memakai `Ikon Kiri`: Fakta = Info, Misi Terkait = Misi, Galeri = Galeri, Sumber = Sumber (padding horizontal 20, gap 8). Belum dipasang: spinner Loading (masih lingkaran manual).
+
+| Komponen | Varian | Properti |
+|---|---|---|
+| Tombol Ikon | `State` Default, Hover, Focus (44×44, bulat, kaca `#111827` @70–88% + blur 24, garis 1,5–2 px bertoken) | `Ikon` (instance swap) |
+
+**Kontrol Scene** (grup di semua frame scene Story dan Resources): tiga Tombol Ikon, yaitu Setel Ulang Kamera, Layar Penuh, dan Jeda Gerak. Desktop: baris di kanan bawah scene (x 1198, y 692, di atas dok). Tablet dan mobile: kolom di tepi kanan, tepat di bawah Tombol Panel. Saat panel terbuka di desktop, kontrol bergeser ke kiri panel; di mobile, panel penuh layar menyembunyikannya. Animasi: fade-in 0→1 pada detik 1,4–2,0 (EASE_OUT). Perilaku masih usulan: Setel Ulang Kamera mengembalikan kamera ke posisi awal model, Layar Penuh membuka scene tanpa HUD sekunder, Jeda Gerak menghentikan animasi latar dan HUD (dan harus otomatis aktif bila `prefers-reduced-motion`). Setiap tombol butuh `aria-label` dan area sentuh 44 px.
+
+Catatan teknis: garis tombol Secondary berada di luar bingkai (`OUTSIDE`), jadi frame induk (Tombol Panel, Dok, header panel) harus `clipsContent` mati agar garisnya tidak terpotong; di CSS jangan beri `overflow: hidden` pada pembungkus tombol.
+
+Komponen HUD (Titik Info, Kartu Narasi, Kartu Data Benda, dok navigasi) berada **di atas canvas 3D**. Fill kaca memakai warna mentah `#111827` pada opasitas 62–78% dengan *background blur* 24–28 (variabel Figma tidak membawa opasitas, jadi belum jadi token).
 
 Belum ada state Disabled untuk komponen non-Button, dan belum ada state loading/error di tingkat komponen (state halaman ada di bagian 5).
 
 ## 4. Halaman dan frame (halaman Prototype)
 Setiap halaman punya versi Desktop / Tablet / Mobile; flow prototype terdaftar per breakpoint.
+Frame dikelompokkan dalam tiga section berdampingan di halaman Prototype: **Desktop — 1440**, **Tablet — 768**, dan **Mobile — 390**. Di tiap section, frame disusun per baris halaman (Home, Story, Journey Map, Resources, Source) dengan label baris. Section fondasi (Color Palette, Komponen, State 3D, Resources — Referensi Aset (lama)) ada di sebelah kirinya.
 
 | Halaman | Frame |
 |---|---|
 | Home | `Home — Desktop` (hero foto, CTA, pengantar, pilihan Mars/Moon/Deep Space), `Home — Tablet`, `Home — Mobile` |
-| Story | `Story — Pengantar` (daftar 5 bab), `Story — Bab 1…5` (judul, stepper progres, narasi, media, misi terkait, sumber, sebelumnya/berikutnya) |
+| Story | `Story — Pengantar` (daftar 5 bab, halaman scroll) dan `Story — Bab 1…5` sebagai **tampilan 3D imersif satu layar** (1440×900 / 768×1024 / 390×844): scene 3D penuh, kartu narasi mengambang, titik info (hotspot) pada benda dengan kartu data benda, tombol panel Misi Terkait dan Sumber, dok bawah (sebelumnya, stepper bab, berikutnya). Frame pola tambahan: panel Misi Terkait dan Sumber (Bab 2 desktop dan mobile), data benda terbuka (Bab 2 tablet dan mobile) |
 | Journey Map | `Journey Map — Moon`, `— Mars`, `— Deep Space` (peta simbolis, misi terkait, detail misi, sumber) + panel state Kosong/Memuat/Galat |
 | Source | `Source` (filter kategori, referensi, kredit gambar, kredit model 3D) + panel Kosong |
-| Resources | `Resources — Mars`, `— Moon`, `— Deep Space` (viewer 3D, ringkasan, bagian khas kategori, fakta, misi, galeri, sumber) |
+| Resources | `Resources — Mars`, `— Moon`, `— Deep Space` sebagai **tampilan 3D imersif**: scene penuh, kartu ringkasan mengambang, titik info + kartu data benda, empat tombol panel (Fakta, Misi Terkait, Galeri, Sumber), dok tab kategori. Frame pola: empat panel pada Mars desktop |
 
 Resources tidak ada di navbar; diakses dari kartu environment di Home. Section `Resources — Referensi Aset (lama)` hanya acuan aset.
 
 ## 5. State dan interaksi
 - **State 3D hero** (section **State 3D**): Loading, Loaded (Moon), Destination selected (Mars, Deep Space), Information open (Mars, Deep Space), Transition, Fallback. Durasi/easing transisi: TBD.
-- **Interaksi prototype** (dissolve 0,3 dtk, nilai sementara): navbar antar halaman (desktop), kartu Home → Resources, tab kategori Resources, penanda Journey Map antar destinasi, daftar bab → bab, sebelumnya/berikutnya antar bab, tab dan panel di state 3D, tombol menu Navbar Ringkas (buka/tutup). Tautan di dalam menu terbuka dan stepper bab belum disambungkan.
+- **Interaksi prototype** (dissolve 0,3 dtk, nilai sementara): navbar antar halaman (desktop), kartu Home → Resources imersif, tab kategori Resources, penanda Journey Map antar destinasi, daftar bab → bab imersif, sebelumnya/berikutnya antar bab (bab 5 → daftar bab), tombol panel → panel dan tombol Tutup (Story Bab 2, Resources Mars desktop), hotspot → data benda terbuka (Story Bab 2 tablet dan mobile), tab dan panel di state 3D, tombol menu Navbar Ringkas (buka/tutup). Tautan di dalam menu terbuka dan stepper bab belum disambungkan.
+- **Cara kerja tampilan 3D imersif (usulan untuk FE):** scene 3D memenuhi layar (lapisan 0), gradien untuk keterbacaan (lapisan 1), lalu HUD (navbar, kartu narasi, tombol panel, dok). **Titik Info** harus mengikuti benda di scene: posisi layar = proyeksi koordinat 3D benda ke layar, dihitung ulang tiap frame/saat kamera bergerak. Klik titik membuka Kartu Data Benda di dekatnya (garis penghubung 1,5 px, warna Aksen Informasi). Di mobile, label titik disembunyikan (hanya titik) dan kartu data menggantikan kartu narasi. Posisi titik di Figma hanya ilustrasi; label titik kini memakai nama benda dari dokumen NASA (lihat bagian 5a), tetapi scene Moon/Mars/Deep Space belum memuat model benda itu (Lunar Module, rover, Voyager), jadi posisi dan keberadaan benda di scene harus disamakan dengan tim 3D.
+- **Animasi HUD (keyframe Figma, nilai usulan):** dibuat pada frame dasar Story dan Resources (timeline 12 dtk). Urutan masuk: scene mengecil pelan dari skala 1,07 ke 1,0 (0–3 dtk, ease-out); navbar fade + turun 20 px (0 dtk, 0,5 dtk); kartu narasi fade + geser dari kiri 40 px (desktop) atau naik 40 px (tablet/mobile) (0,3 dtk, 0,7 dtk); tombol panel fade + geser (0,5 dtk, 0,6 dtk); dok fade + naik 40 px (0,6 dtk, 0,6 dtk); titik info membesar 0,4→1 dengan sedikit pantulan (*ease-out-back*), berurutan tiap 0,15 dtk mulai 0,9 dtk; garis penghubung "tergambar" (trim 0→1, 1,3–1,9 dtk); kartu data fade + geser 30 px (1,7 dtk, 0,6 dtk). **Denyut titik:** cincin tipis (1,5 px) membesar 1→2× sambil memudar (opasitas 0,7→0), siklus 2 dtk, ulang tanpa henti, tiap titik bergeser 0,4 dtk. Frame state (panel, data benda) hanya menganimasikan panel/kartu yang muncul (0,5 dtk; panel geser 60 px dari kanan di desktop, naik 80 px di mobile). Timeline Figma hanya berjalan sekali; di web denyut dan latar diulang tanpa henti. Matikan semua gerak jika `prefers-reduced-motion`. Logo di dalam Navbar Ringkas tidak dianimasikan terpisah (Figma tidak mengizinkan animasi pada sublayer instance).
+- **Scene 3D per bab:** Bab 2 = Moon, Bab 3 = Mars, Bab 4 = Deep Space. **Bab 1 dan Bab 5 belum punya aset 3D**; frame memakai gambar konsep sebagai placeholder, dengan penanda "PLACEHOLDER · SCENE 3D FINAL: TBD". Bab 1 = Bumi dari orbit saat matahari terbit (benda yang bisa diberi titik info: cahaya fajar, lapisan atmosfer, lampu kota sisi malam, satelit generik); Bab 5 = wahana generik yang melayang senyap dengan Bumi kecil di kejauhan dan pita Bima Sakti tipis (titik info: antena parabola, boom/instrumen, debu Bima Sakti; Bumi tidak diberi titik di desktop karena tertutup tombol panel). Wahana pada gambar Bab 5 mirip wahana nyata, tetapi ini ilustrasi; jangan dilabeli sebagai wahana atau misi tertentu tanpa sumber terverifikasi. Di tablet dan mobile, gambar Bab 5 hanya mengisi sekitar 62–70% tinggi layar (bagian bawah memudar) supaya wahana tidak tertutup kartu narasi. Kedua gambar hasil generate AI (catat di halaman Source: alat, tanggal, prompt).
 - **Spesifikasi integrasi 3D** (usulan) ada di kotak teks dalam section State 3D.
+
+## 5a. Konten dari dokumen NASA (`NASA/NASA History`)
+Isi teks di Figma kini berasal dari dokumen itu. **Sumber data untuk FE adalah [`docs/content-data.json`](content-data.json)**, bukan teks layer Figma, supaya tidak ada salah salin. Field JSON cocok dengan properti komponen: `narasi` = Kartu Narasi `Isi`; `hotspot[n]` = Titik Info `Teks`; `dataBenda.*` = Kartu Data Benda `Nama/Kategori/Deskripsi/Fakta`; `misi.*` = Kartu Misi dan Panel Detail Misi; `sumber[]` = Item/Entri Sumber (`Judul/Meta/URL`).
+
+| Halaman | Terisi dari dokumen | Masih TBD |
+|---|---|---|
+| Story Pengantar | Ringkasan Bab 1–4 | Bab 5 |
+| Story Bab 1–4 (3 breakpoint) | Narasi, label hotspot, Kartu Data Benda (hotspot 1) | Bab 5; data benda hotspot 2 dan 3 |
+| Story Bab 2 panel | Misi Terkait (Apollo 11, 8, 10) dan Sumber (3) | Wahana dan peluncuran Apollo 8 dan 10; tanggal akses |
+| Resources Mars/Moon/Deep Space | Ringkasan, hotspot, data benda | Panel Galeri (belum ada gambar Mars) |
+| Resources Mars panel | Fakta (3), Misi Terkait (Spirit, Opportunity), Sumber (3) | Misi Terkait ke-3 |
+| Journey Map Moon/Mars/Deep Space | Kartu Misi, Panel Detail Misi, Sumber (2) | Kartu Misi ke-3 Mars dan Deep Space; "Tujuan misi" Voyager; koordinat belum punya kolom di desain |
+| Source | Referensi 1–3, Kredit Gambar 1–2 (sebagian) | Tanggal akses, kredit foto, lisensi, pembuat model |
+
+**Batas karakter** (ukuran kartu di Figma, mobile 342 px): narasi 90, label hotspot 24, nama benda 24, kategori 40, deskripsi 60, fakta 70, status misi 50. Teks lebih panjang menambah tinggi kartu dan bisa menutup hotspot atau dok.
+
+**Hal yang masih perlu dicek tim konten:** tanggal peluncuran Opportunity (7 atau 8 Juli 2003), kalimat "air asin yang cukup dalam untuk dipercik" di `03_Spirit_Opportunity.md` (kemungkinan salah terjemah), `Apollo11_Informasi_Utama_Misi.md` yang sudah usang soal tanggal pendaratan, dan peristiwa Voyager 1 satu hari cahaya pada 18 November 2026. Model 3D Apollo/Voyager adalah model umum, tulis "model umum" di web. Folder `NASA/` (251 MB) belum aman di-commit mentah; gunakan Git LFS atau penyimpanan luar.
+
+**Data Benda = objek 3D langsung + kartu deskripsi:** saat hotspot dibuka, benda (mis. Rover Spirit) tampil langsung sebagai objek 3D di scene tanpa card (komponen Objek 3D, placeholder "MODEL 3D: TBD"), dan deskripsinya muncul di kartu terpisah. Desktop: objek di tengah, kartu di kanan (x 974, lebar 380); tablet dan mobile: objek di atas, kartu di bawah menggantikan kartu narasi. Garis penghubung (desktop) menyambung hotspot aktif ke objek. Perilaku usulan: objek bisa diseret untuk memutar, model dimuat hanya saat hotspot dibuka, dan jatuh ke gambar statis bila WebGL gagal. Status model: Apollo Lunar Module dan Voyager sudah ada (model umum); rover Spirit/Opportunity **belum ada file di repo** (lihat `model3d` di `content-data.json`). Di mobile hotspot diletakkan di tepi kiri dan kanan objek.
+
+**Navbar disembunyikan di halaman imersif:** semua frame Story Bab dan Resources (termasuk state panel dan data benda) tidak lagi menampilkan navbar dan logo NASA (layer disembunyikan, bukan dihapus; tombol panel, kartu narasi, dan kontrol scene digeser ke atas mengisi ruangnya). Akibatnya 52 interaksi prototype dari tautan navbar di frame itu hilang. Sebagai gantinya ada **Tombol Kembali** (Tombol Ikon, ikon Panah Kiri, 44 px) di pojok kiri atas: dari Story kembali ke halaman Cerita (Pengantar), dari Resources kembali ke Beranda (dissolve 0,3 dtk, nilai sementara; interaksi tersambung di desktop, tablet, dan mobile). Di tablet dan mobile tombol panel, penanda placeholder, dan kontrol scene bergeser 56 px ke bawah memberi ruang. Fade-in tombol kembali 0,4–0,9 dtk. Perlu `aria-label` "Kembali ke Beranda" atau "Kembali ke Cerita"; tujuan kembali adalah usulan, belum disetujui tim.
+
+Efek ke tata letak: karena teks lebih panjang, tinggi frame Journey Map, Source, dan Pengantar bertambah. Baris di section Desktop/Tablet/Mobile sudah disusun ulang (jarak 240) dan latar bintang/arsip diperpanjang.
 
 ## 6. Aset 3D (repo: `NASA 3D Resources/`)
 | Environment | Model | Ukuran | Catatan |
@@ -104,6 +148,8 @@ Resources tidak ada di navbar; diakses dari kartu environment di Home. Section `
 - Penggunaan logo NASA di navbar dan posisinya (di Figma masih di x=252, belum sejajar tepi navbar).
 - Persetujuan tiga ukuran teks "usulan" dan semua copy draf (headline, pengantar, teks pendukung, judul bab dalam Bahasa Indonesia).
 - Navbar di Resources ditandai "Beranda" (usulan).
+- Konsep 3D imersif menggantikan halaman scroll Story Bab dan Resources (disepakati antar tim). Yang belum diputuskan: scene 3D final Bab 1 dan 5, daftar benda dan data per scene, cara pengguna kembali ke "mode baca" (bila diperlukan), dan perilaku kamera (bebas, terpandu, atau terkunci).
+- **Latar per halaman:** Story dan Resources memakai scene 3D sebagai latar. **Journey Map** memakai peta bintang (grid lengkung, orbit samar, bintang; tanpa garis rute) dan **Source** memakai latar arsip (gradien slate dengan grain dan grid sangat samar). Keduanya dipasang sebagai potongan berulang bergantian arah (rotasi 180°) dengan mask pudar di tepi, di bawah konten dan di bawah header. Journey Map punya gerak sangat pelan (geser horizontal ±45 px dan napas opasitas 0,7–1,0, timeline 24 dtk, arah berlawanan tiap potongan); Source dibiarkan statis. Untuk web, latar sebaiknya satu lapisan tetap (`position: fixed`) yang bergerak pelan, bukan potongan berulang. **Home** baru punya prototipe Bima Sakti (desktop). Semua gambar latar hasil generate AI beresolusi 1774 px (perlu versi ≥3840 px untuk produksi) dan harus dicatat di halaman Source sebagai ilustrasi buatan AI.
 - Foto lunar lander di hero Home dan header halaman lain: asal dan lisensi belum tercatat.
 - Isi konten: dataset misi, daftar sumber, narasi bab, fakta ilmiah, media galeri (semua `TBD`).
 - Rasio hero terhadap kamera model, dan performa di perangkat nyata.
