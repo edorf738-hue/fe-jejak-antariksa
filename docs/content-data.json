@@ -214,7 +214,49 @@
         "isi": "Spirit terjebak di tanah lunak pada 1 Mei 2009; komunikasi terakhir 22 Maret 2010.",
         "sumber": "NASA Science"
       }
-    ]
+    ],
+    "panelTambahan": {
+      "Moon": {
+        "fakta": [
+          [
+            "Tahap turun Eagle berukuran lebar 4,2 m dan tebal 1,7 m, dengan massa kering 2.034 kg.",
+            "NSSDCA"
+          ],
+          [
+            "Total waktu di permukaan Bulan 21 jam 36 menit, dengan berjalan di Bulan sekitar 2,5 jam.",
+            "NASA — Apollo 11 Mission Overview"
+          ],
+          [
+            "Sampel batuan dan tanah Bulan yang dibawa pulang: 21,55 kg.",
+            "NASA (verifikasi: TBD)"
+          ]
+        ],
+        "galeri": [
+          "Buzz Aldrin memberi hormat di dekat bendera AS, Apollo 11, Juli 1969 (kredit: TBD)",
+          null
+        ]
+      },
+      "Deep Space": {
+        "fakta": [
+          [
+            "Voyager 1 berjarak 164,7 SA dari Matahari per 21 Agustus 2024 (data lama).",
+            "NASA Science — Voyager 1"
+          ],
+          [
+            "Voyager 2 melewati Uranus pada 24 Januari 1986 dan Neptunus pada 25 Agustus 1989.",
+            "NASA Science"
+          ],
+          [
+            "Golden Record berisi salam 55 bahasa, 35 suara alam, sekitar 90 menit musik, dan 115 gambar.",
+            "NASA Science"
+          ]
+        ],
+        "galeri": [
+          "Golden Record Voyager: piringan tembaga berlapis emas 30 cm (kredit: TBD)",
+          null
+        ]
+      }
+    }
   },
   "misi": {
     "Bulan": [

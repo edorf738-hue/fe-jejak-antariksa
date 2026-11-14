@@ -115,8 +115,8 @@ Isi teks di Figma kini berasal dari dokumen itu. **Sumber data untuk FE adalah [
 | Story Pengantar | Ringkasan Bab 1–4 | Bab 5 |
 | Story Bab 1–4 (3 breakpoint) | Narasi, label hotspot, Kartu Data Benda hotspot 1; **8 frame state baru di Desktop (baris paling bawah) untuk hotspot 2 dan 3** (klik hotspot berpindah antar state) | Bab 5; hotspot 2 dan 3 belum didesain untuk tablet dan mobile maupun halaman Resources; "Fakta" Heat Shield Rock |
 | Story Bab 2 panel | Misi Terkait (Apollo 11, 8, 10) dan Sumber (3) | Wahana dan peluncuran Apollo 8 dan 10; tanggal akses |
-| Resources Mars/Moon/Deep Space | Ringkasan, hotspot, data benda | Panel Galeri (belum ada gambar Mars) |
-| Resources Mars panel | Fakta (3), Misi Terkait (Spirit, Opportunity), Sumber (3) | Misi Terkait ke-3 |
+| Resources Mars/Moon/Deep Space | Ringkasan, hotspot, data benda hotspot 1; **6 frame state baru untuk hotspot 2 dan 3** (desktop) | Gambar Galeri (belum ada); "Fakta" Heat Shield Rock |
+| Resources panel Mars, Moon, **Deep Space (baru: 8 frame)** | Fakta (3), Misi Terkait, Galeri (keterangan), Sumber | Misi Terkait ke-3 (Mars dan Deep Space), Sumber ke-3 Deep Space, gambar Galeri, tanggal akses |
 | Journey Map Moon/Mars/Deep Space | Kartu Misi, Panel Detail Misi (plus baris Lokasi/koordinat, Kru atau Tokoh, Fakta menarik), **Panel Kronologi baru** (Apollo 11, Spirit dan Opportunity, Voyager), Sumber (2) | Kartu Misi ke-3 Mars dan Deep Space; "Tujuan misi" Voyager; tokoh Deep Space |
 | Source | Referensi 1–3, Kredit Gambar 1–2 (sebagian) | Tanggal akses, kredit foto, lisensi, pembuat model |
 
@@ -155,3 +155,15 @@ Efek ke tata letak: karena teks lebih panjang, tinggi frame Journey Map, Source,
 - Isi konten: dataset misi, daftar sumber, narasi bab, fakta ilmiah, media galeri (semua `TBD`).
 - Rasio hero terhadap kamera model, dan performa di perangkat nyata.
 - Belum diperiksa: kontras teks satu per satu, prototype di mode present, tampilan di perangkat nyata.
+
+## 8. Hasil pemeriksaan sebelum serah terima
+
+**Animasi (audit keyframe, bukan pemutaran):** 52 frame dengan gerak, sekitar 1.000 track. Tidak ada keyframe di luar durasi timeline dan urutan waktu selalu menaik; nilai akhir elemen HUD kembali ke keadaan diam (opasitas 1, geser 0). Dua frame state tablet/mobile berdurasi 2 dtk punya Objek 3D yang selesai di 2,3 dtk; sudah diperbaiki (muncul 0,3–0,8 dtk). Pemutaran di mode present tetap **belum** dilakukan karena tidak ada alat pencuplik video di lingkungan kerja ini; lakukan sekali di Figma sebelum serah terima. Catatan: berpindah antar frame state di prototype memutar ulang seluruh animasi masuk frame itu (batasan prototype; di web hanya benda dan kartu yang berganti).
+
+**Kontras teks (diukur dari tangkapan layar 8 frame kunci: Home, Pengantar, Journey Map, Story Bab 3, Resources Mars desktop, Story Bab 3 mobile, Story Bab 2 tablet; 89 teks, rasio WCAG dihitung terhadap piksel latar di belakang tiap teks):**
+- Pada nilai median latar, semua teks lolos AA (4,5:1; 3:1 untuk teks besar) kecuali satu: penanda "MODEL 3D: TBD" (emas di atas medan), sudah diganti ke token **Aksen Warisan/Light :active**.
+- Pada kasus terburuk (piksel latar terang, mis. Bumi, pendarat, dan tepi medan), rasio turun ke 2,7–4,4:1 untuk label tombol panel, tab kategori, label hotspot, dan tautan navbar. Median tetap di atas 11:1, jadi ini hanya terjadi di bagian gambar yang sangat terang. Yang paling tipis: **teks "Kisah wahana NASA yang masih berbicara" di hero Home** (Text Secondary, median 6,3:1, terburuk 3,5:1). Rekomendasi: gelapkan overlay hero atau pakai Text Primary untuk baris itu.
+- Frontend: jangan mengandalkan gambar scene untuk kontras; pertahankan fill kaca, bayangan teks, dan overlay gradien.
+- Belum diukur: seluruh halaman Source dan Journey Map di bawah header, tablet selain Bab 2, dan semua state hover/focus.
+
+**Aturan untuk frame yang tidak dibuat satu per satu:** (1) Hotspot 2 dan 3 di **tablet dan mobile** mengikuti pola Story Bab 2 tablet/mobile (objek 3D di atas, kartu deskripsi menggantikan kartu narasi di bawah, hotspot di sisi objek). (2) Panel Fakta/Misi/Galeri/Sumber di **tablet dan mobile** untuk Resources mengikuti pola panel Story mobile (panel penuh lebar menutupi scene; Kontrol Scene disembunyikan). (3) Resources di tablet dan mobile hanya punya frame dasar Mars, Moon, Deep Space.
