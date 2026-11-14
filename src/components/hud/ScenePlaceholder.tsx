@@ -1,4 +1,5 @@
 import Image from "next/image";
+import type { CSSProperties } from "react";
 
 /**
  * Pengganti sementara untuk bagian scene 3D, sampai komponen dari tim 3D tersedia:
@@ -12,7 +13,10 @@ import Image from "next/image";
 export function LatarScene({ gambar }: { gambar: string }) {
   return (
     <div aria-hidden="true" className="absolute inset-0">
-      <Image src={gambar} alt="" fill priority sizes="100vw" className="object-cover" />
+      {/* Scene mengecil pelan 1,07 -> 1 selama 3 dtk saat halaman masuk. */}
+      <div className="hud-scene absolute inset-0">
+        <Image src={gambar} alt="" fill priority sizes="100vw" className="object-cover" />
+      </div>
       {/* Gradien Atas, Bawah, Kiri (Figma): rgba(8,11,18) 0,85/0,92/0,7 -> 0 */}
       <div className="absolute inset-x-0 top-0 h-[200px] bg-gradient-to-b from-[rgba(8,11,18,0.85)] to-[rgba(8,11,18,0)] lg:h-[240px]" />
       <div className="absolute inset-x-0 bottom-0 h-[420px] bg-gradient-to-b from-[rgba(8,11,18,0)] to-[rgba(8,11,18,0.92)] lg:h-[320px]" />
@@ -52,23 +56,26 @@ type TitikInfoProps = {
   label: string;
   aktif?: boolean;
   onClick?: () => void;
+  /** Urutan titik (0, 1, 2): menentukan jeda animasi masuk (+0,15 dtk) dan denyut (+0,4 dtk). */
+  urutan?: number;
   className?: string;
 };
 
-export function TitikInfoPlaceholder({ label, aktif = false, onClick, className = "" }: TitikInfoProps) {
+export function TitikInfoPlaceholder({ label, aktif = false, onClick, urutan = 0, className = "" }: TitikInfoProps) {
   return (
     <button
       type="button"
       onClick={onClick}
       aria-pressed={aktif}
       aria-label={label}
-      className={`group absolute flex min-h-11 cursor-pointer items-center gap-3 ${className}`}
+      style={{ "--hud-delay": `${0.9 + urutan * 0.15}s`, "--denyut-delay": `${1.5 + urutan * 0.4}s` } as CSSProperties}
+      className={`hud-titik group absolute flex min-h-11 cursor-pointer items-center gap-3 ${className}`}
     >
       <span className="relative block size-11 shrink-0">
-        {/* Denyut: cincin tipis membesar 1 -> 2x sambil memudar, siklus 2 dtk (handoff bagian 5). */}
+        {/* Denyut: cincin tipis membesar 1 -> 2x sambil memudar, siklus 2 dtk, tiap titik bergeser 0,4 dtk. */}
         <span
           aria-hidden="true"
-          className={`absolute inset-0 rounded-full border-[1.5px] motion-safe:animate-[ping_2s_cubic-bezier(0,0,0.2,1)_infinite] ${aktif ? "border-aksen-informasi-normal" : "border-text-primary-normal"}`}
+          className={`absolute inset-0 rounded-full border-[1.5px] opacity-0 motion-safe:hud-denyut ${aktif ? "border-aksen-informasi-normal" : "border-text-primary-normal"}`}
         />
         <span
           className={`absolute inset-0 rounded-full border-2 ${aktif ? "border-aksen-informasi-normal bg-aksen-informasi-normal/20" : "border-text-primary-normal group-hover:bg-white/10"}`}

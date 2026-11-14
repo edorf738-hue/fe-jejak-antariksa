@@ -1,6 +1,9 @@
-import { redirect } from "next/navigation";
+import type { Metadata } from "next";
+import { PetaPerjalanan } from "./PetaPerjalanan";
 
-// Peta Perjalanan tanpa tujuan terpilih: buka Moon (tujuan pertama di peta).
+export const metadata: Metadata = { title: "Peta Perjalanan — Wayang Antariksa" };
+
+// Belum ada tujuan dipilih: peta tanpa penanda terpilih dan panel state Kosong.
 export default function JourneyMapIndex() {
-  redirect("/journey-map/moon");
+  return <PetaPerjalanan />;
 }

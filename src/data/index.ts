@@ -5,3 +5,4 @@ export * from "./story";
 export * from "./source";
 export * from "./journey";
 export * from "./imersif";
+export * from "./status";

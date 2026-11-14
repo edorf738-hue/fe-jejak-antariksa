@@ -65,11 +65,14 @@ export default function Home() {
 
       {/* Latar Bima Sakti (desktop saja, 1440x1021 di bawah hero). */}
       <div className="relative bg-bg-primary-normal">
-        {/* CSS background (bukan next/image) agar berkas tidak diunduh di tablet/mobile. */}
+        {/* CSS background (bukan next/image) agar berkas tidak diunduh di tablet/mobile. Digeser pelan
+            (70, 14) px selama 16 dtk; diperbesar 1,1x agar tepinya tidak terbuka saat bergeser. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 hidden h-[1021px] bg-[url('/images/home/latar-bima-sakti.webp')] bg-cover bg-top bg-no-repeat lg:block"
-        />
+          className="pointer-events-none absolute inset-x-0 top-0 hidden h-[1021px] overflow-hidden lg:block"
+        >
+          <div className="bima-geser absolute inset-0 scale-110 bg-[url('/images/home/latar-bima-sakti.webp')] bg-cover bg-top bg-no-repeat" />
+        </div>
 
         <section
           aria-labelledby="judul-pengantar"

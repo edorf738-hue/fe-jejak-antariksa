@@ -12,4 +12,5 @@ export { Logo } from "./Logo";
 export { Navbar, NAV_ITEMS } from "./Navbar";
 export { PageHeader } from "./PageHeader";
 export { PanelBaris } from "./PanelBaris";
+export { PanelStatus } from "./PanelStatus";
 export { PenandaDestinasi } from "./PenandaDestinasi";

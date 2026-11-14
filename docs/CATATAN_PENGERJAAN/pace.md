@@ -4,6 +4,30 @@ Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 
 ## Entri
 
+### [2026-11-15] Animasi (HUD, latar) dan state Kosong/Memuat/Galat
+- **Tugas / klaim:** Animasi HUD dan state loading/kosong/galat (PEMBAGIAN_TUGAS bagian 4, Pace nomor 8)
+- **Branch / PR:** `feat/ui-animasi` (bertumpuk di atas `feat/ui-imersif`) / belum dibuka
+- **Yang dikerjakan:**
+  - **Animasi masuk HUD** halaman imersif dari `get_motion_context` Figma (frame Story Bab 1), CSS murni tanpa pustaka (`globals.css`: `hud-masuk`, `hud-titik`, `hud-denyut`, `hud-scene`): scene mengecil 1,07 ke 1 (3 dtk), tombol kembali 0,4/0,5 dtk, kartu narasi 0,3/0,7 dtk (geser dari kiri 40 px di desktop, naik di tablet/mobile), tombol panel 0,5/0,6, dok 0,6/0,6 (naik 40 px), kontrol scene 1,4/0,6, titik info membesar 0,4 ke 1 dengan pantulan, jeda 0,9 + 0,15 per titik, cincin denyut siklus 2 dtk dengan geseran 0,4 dtk per titik, kartu data benda dan objek fade 0,5 dtk saat dibuka, panel geser 60 px dari kanan (desktop) atau 80 px dari bawah (mobile) 0,5 dtk.
+  - **Animasi latar:** Peta Perjalanan (`LatarBerulang animasi`): potongan bergeser +-45 px berlawanan arah dan napas opasitas 0,7 ke 1, 24 dtk. Beranda: latar Bima Sakti bergeser (70, 14) px, 16 dtk.
+  - **State:** `PanelStatus` (Kosong, Memuat dengan kerangka berdenyut, Galat dengan aksi) memakai copy Figma di `src/data/status.ts`. Dipasang di: `/journey-map` tanpa tujuan (panel Kosong; kini tidak redirect), `journey-map/[kategori]/loading.tsx` (Memuat), `error.tsx` (Galat + Coba Lagi), filter Sumber tanpa hasil (Kosong Source).
+  - `prefers-reduced-motion`: semua animasi dimatikan (durasi 0,01 ms, jeda 0, sekali jalan); cincin denyut hanya dipasang lewat `motion-safe:` sehingga tidak muncul.
+  - Perbaikan terkait: Navbar tidak lagi membungkus teks di lebar 1024-1279 (tautan rata kanan; tata letak Figma tetap mulai 1280 ke atas).
+- **File dibuat/diubah:** `src/app/globals.css`, `src/components/hud/{HalamanImersif,ScenePlaceholder}.tsx`, `src/components/ui/{PanelStatus,LatarBerulang,Navbar,index}`, `src/app/(site)/{page.tsx,journey-map/**,source/SumberDaftar.tsx}`, `src/data/{status,index}.ts`.
+- **Cara menguji:** buka `/resources/mars` dan `/story/1` lalu muat ulang; di konsol `document.getAnimations()` menunjukkan nama, jeda, dan durasi tiap animasi. Buka `/journey-map` (state Kosong) dan `/journey-map/moon` (latar bergeser).
+- **Hasil uji:** lint dan build lolos. Jeda dan durasi 12 animasi di `/resources/mars` dibaca lewat Web Animations API dan cocok dengan Figma (scene 3 dtk; titik info 0,9/1,05/1,2; denyut 1,5/1,9/2,3 berulang 2 dtk; kembali 0,4/0,5; narasi 0,3/0,7; panel 0,5/0,6; kontrol 1,4/0,6; dok 0,6/0,6); panel terbuka 0/0,5 dtk dengan geseran 60 px; 8 potongan latar peta berdurasi 24 dtk. Belum dilihat langsung gerakannya dalam waktu nyata (hanya parameter yang diverifikasi), belum diuji dengan mode reduced-motion sungguhan atau perangkat nyata, state Memuat dan Galat belum dipicu di browser (hanya lolos build dan tipe).
+- **Keputusan teknis & alasan:**
+  - CSS murni karena repo belum memakai pustaka gerak dan semua animasi sederhana; pustaka akan menambah ukuran bundel.
+  - Latar Bima Sakti di Beranda adalah satu gambar hasil ekspor, jadi pita galaksi, kabut, dan bintang bergeser bersama (di Figma hanya pita yang bergeser dan 23 bintang berkelip sendiri-sendiri, kabut bernapas 0,06-0,14 dan 0,2-0,08). Kelip bintang dan napas kabut belum dibuat.
+  - Garis penghubung hotspot (path trim) belum dibuat karena bagian HotspotLayer (Zhafran).
+  - Animasi Figma berulang 12 dtk; di web urutan masuk dijalankan sekali, denyut dan latar berulang.
+- **Belum selesai / catatan untuk orang lain:**
+  - Copy state memakai teks Figma; halaman 404 dan galat global belum ada (copy belum didesain).
+  - Navbar: frame Figma hanya 1440, 768, 390; perilaku di 1024-1279 adalah keputusan saya (tautan rata kanan).
+  - State 3D Loading dan Fallback (frame State 3D) milik Edo.
+  - Menyentuh file bersama `globals.css`: Dhika perlu diberi tahu.
+- **Status:** Review
+
 ### [2026-11-15] Kerangka halaman imersif: Story Bab 1-4 dan Resources
 - **Tugas / klaim:** Halaman imersif (kerangka) (PEMBAGIAN_TUGAS bagian 4, Pace nomor 7)
 - **Branch / PR:** `feat/ui-imersif` (bertumpuk di atas `feat/ui-journey-map`) / belum dibuka

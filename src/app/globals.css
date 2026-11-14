@@ -268,12 +268,113 @@ body {
   gap: var(--section-gap);
 }
 
+/*
+ * Animasi (FIGMA_HANDOFF bagian 5 dan get_motion_context). Dibuat dengan CSS murni (tanpa
+ * pustaka). easeOut = cubic-bezier(0, 0, 0.58, 1); "back" = cubic-bezier(0.45, 1.45, 0.8, 1).
+ * Semua dimatikan lewat aturan prefers-reduced-motion di bawah.
+ */
+@keyframes hud-masuk {
+  from {
+    opacity: 0;
+    translate: var(--hud-dx, 0px) var(--hud-dy, 0px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes hud-titik {
+  from {
+    opacity: 0;
+    scale: 0.4;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+  }
+}
+/* Cincin denyut: muncul 0,7 lalu membesar 1 -> 2x sambil memudar (~1,55 dtk), jeda, siklus 2 dtk. */
+@keyframes hud-denyut {
+  0% {
+    opacity: 0.7;
+    scale: 1;
+  }
+  77.5%,
+  100% {
+    opacity: 0;
+    scale: 2;
+  }
+}
+@keyframes hud-scene {
+  from {
+    scale: 1.07;
+  }
+  to {
+    scale: 1;
+  }
+}
+/* Latar Peta Perjalanan: geser +-45 px dan napas opasitas 0,7 -> 1, siklus 24 dtk. */
+@keyframes latar-geser {
+  0%,
+  100% {
+    translate: 0 0;
+    opacity: 0.7;
+  }
+  50% {
+    translate: var(--geser-x, 45px) 0;
+    opacity: 1;
+  }
+}
+/* Latar Bima Sakti Beranda: geser pelan (70, 14) px, siklus 16 dtk. */
+@keyframes bima-geser {
+  0%,
+  100% {
+    translate: 0 0;
+  }
+  50% {
+    translate: 70px 14px;
+  }
+}
+@keyframes kerangka-napas {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Variabel: --hud-delay, --hud-dur, --hud-dx, --hud-dy (set lewat kelas [--hud-delay:0.3s]) */
+@utility hud-masuk {
+  animation: hud-masuk var(--hud-dur, 0.6s) cubic-bezier(0, 0, 0.58, 1) var(--hud-delay, 0s) both;
+}
+@utility hud-titik {
+  animation: hud-titik 0.4s cubic-bezier(0.45, 1.45, 0.8, 1) var(--hud-delay, 0.9s) both;
+}
+@utility hud-denyut {
+  animation: hud-denyut 2s cubic-bezier(0, 0, 0.58, 1) var(--denyut-delay, 1.5s) infinite;
+}
+@utility hud-scene {
+  animation: hud-scene 3s cubic-bezier(0, 0, 0.58, 1) both;
+}
+@utility latar-geser {
+  animation: latar-geser 24s ease-in-out infinite;
+}
+@utility bima-geser {
+  animation: bima-geser 16s ease-in-out infinite;
+}
+@utility kerangka-napas {
+  animation: kerangka-napas 1.6s ease-in-out infinite;
+}
+
 /* Gerak dimatikan bila pengguna memilih prefers-reduced-motion */
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
   *::after {
     animation-duration: 0.01ms !important;
+    animation-delay: 0s !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;

@@ -71,9 +71,14 @@ export function HalamanImersif({
   }
 
   const kartuBawah = bendaAktif ? (
-    <KartuDataBenda {...bendaAktif} eyebrow={IMERSIF_COPY.dataBenda.toUpperCase()} className="lg:hidden" />
+    <KartuDataBenda
+      key={bendaAktif.id}
+      {...bendaAktif}
+      eyebrow={IMERSIF_COPY.dataBenda.toUpperCase()}
+      className="hud-masuk [--hud-delay:0s] [--hud-dur:0.5s] [--hud-dy:20px] lg:hidden"
+    />
   ) : (
-    <KartuNarasi {...narasi} className="lg:hidden" />
+    <KartuNarasi {...narasi} className="hud-masuk [--hud-delay:0.3s] [--hud-dur:0.7s] [--hud-dy:40px] lg:hidden" />
   );
 
   return (
@@ -86,10 +91,13 @@ export function HalamanImersif({
 
       {bendaAktif && (
         <div className="absolute left-1/2 top-[30%] z-[5] -translate-x-1/2 -translate-y-1/2 lg:top-[47%]">
-          <Objek3DPlaceholder
-            judul={IMERSIF_COPY.placeholderModel.judul}
-            status={IMERSIF_COPY.placeholderModel.status}
-          />
+          {/* Dibungkus terpisah: animasi memakai properti translate yang sama dengan pemusatan di atas. */}
+          <div key={bendaAktif.id} className="hud-masuk [--hud-delay:0.3s] [--hud-dur:0.5s]">
+            <Objek3DPlaceholder
+              judul={IMERSIF_COPY.placeholderModel.judul}
+              status={IMERSIF_COPY.placeholderModel.status}
+            />
+          </div>
         </div>
       )}
 
@@ -98,6 +106,7 @@ export function HalamanImersif({
           key={b.id}
           label={b.hotspot}
           aktif={bendaIdx === i}
+          urutan={i}
           onClick={() => setBendaIdx(bendaIdx === i ? null : i)}
           className={`z-10 ${POSISI_TITIK[i]}`}
         />
@@ -106,12 +115,16 @@ export function HalamanImersif({
       {/* Lapisan HUD: selaras dengan konten halaman (padding 24/40/86, lebar maksimum 1440). */}
       <div className="pointer-events-none absolute inset-0 z-20 mx-auto max-w-page px-page [&>*]:pointer-events-auto">
         <div className="relative h-full">
-          <TombolKembali href={kembali.href} label={kembali.label} className="absolute left-0 top-6 lg:top-5" />
+          <TombolKembali
+            href={kembali.href}
+            label={kembali.label}
+            className="hud-masuk absolute left-0 top-6 [--hud-delay:0.4s] [--hud-dur:0.5s] lg:top-5"
+          />
 
           {scenePlaceholder && (
             <PenandaPlaceholder
               teks={IMERSIF_COPY.placeholderScene}
-              className="absolute left-0 top-[142px] md:top-[142px] lg:left-14 lg:top-[26px]"
+              className="hud-masuk absolute left-0 top-[142px] [--hud-delay:0.4s] [--hud-dur:0.5s] lg:left-14 lg:top-[26px]"
             />
           )}
 
@@ -119,19 +132,20 @@ export function HalamanImersif({
           <KartuNarasi
             {...narasi}
             petunjuk={IMERSIF_COPY.petunjuk}
-            className="absolute left-0 top-[77px] max-lg:hidden"
+            className="hud-masuk absolute left-0 top-[77px] [--hud-delay:0.3s] [--hud-dur:0.7s] [--hud-dx:-40px] max-lg:hidden"
           />
           {bendaAktif && !panel && (
             <KartuDataBenda
+              key={bendaAktif.id}
               {...bendaAktif}
               eyebrow={IMERSIF_COPY.dataBenda.toUpperCase()}
-              className="absolute right-0 top-[300px] max-lg:hidden"
+              className="hud-masuk absolute right-0 top-[300px] [--hud-delay:0s] [--hud-dur:0.5s] [--hud-dx:30px] max-lg:hidden"
             />
           )}
 
           {!panel && (
             <div
-              className={`absolute left-0 top-20 flex w-full flex-wrap gap-2.5 lg:left-auto lg:right-0 lg:top-[57px] lg:w-auto lg:gap-3 ${
+              className={`hud-masuk absolute left-0 top-20 flex w-full flex-wrap gap-2.5 [--hud-delay:0.5s] [--hud-dx:30px] max-lg:[--hud-dx:0px] max-lg:[--hud-dy:-20px] lg:left-auto lg:right-0 lg:top-[57px] lg:w-auto lg:gap-3 ${
                 story ? "lg:flex-col lg:items-end" : "lg:flex-row"
               }`}
             >
@@ -145,7 +159,7 @@ export function HalamanImersif({
             paused={paused}
             onTogglePause={() => setPaused((p) => !p)}
             onToggleFullscreen={toggleFullscreen}
-            className={`absolute right-0 ${
+            className={`hud-masuk absolute right-0 [--hud-delay:1.4s] ${
               story ? "top-[191px]" : "top-[218px]"
             } md:top-[152px] lg:bottom-40 lg:top-auto ${panel ? "max-lg:hidden lg:right-[456px]" : ""}`}
           />
@@ -153,13 +167,13 @@ export function HalamanImersif({
           {/* Tumpukan bawah (tablet/mobile): kartu narasi atau data benda, lalu dok. */}
           <div className="absolute inset-x-0 bottom-6 flex flex-col gap-5 lg:hidden">
             {kartuBawah}
-            {dok}
+            <div className="hud-masuk [--hud-delay:0.6s] [--hud-dy:40px]">{dok}</div>
           </div>
           {/* Dok desktop. */}
           <div
             className={`absolute inset-x-0 hidden justify-center lg:flex ${story ? "bottom-[52px]" : "bottom-[30px]"}`}
           >
-            {dok}
+            <div className="hud-masuk w-full [--hud-delay:0.6s] [--hud-dy:40px] lg:flex lg:justify-center">{dok}</div>
           </div>
 
           {panel && (
@@ -167,7 +181,7 @@ export function HalamanImersif({
               judul={PANEL_META[panel].label}
               onTutup={() => setPanel(null)}
               labelTutup={IMERSIF_COPY.tutup}
-              className="absolute inset-x-0 bottom-6 top-6 z-30 lg:inset-x-auto lg:bottom-auto lg:right-0 lg:top-[57px] lg:h-[564px] lg:w-[440px]"
+              className="hud-masuk absolute inset-x-0 bottom-6 top-6 z-30 [--hud-dur:0.5s] [--hud-dy:80px] lg:[--hud-dx:60px] lg:[--hud-dy:0px] lg:inset-x-auto lg:bottom-auto lg:right-0 lg:top-[57px] lg:h-[564px] lg:w-[440px]"
             >
               {panelKonten[panel]}
             </Panel>

@@ -1,3 +1,5 @@
+import type { CSSProperties } from "react";
+
 /**
  * Latar berulang untuk halaman non-imersif (FIGMA_HANDOFF bagian 7):
  * - Sumber: "Latar Arsip" (gradien slate, grain, grid sangat samar), statis.
@@ -17,11 +19,13 @@ type LatarBerulangProps = {
   gambar: string;
   /** Jumlah potongan; cukup banyak untuk menutup tinggi halaman terpanjang. */
   jumlah?: number;
-  /** Opasitas gambar (Peta Bintang 0,9). */
+  /** Opasitas gambar statis. Diabaikan bila `animasi` (opasitas ikut siklus 0,7 -> 1). */
   opacity?: number;
+  /** Geser pelan +-45 px berlawanan arah tiap potongan, siklus 24 dtk (Peta Perjalanan). */
+  animasi?: boolean;
 };
 
-export function LatarBerulang({ gambar, jumlah = 8, opacity = 1 }: LatarBerulangProps) {
+export function LatarBerulang({ gambar, jumlah = 8, opacity = 1, animasi = false }: LatarBerulangProps) {
   return (
     <div
       aria-hidden="true"
@@ -30,14 +34,16 @@ export function LatarBerulang({ gambar, jumlah = 8, opacity = 1 }: LatarBerulang
       {Array.from({ length: jumlah }, (_, i) => (
         <div
           key={i}
-          className={`absolute inset-x-0 h-(--seg-h) bg-cover bg-center ${i % 2 === 1 ? "rotate-180" : ""}`}
-          style={{
-            top: `calc(${i} * var(--seg-h) * 0.8)`,
-            backgroundImage: `url('${gambar}')`,
-            maskImage: MASK,
-            WebkitMaskImage: MASK,
-            opacity,
-          }}
+          className={`absolute inset-x-0 h-(--seg-h) bg-cover bg-center ${i % 2 === 1 ? "rotate-180" : ""} ${animasi ? "latar-geser" : ""}`}
+          style={
+            {
+              top: `calc(${i} * var(--seg-h) * 0.8)`,
+              backgroundImage: `url('${gambar}')`,
+              maskImage: MASK,
+              WebkitMaskImage: MASK,
+              ...(animasi ? { "--geser-x": i % 2 === 1 ? "-45px" : "45px" } : { opacity }),
+            } as CSSProperties
+          }
         />
       ))}
     </div>
