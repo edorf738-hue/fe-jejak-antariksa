@@ -113,11 +113,11 @@ Isi teks di Figma kini berasal dari dokumen itu. **Sumber data untuk FE adalah [
 | Halaman | Terisi dari dokumen | Masih TBD |
 |---|---|---|
 | Story Pengantar | Ringkasan Bab 1–4 | Bab 5 |
-| Story Bab 1–4 (3 breakpoint) | Narasi, label hotspot, Kartu Data Benda (hotspot 1) | Bab 5; data benda hotspot 2 dan 3 |
+| Story Bab 1–4 (3 breakpoint) | Narasi, label hotspot, Kartu Data Benda hotspot 1; **8 frame state baru di Desktop (baris paling bawah) untuk hotspot 2 dan 3** (klik hotspot berpindah antar state) | Bab 5; hotspot 2 dan 3 belum didesain untuk tablet dan mobile maupun halaman Resources; "Fakta" Heat Shield Rock |
 | Story Bab 2 panel | Misi Terkait (Apollo 11, 8, 10) dan Sumber (3) | Wahana dan peluncuran Apollo 8 dan 10; tanggal akses |
 | Resources Mars/Moon/Deep Space | Ringkasan, hotspot, data benda | Panel Galeri (belum ada gambar Mars) |
 | Resources Mars panel | Fakta (3), Misi Terkait (Spirit, Opportunity), Sumber (3) | Misi Terkait ke-3 |
-| Journey Map Moon/Mars/Deep Space | Kartu Misi, Panel Detail Misi, Sumber (2) | Kartu Misi ke-3 Mars dan Deep Space; "Tujuan misi" Voyager; koordinat belum punya kolom di desain |
+| Journey Map Moon/Mars/Deep Space | Kartu Misi, Panel Detail Misi (plus baris Lokasi/koordinat, Kru atau Tokoh, Fakta menarik), **Panel Kronologi baru** (Apollo 11, Spirit dan Opportunity, Voyager), Sumber (2) | Kartu Misi ke-3 Mars dan Deep Space; "Tujuan misi" Voyager; tokoh Deep Space |
 | Source | Referensi 1–3, Kredit Gambar 1–2 (sebagian) | Tanggal akses, kredit foto, lisensi, pembuat model |
 
 **Batas karakter** (ukuran kartu di Figma, mobile 342 px): narasi 90, label hotspot 24, nama benda 24, kategori 40, deskripsi 60, fakta 70, status misi 50. Teks lebih panjang menambah tinggi kartu dan bisa menutup hotspot atau dok.
@@ -150,6 +150,7 @@ Efek ke tata letak: karena teks lebih panjang, tinggi frame Journey Map, Source,
 - Navbar di Resources ditandai "Beranda" (usulan).
 - Konsep 3D imersif menggantikan halaman scroll Story Bab dan Resources (disepakati antar tim). Yang belum diputuskan: scene 3D final Bab 1 dan 5, daftar benda dan data per scene, cara pengguna kembali ke "mode baca" (bila diperlukan), dan perilaku kamera (bebas, terpandu, atau terkunci).
 - **Latar per halaman:** Story dan Resources memakai scene 3D sebagai latar. **Journey Map** memakai peta bintang (grid lengkung, orbit samar, bintang; tanpa garis rute) dan **Source** memakai latar arsip (gradien slate dengan grain dan grid sangat samar). Keduanya dipasang sebagai potongan berulang bergantian arah (rotasi 180°) dengan mask pudar di tepi, di bawah konten dan di bawah header. Journey Map punya gerak sangat pelan (geser horizontal ±45 px dan napas opasitas 0,7–1,0, timeline 24 dtk, arah berlawanan tiap potongan); Source dibiarkan statis. Untuk web, latar sebaiknya satu lapisan tetap (`position: fixed`) yang bergerak pelan, bukan potongan berulang. **Home** baru punya prototipe Bima Sakti (desktop). Semua gambar latar hasil generate AI beresolusi 1774 px (perlu versi ≥3840 px untuk produksi) dan harus dicatat di halaman Source sebagai ilustrasi buatan AI.
+- **Header Story (Pengantar) dan Journey Map:** tidak lagi memakai foto hero Home. Story memakai panorama 3:1 (Bumi, Bulan, wahana, Mars, gugus bintang yang dihubungkan satu garis tipis); Journey Map memakai panorama 3:1 peta navigasi (orbit samar, lintasan putus-putus, Bumi, Bulan, Mars, titik biru). Detail ada di strip atas dan bawah karena teks header rata tengah; di mobile hanya bagian tengah gambar yang tampil. Lapisan Overlay header diturunkan ke opasitas 30% agar gambar terlihat. Source dan Home masih memakai foto lama. Kedua gambar hasil generate AI (2000×672 px; butuh versi 3840 px untuk produksi): catat alat, tanggal, dan prompt di halaman Source.
 - Foto lunar lander di hero Home dan header halaman lain: asal dan lisensi belum tercatat.
 - Isi konten: dataset misi, daftar sumber, narasi bab, fakta ilmiah, media galeri (semua `TBD`).
 - Rasio hero terhadap kamera model, dan performa di perangkat nyata.

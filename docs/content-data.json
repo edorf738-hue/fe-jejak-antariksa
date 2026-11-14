@@ -32,7 +32,25 @@
         "fakta": "NASA mulai beroperasi 1 Oktober 1958",
         "sumber": "NASA — Asal-usul NASA"
       },
-      "catatan": "Hotspot 2 dan 3 belum punya isi data benda (hanya judul)."
+      "catatan": "Hotspot 2 dan 3 belum punya isi data benda (hanya judul).",
+      "dataBendaLain": [
+        {
+          "hotspot": "Apollo 8 dan 10",
+          "nama": "Apollo 8 dan 10",
+          "kategori": "Misi sebelum Apollo 11",
+          "deskripsi": "Membantu membuktikan perjalanan ke Bulan bisa dilakukan.",
+          "fakta": "Disebut dalam artikel NASA",
+          "sumber": "NASA"
+        },
+        {
+          "hotspot": "Target Kennedy",
+          "nama": "Target Kennedy",
+          "kategori": "Sejarah",
+          "deskripsi": "Kennedy menetapkan target mendaratkan manusia di Bulan.",
+          "fakta": "Ditetapkan 25 Mei 1961",
+          "sumber": "NASA"
+        }
+      ]
     },
     {
       "id": 2,
@@ -56,7 +74,25 @@
           "catatan": "Bukan model khusus Eagle. Tulis 'model umum' di web."
         }
       },
-      "catatan": "Model Apollo Lunar Module adalah model umum, bukan khusus Eagle. Tulis 'model umum' di web."
+      "catatan": "Model Apollo Lunar Module adalah model umum, bukan khusus Eagle. Tulis 'model umum' di web.",
+      "dataBendaLain": [
+        {
+          "hotspot": "Plakat peringatan",
+          "nama": "Plakat peringatan",
+          "kategori": "Ditinggalkan di Bulan",
+          "deskripsi": "Dipasang pada kaki pendarat Eagle.",
+          "fakta": "\"We came in peace for all mankind\"",
+          "sumber": "NSSDCA"
+        },
+        {
+          "hotspot": "Bendera Amerika",
+          "nama": "Bendera Amerika",
+          "kategori": "Ditinggalkan di Bulan",
+          "deskripsi": "Didirikan para astronaut.",
+          "fakta": "Aldrin memberi hormat di dekatnya",
+          "sumber": "NASA"
+        }
+      ]
     },
     {
       "id": 3,
@@ -77,7 +113,25 @@
         "model3d": null,
         "model3dCatatan": "Belum ada file di repo. Sumber yang disebut dokumen: 'Spirit and Opportunity' (.blend 12 MB, perlu diekspor ke .glb) dan MER Opportunity (MER-B, .glb 36 KB, kemungkinan sederhana). Satu model rover bisa dipakai untuk keduanya."
       },
-      "catatan": "Belum ada gambar atau model 3D rover. Tanggal peluncuran dan pendaratan Opportunity punya dua versi (NASA Science vs NSSDCA)."
+      "catatan": "Belum ada gambar atau model 3D rover. Tanggal peluncuran dan pendaratan Opportunity punya dua versi (NASA Science vs NSSDCA).",
+      "dataBendaLain": [
+        {
+          "hotspot": "Rover Opportunity",
+          "nama": "Rover Opportunity",
+          "kategori": "Ditinggalkan di Mars, nonaktif",
+          "deskripsi": "Mendarat di Meridiani Planum, 24 Januari 2004.",
+          "fakta": "Menempuh 45,16 km",
+          "sumber": "NASA Science"
+        },
+        {
+          "hotspot": "Heat Shield Rock",
+          "nama": "Heat Shield Rock",
+          "kategori": "Temuan, bukan artefak",
+          "deskripsi": "Meteorit besi-nikel yang ditemukan Opportunity.",
+          "fakta": "TBD",
+          "sumber": "TBD"
+        }
+      ]
     },
     {
       "id": 4,
@@ -101,7 +155,25 @@
           "catatan": "Voyager 1 dan 2 memakai model yang sama. Versi (antenna) tanpa tekstur dan lebih ringan."
         }
       },
-      "catatan": "Data jarak dan kecepatan Voyager 2 belum ada. Posisi terkini berubah tiap hari, tulis tanggal pengambilan data."
+      "catatan": "Data jarak dan kecepatan Voyager 2 belum ada. Posisi terkini berubah tiap hari, tulis tanggal pengambilan data.",
+      "dataBendaLain": [
+        {
+          "hotspot": "Voyager 2",
+          "nama": "Voyager 2",
+          "kategori": "Masih beroperasi",
+          "deskripsi": "Diluncurkan 20 Agustus 1977.",
+          "fakta": "Antarbintang sejak 2018",
+          "sumber": "NASA Science"
+        },
+        {
+          "hotspot": "Golden Record",
+          "nama": "Golden Record",
+          "kategori": "Dibawa terbang",
+          "deskripsi": "Piringan tembaga berlapis emas, 30 cm.",
+          "fakta": "Berisi salam 55 bahasa dan 115 gambar",
+          "sumber": "NASA"
+        }
+      ]
     },
     {
       "id": 5,
@@ -292,5 +364,112 @@
     "3": "Dua rover kembar, Spirit dan Opportunity, mencari jejak air di Mars sejak 2004.",
     "4": "Voyager 1 dan 2 terbang ke ruang antarbintang membawa Golden Record.",
     "5": "TBD"
+  },
+  "detailMisiTambahan": {
+    "Bulan": {
+      "lokasi": "Tranquility Base: 0,67416° LU, 23,47314° BT (NSSDCA)",
+      "kru": "Neil Armstrong (komandan), Michael Collins (pilot modul komando), Buzz Aldrin (pilot modul Bulan)",
+      "faktaMenarik": "Medali untuk tiga astronaut Apollo 1 dan dua kosmonot, serta cakram silikon berisi pesan dari 73 negara"
+    },
+    "Mars": {
+      "lokasi": "Gusev Crater: 14,572° LS, 175,478° BT (NSSDCA)",
+      "tokoh": "Steve Squyres, pemimpin sains kedua rover (jabatan resmi: TBD)"
+    },
+    "Deep Space": {
+      "lokasi": "Ruang antarbintang; Voyager 1: 164,7 SA dari Matahari per 21 Agustus 2024 (data lama)",
+      "faktaMenarik": "Golden Record: piringan tembaga berlapis emas 30 cm berisi suara alam, musik, dan salam dalam 55 bahasa"
+    }
+  },
+  "kronologi": {
+    "Bulan": [
+      [
+        "16 Juli 1969",
+        "Peluncuran Saturn V dari Kennedy Space Center, pukul 09.32 EDT"
+      ],
+      [
+        "19 Juli",
+        "Masuk orbit Bulan"
+      ],
+      [
+        "20 Juli",
+        "Eagle melepaskan diri dari Columbia"
+      ],
+      [
+        "20 Juli",
+        "Eagle mendarat di Sea of Tranquility"
+      ],
+      [
+        "20 Juli",
+        "Armstrong melangkah di Bulan; Aldrin menyusul sekitar 20 menit kemudian"
+      ],
+      [
+        "21 Juli",
+        "Eagle lepas landas dan menyambung kembali dengan Columbia"
+      ],
+      [
+        "21 Juli",
+        "Mesin dinyalakan untuk pulang ke Bumi"
+      ],
+      [
+        "24 Juli",
+        "Mendarat di Samudra Pasifik dekat kapal USS Hornet"
+      ]
+    ],
+    "Mars": [
+      [
+        "10 Juni 2003",
+        "Spirit diluncurkan (roket Delta II)"
+      ],
+      [
+        "8 Juli 2003 (UT)",
+        "Opportunity diluncurkan"
+      ],
+      [
+        "3 Januari 2004",
+        "Spirit mendarat di Gusev Crater"
+      ],
+      [
+        "24 Januari 2004",
+        "Opportunity mendarat di Meridiani Planum"
+      ],
+      [
+        "2 Maret 2004",
+        "NASA mengumumkan bukti kuat bahwa Meridiani Planum dulu basah"
+      ],
+      [
+        "22 Maret 2010",
+        "Transmisi terakhir Spirit (terjebak di pasir sejak 2009)"
+      ],
+      [
+        "10 Juni 2018",
+        "Kontak terakhir dengan Opportunity saat badai debu global"
+      ]
+    ],
+    "Deep Space": [
+      [
+        "20 Agustus 1977",
+        "Voyager 2 diluncurkan"
+      ],
+      [
+        "5 September 1977",
+        "Voyager 1 diluncurkan"
+      ],
+      [
+        "24 Januari 1986",
+        "Voyager 2 melewati Uranus"
+      ],
+      [
+        "25 Agustus 1989",
+        "Voyager 2 melewati Neptunus"
+      ],
+      [
+        "Agustus 2012",
+        "Voyager 1 memasuki ruang antarbintang"
+      ],
+      [
+        "5 November 2018",
+        "Voyager 2 memasuki ruang antarbintang"
+      ]
+    ]
   }
 }
