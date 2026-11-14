@@ -20,6 +20,8 @@ type ButtonOwnProps = {
   /** Menampilkan spinner dan menonaktifkan klik. */
   loading?: boolean;
   disabled?: boolean;
+  /** Fill kaca + blur, untuk tombol yang berada di atas scene 3D (Tombol Panel, Dok). */
+  glass?: boolean;
   className?: string;
   children: ReactNode;
 };
@@ -74,6 +76,7 @@ export function Button({
   iconRight,
   loading = false,
   disabled = false,
+  glass = false,
   className = "",
   children,
   href,
@@ -87,6 +90,7 @@ export function Button({
     padding,
     VARIANTS[variant][disabled ? "disabled" : "enabled"],
     inactive ? "cursor-not-allowed" : "cursor-pointer",
+    glass ? "glass" : "",
     className,
   ].join(" ");
 

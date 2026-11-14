@@ -253,6 +253,16 @@ body {
   padding-inline: var(--page-padding);
 }
 
+/*
+ * Fill kaca untuk komponen HUD di atas canvas 3D: #111827 @ 70% + blur 24
+ * (Figma memakai 62-78% dan blur 24-28; variabel Figma tidak membawa opasitas).
+ */
+@utility glass {
+  background-color: color-mix(in srgb, var(--color-bg-secondary-normal) 70%, transparent);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
 /* Jarak antar-section mengikuti breakpoint (40 / 48 / 56) */
 @utility gap-section {
   gap: var(--section-gap);

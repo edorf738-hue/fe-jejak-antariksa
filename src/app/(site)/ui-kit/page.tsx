@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import type { ReactNode } from "react";
 import { Button, Container, ICON_NAMES, Icon, IconButton } from "@/components/ui";
 
@@ -62,6 +63,9 @@ export default function UiKitPage() {
           Token, text style, dan komponen dasar dari <code>docs/FIGMA_HANDOFF.md</code>.
           Ubah lebar jendela untuk melihat tiga breakpoint (390 / 768 / 1440).
         </p>
+        <Link href="/ui-kit/hud" className="text-aksen-informasi-normal underline underline-offset-4">
+          Uji komponen HUD (kerangka halaman imersif)
+        </Link>
       </header>
 
       <Block title="Warna">

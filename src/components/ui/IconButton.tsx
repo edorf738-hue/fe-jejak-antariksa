@@ -1,3 +1,4 @@
+import Link from "next/link";
 import type { ComponentProps } from "react";
 import { Icon, type IconName } from "./Icon";
 
@@ -8,14 +9,26 @@ import { Icon, type IconName } from "./Icon";
  * Jeda Gerak), dan tombol Menu/Tutup Navbar Ringkas.
  *
  * `label` wajib: tombol ikon tanpa teks harus punya nama aksesibel (aria-label).
+ * `IconLink` adalah versi tautan (mis. Tombol Kembali).
  */
-type IconButtonProps = Omit<ComponentProps<"button">, "children" | "aria-label"> & {
+const ICON_BUTTON_CLASS =
+  "inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full " +
+  "bg-bg-secondary-normal/80 text-text-primary-normal backdrop-blur-[24px] " +
+  "shadow-[0_0_0_1.5px_var(--color-archive-slate-normal)] transition-colors duration-150 " +
+  "hover:bg-archive-slate-normal/90 hover:shadow-[0_0_0_1.5px_var(--color-aksen-informasi-normal)] " +
+  "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-aksen-informasi-normal " +
+  "disabled:cursor-not-allowed disabled:text-text-secondary-dark";
+
+type IconProps = {
   icon: IconName;
   /** Nama aksesibel, mis. "Kembali ke Beranda". */
   label: string;
   /** Ukuran ikon dalam tombol (grid 24). */
   iconSize?: number;
 };
+
+type IconButtonProps = IconProps &
+  Omit<ComponentProps<"button">, "children" | "aria-label">;
 
 export function IconButton({
   icon,
@@ -29,18 +42,27 @@ export function IconButton({
     <button
       type={type}
       aria-label={label}
-      className={[
-        "inline-flex size-11 shrink-0 cursor-pointer items-center justify-center rounded-full",
-        "bg-bg-secondary-normal/80 text-text-primary-normal backdrop-blur-[24px]",
-        "shadow-[0_0_0_1.5px_var(--color-archive-slate-normal)] transition-colors duration-150",
-        "hover:bg-archive-slate-normal/90 hover:shadow-[0_0_0_1.5px_var(--color-aksen-informasi-normal)]",
-        "focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-aksen-informasi-normal",
-        "disabled:cursor-not-allowed disabled:text-text-secondary-dark",
-        className,
-      ].join(" ")}
+      className={`${ICON_BUTTON_CLASS} ${className}`}
       {...rest}
     >
       <Icon name={icon} size={iconSize} />
     </button>
+  );
+}
+
+type IconLinkProps = IconProps &
+  Omit<ComponentProps<typeof Link>, "children" | "aria-label">;
+
+export function IconLink({
+  icon,
+  label,
+  iconSize = 24,
+  className = "",
+  ...rest
+}: IconLinkProps) {
+  return (
+    <Link aria-label={label} className={`${ICON_BUTTON_CLASS} ${className}`} {...rest}>
+      <Icon name={icon} size={iconSize} />
+    </Link>
   );
 }

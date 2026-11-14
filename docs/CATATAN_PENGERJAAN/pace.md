@@ -4,6 +4,28 @@ Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 
 ## Entri
 
+### [2026-11-15] HUD: kartu, tombol panel, panel, dok, kontrol scene + pemuat data
+- **Tugas / klaim:** HUD (PEMBAGIAN_TUGAS bagian 4, Pace nomor 2) dan pemuat data `src/data/`
+- **Branch / PR:** `feat/ui-hud` (bertumpuk di atas `feat/ui-fondasi`, rebase setelah fondasi dimerge) / belum dibuka
+- **Yang dikerjakan:**
+  - `src/components/hud/`: `KartuNarasi`, `KartuDataBenda`, `TombolPanel`, `Panel` + isi panel (`PanelFakta`, `PanelMisi`, `PanelGaleri`, `PanelSumber`, `KartuFakta`, `ItemGaleri`, `ItemSumber`), `DokBab` (stepper 1-4), `DokKategori`, `TombolKembali`, `KontrolScene`. Semua murni presentasi, tanpa Three.js (kontrak bagian 5).
+  - `src/data/` (`getDaftarBab`, `getBab`, `getKategori`, `getSumber`, tipe di `types.ts`) membaca `docs/content-data.json` langsung; "TBD" dan null dipertahankan (galeri null jadi kotak "GAMBAR: TBD", misi null jadi kartu TBD).
+  - Tambahan di `src/components/ui/`: `KartuMisi`, `IconLink` (Tombol Ikon sebagai tautan), prop `glass` pada `Button`. Tambahan di `globals.css`: utilitas `glass`.
+  - Halaman uji `/ui-kit/hud` (kerangka kasar halaman imersif, tanpa Navbar, latar gradien sementara).
+- **File dibuat/diubah:** `src/components/hud/*`, `src/data/*`, `src/components/ui/{KartuMisi,IconButton,Button,index}`, `src/app/globals.css`, `src/app/ui-kit/hud/*`, `src/app/(site)/ui-kit/page.tsx` (tautan ke halaman uji).
+- **Cara menguji:** `npm run lint`, `npm run build`, lalu buka `/ui-kit/hud` di 1440, 768, 390: buka tiap Tombol Panel, pilih benda, jeda/putar, tutup panel.
+- **Hasil uji:** lint dan build lolos; dicek visual di build produksi pada 1440, 768, 390 (tanpa scroll horizontal). Belum diuji dengan keyboard secara menyeluruh atau pembaca layar, belum di perangkat nyata. Fokus panel (focus trap, kembali ke tombol pemicu) belum dikerjakan.
+- **Keputusan teknis & alasan:**
+  - Panel memakai fill 95% (bukan kaca 70%) agar terbaca saat menutupi scene.
+  - Tujuan tombol Sebelumnya/Berikutnya di `DokBab` diberikan lewat props karena Bab 4 berlabel "Daftar Bab" dan kembali ke Cerita.
+  - Titik Info (hotspot) tidak dibuat: itu `HotspotLayer` milik Zhafran.
+- **Belum selesai / catatan untuk orang lain:**
+  - Panel Sumber per scene: `content-data.json` hanya punya satu daftar `sumber` (8 item) tanpa pemetaan ke scene; demo memakai 3 item pertama. Perlu field pemetaan dari Dhika.
+  - Ukuran kartu/panel (420 dan 380 lebar maks, padding 24) dan Tombol Panel di mobile (grid yang membungkus) adalah perkiraan; belum dicocokkan dengan Figma. Animasi masuk HUD (butir 8) belum.
+  - Zhafran: `KontrolScene` menerima callback `onResetCamera`, `onToggleFullscreen`, `onTogglePause`; perilakunya dipasang di sisi 3D.
+  - Menyentuh file bersama `globals.css` (utilitas `glass`): Dhika perlu diberi tahu.
+- **Status:** Review
+
 ### [2026-11-14] Fondasi UI: token, font, Button, Tombol Ikon, ikon, Navbar, layout dasar
 - **Tugas / klaim:** Fondasi UI (PEMBAGIAN_TUGAS bagian 4, Pace nomor 1)
 - **Branch / PR:** `feat/ui-fondasi` / belum dibuka
