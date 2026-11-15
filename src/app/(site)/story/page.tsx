@@ -25,7 +25,7 @@ export default function StoryPage() {
   return (
     <>
       <header className="relative -mt-(--navbar-offset) flex min-h-[440px] flex-col overflow-hidden bg-bg-primary-normal md:min-h-[400px] lg:min-h-[460px]">
-        <Image src="/images/story/header-cerita.webp" alt="" fill priority sizes="100vw" className="object-cover object-center" />
+        <Image src="/images/story/header-cerita-earthrise.webp" alt="" fill priority sizes="100vw" className="object-cover object-[62%_center] md:object-center" />
         <div
           aria-hidden="true"
           className="absolute inset-0 bg-[linear-gradient(to_top,#080b12_0%,rgba(8,11,18,0)_40%),linear-gradient(to_right,rgba(8,11,18,0.7)_0%,rgba(8,11,18,0)_65%)]"

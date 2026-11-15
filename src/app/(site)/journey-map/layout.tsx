@@ -17,9 +17,10 @@ export default function JourneyMapLayout({ children }: { children: ReactNode }) 
   });
   return (
     <>
-      <PageHeader {...JOURNEY_COPY.header} gambar="/images/journey-map/header-peta.webp" />
-      <div className="relative flex-1">
-        <LatarBerulang gambar="/images/journey-map/latar-peta-bintang.webp" />
+      <PageHeader {...JOURNEY_COPY.header} gambar="/images/journey-map/header-peta-nasa.webp" />
+      {/* Pangkal section: gradien dari warna dasar header (#10131b) agar sambungan header ke latar tidak terlihat. */}
+      <div className="relative flex-1 bg-[linear-gradient(to_bottom,#10131b_0,transparent_260px)] bg-no-repeat">
+        <LatarBerulang gambar="/images/journey-map/latar-peta-bintang-nasa.webp" />
         <Container className="relative flex flex-col gap-10 pb-16 pt-10 md:gap-12 md:pb-[72px] md:pt-14 lg:gap-14 lg:pb-24 lg:pt-[72px]">
           <section aria-labelledby="judul-peta" className="flex flex-col gap-6">
             <h2

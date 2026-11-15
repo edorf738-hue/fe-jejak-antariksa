@@ -597,11 +597,39 @@
         "atribusi": "Bentuk ilustratif, bukan peta permukaan asli. Mars: warna dan pola karat buatan; Deep Space: raksasa es bercincin sebagai gambaran umum wahana Voyager, bukan benda tertentu."
       },
       {
-        "id": "gambar-latar-bumi",
-        "judul": "Latar Beranda bagian Pilih Lingkungan: Bumi dari orbit saat matahari terbit, lengkung atmosfer biru (latar-bumi.webp)",
-        "meta": "Kredit: TBD (gambar diberikan Zhafran; sumber asli belum dicatat) · Diakses: TBD",
-        "url": "URL halaman sumber: TBD",
-        "atribusi": "Ketentuan penggunaan: TBD (jangan menganggap semua aset NASA bebas ketentuan pihak ketiga). Jangan dipublikasikan sebagai foto NASA sebelum sumbernya dipastikan."
+        "id": "gambar-latar-beranda-iss",
+        "judul": "Latar Beranda bagian Pilih Lingkungan: \"The sun's first rays peek above Earth's limb\", matahari terbit di atas lengkung Bumi dari ISS, 21 April 2019 (iss059e027932; latar-bumi-iss.webp)",
+        "meta": "Kredit: NASA (foto kru ISS; fotografer tidak tercatat di halaman sumber) · Diakses: 15 November 2026",
+        "url": "https://www.nasa.gov/image-article/suns-first-rays-peek-above-earths-limb",
+        "atribusi": "Foto asli (bukan AI), dipotong (perangkat ISS di tepi kanan dibuang), dicerahkan sedikit, dan dianimasikan dengan kode (melayang dan pendar). Ketentuan penggunaan: tidak dinyatakan di halaman; merujuk NASA Brand & Usage Guidelines, belum diverifikasi per aset. Menggantikan latar Bumi buatan AI sebelumnya."
+      },
+      {
+        "id": "gambar-header-cerita",
+        "judul": "Latar header halaman Cerita: \"Earthrise\", Bumi terbit di atas cakrawala Bulan, foto Apollo 8, 24 Desember 1968 (AS08-14-2383; header-cerita-earthrise.webp)",
+        "meta": "Kredit: NASA/JSC (foto kru Apollo 8; fotografer tidak tercatat di metadata API NASA) · Diakses: 15 November 2026",
+        "url": "https://images.nasa.gov/details/as08-14-2383",
+        "atribusi": "Foto asli (bukan AI), dipotong dan diletakkan di kanan kanvas gelap (sisi kiri cakrawala dipudarkan, bintang kecil buatan kode) agar teks di kiri terbaca. Ketentuan penggunaan: tidak dinyatakan di halaman aset; merujuk NASA Brand & Usage Guidelines, belum diverifikasi per aset. Menggantikan header buatan AI sebelumnya."
+      },
+      {
+        "id": "gambar-hero-beranda",
+        "judul": "Latar hero Beranda: Buzz Aldrin di samping bendera AS, Apollo 11 (hero-apollo-11.webp, dipotong 16:9 dari Apollo-11-Buzz-Aldrin-Lunar-Module.jpg)",
+        "meta": "Kredit: NASA (Apollo 11); nomor foto dan fotografer belum diverifikasi dari berkas · Diakses: 15 November 2026",
+        "url": "URL halaman sumber: TBD (berkas dari paket aset NASA proyek)",
+        "atribusi": "Foto asli (bukan AI), dipotong dan dikonversi ke WebP. Ketentuan penggunaan: TBD; merujuk NASA Brand & Usage Guidelines, belum diverifikasi per aset. Menggantikan gambar hero AI sebelumnya yang memuat logo dan bendera NASA."
+      },
+      {
+        "id": "gambar-latar-peta-perjalanan",
+        "judul": "Latar header dan latar Peta Perjalanan: pita Bima Sakti dari Galaxy Panorama (NASA SVS 11543, Spitzer) dengan bintang halus buatan kode (header-peta-nasa.webp, latar-peta-bintang-nasa.webp)",
+        "meta": "Kredit: NASA/JPL-Caltech (citra Spitzer); NASA's Goddard Space Flight Center · Diakses: 15 November 2026",
+        "url": "https://svs.gsfc.nasa.gov/11543",
+        "atribusi": "Pita Bima Sakti dipotong dari s3-original.jpg, digelapkan, dimiringkan, dan dihaluskan; bintang-bintang kecil dan gradien dibuat dengan kode (bukan citra NASA dan bukan AI generatif). Ketentuan penggunaan: halaman merujuk NASA Reproduction Guidelines, belum diverifikasi."
+      },
+      {
+        "id": "gambar-latar-sumber",
+        "judul": "Latar header dan latar halaman Sumber: foto Voyager 1 \"Pale Blue Dot Revisited\" (header-sumber-nasa.webp, latar-arsip-nasa.webp)",
+        "meta": "Kredit: NASA/JPL-Caltech (citra Voyager 1; nomor PIA belum dicatat) · Diakses: 15 November 2026",
+        "url": "URL halaman sumber: TBD (berkas Voyager_Pale_Blue_Dot_Revisited.jpg dari paket aset NASA proyek)",
+        "atribusi": "Dipotong, digelapkan, dan diberi gradasi warna (header: bagian berkas cahaya dan titik Bumi; ubin latar: sisi kiri foto). Ketentuan penggunaan: TBD; nomor PIA dan lisensi belum diverifikasi per aset."
       },
       {
         "id": "gambar-misi-apollo-11",
