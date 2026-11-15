@@ -22,7 +22,7 @@ export default function Home() {
         className="relative -mt-(--navbar-offset) flex min-h-[760px] flex-col overflow-hidden bg-bg-primary-normal md:min-h-[720px] lg:min-h-[849px]"
       >
         <Image
-          src="/images/home/hero-bulan.webp"
+          src="/images/home/hero-apollo-11.webp"
           alt=""
           fill
           priority
@@ -82,9 +82,9 @@ export default function Home() {
           className="bumi-mask pointer-events-none absolute inset-0"
         >
           {/* Lapisan bergerak: melayang dan memperbesar pelan; pendar atmosfer ikut di dalamnya agar tetap di lengkung. */}
-          <div className="bumi-melayang absolute inset-0 bg-[url('/images/home/latar-bumi.webp')] bg-cover bg-top bg-no-repeat">
-            <div className="bumi-pendar absolute left-[-5%] top-[24%] hidden h-[14%] w-[100%] -rotate-[9deg] bg-[radial-gradient(ellipse_at_center,rgba(96,176,255,0.55),transparent_68%)] blur-2xl lg:block" />
-            <div className="bumi-pendar-hangat absolute -left-[4%] top-[44%] hidden h-[22%] w-[38%] bg-[radial-gradient(ellipse_at_center,rgba(255,196,140,0.35),transparent_70%)] blur-2xl lg:block" />
+          <div className="bumi-melayang absolute inset-0 bg-[url('/images/home/latar-bumi-iss.webp')] bg-cover bg-left-top bg-no-repeat">
+            <div className="bumi-pendar absolute left-0 top-[30%] hidden h-[10%] w-fullbg-[radial-gradient(ellipse_at_center,rgba(96,176,255,0.55),transparent_68%)] blur-2xl lg:block" />
+            <div className="bumi-pendar-hangat absolute -left-[2%] top-[27%] hidden h-[16%] w-[26%]bg-[radial-gradient(ellipse_at_center,rgba(255,196,140,0.35),transparent_70%)] blur-2xl lg:block" />
           </div>
         </div>
 
