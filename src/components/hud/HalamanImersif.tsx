@@ -364,16 +364,18 @@ export function HalamanImersif({
 
           {/* Satu tombol Info menggantikan deretan tombol panel; isi lain (Misi, Sumber, ...) ada sebagai tab di dalam panel. */}
           {!panel && jenisPanel.length > 0 && (
-            <Button
-              variant="secondary"
-              glass
-              iconLeft="info"
-              data-panel={jenisPanel[0]}
-              onClick={() => bukaPanel(jenisPanel[0])}
-              className="hud-masuk absolute right-0 top-6 [--hud-delay:0.5s] [--hud-dx:30px] max-lg:[--hud-dx:0px] lg:top-5"
-            >
-              Info
-            </Button>
+            <div className="hud-masuk absolute right-0 top-6 [--hud-delay:0.5s] [--hud-dx:30px] max-lg:[--hud-dx:0px] lg:top-5">
+              <Button
+                variant="secondary"
+                kecil
+                kaca
+                iconLeft="info"
+                data-panel={jenisPanel[0]}
+                onClick={() => bukaPanel(jenisPanel[0])}
+              >
+                Info
+              </Button>
+            </div>
           )}
 
           <KontrolScene

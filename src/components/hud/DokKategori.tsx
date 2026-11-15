@@ -25,7 +25,8 @@ export function DokKategori({ items, aktifHref, className = "" }: DokKategoriPro
             key={item.href}
             href={item.href}
             variant={aktif ? "primary" : "secondary"}
-            glass={!aktif}
+            kecil
+            kaca
             aria-current={aktif ? "page" : undefined}
           >
             {item.label}

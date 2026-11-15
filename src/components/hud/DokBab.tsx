@@ -94,13 +94,14 @@ export function DokBab({
           <Button
             href={hrefSebelumnya}
             variant="secondary"
+            kaca
             iconLeft="panah-kiri"
             className="flex-1 py-2! lg:order-1 lg:w-[140px] whitespace-nowrap lg:flex-none"
           >
             {labelSebelumnya}
           </Button>
         )}
-        <Button href={hrefBerikutnya} iconRight="panah-kanan" className="flex-1 py-2! lg:order-3 lg:w-[140px] whitespace-nowrap lg:flex-none">
+        <Button href={hrefBerikutnya} kaca iconRight="panah-kanan" className="flex-1 py-2! lg:order-3 lg:w-[140px] whitespace-nowrap lg:flex-none">
           {labelBerikutnya}
         </Button>
       </div>
