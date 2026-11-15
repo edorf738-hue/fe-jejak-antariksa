@@ -4,6 +4,22 @@ Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 
 ## Entri
 
+### [2026-11-15] Integrasi SceneCanvas ke HUD, gerak kamera bebas, perbaikan NaN
+- **Tugas / klaim:** pasang SceneCanvas di slot `scene` halaman imersif; kontrol kamera
+- **Branch / PR:** `feat/scene-integrasi` (dibuat dari `zhafran-dev` + `feat/scene-canvas`) / belum ada PR, belum di-push
+- **Yang dikerjakan:**
+  - **Adaptor `ImersifScene`** (`src/components/three/scene/`): melapor status dan progres ke HUD (`setStatusScene`), mengikuti `paused` dari HUD, dan menyambungkan Setel Ulang Kamera (`useResetKamera`). Overlay Memuat dan kartu fallback (Coba Lagi, Lanjut tanpa 3D) milik HUD. `SceneCanvas` punya mode `headless` (poster tetap tampil, teks status disembunyikan) dan `onStatusChange`.
+  - **Halaman:** Story Bab 2 (Moon), 3 (Mars), 4 (Deep Space) dan Resources (tiga kategori) memasang scene, dibungkus `SceneProvider`. Bab 1 tetap placeholder. Hanya dua file halaman yang disentuh; `HalamanImersif` tidak diubah.
+  - **Gerak kamera bebas:** seret, geser dua jari di trackpad (tanpa klik), roda mouse (atas-bawah), cubit atau Ctrl+scroll untuk zoom, tombol panah, `+` dan `-`. Kamera hanya berputar dan zoom, tidak berpindah. Batas di `config.ts` (`rig`): Deep Space bebas 360° (atas dan bawah 85°); Moon dan Mars dijaga di dalam "baji" dunia (`worldHalfDeg` 62°, otomatis menyesuaikan zoom dan bentuk layar), atas 70° dan bawah 35°. Batu dan medan Moon/Mars hanya ada di depan kamera, jadi tidak bisa 360° tanpa revisi aset.
+  - **Perbaikan "Coba Lagi":** GLB yang gagal dimuat dihapus dari cache drei supaya percobaan ulang benar-benar mengunduh lagi.
+  - **Perbaikan layar hitam / "camera became NaN":** state rig diperbaiki otomatis bila ada nilai bukan angka (sempat terjadi karena Fast Refresh mempertahankan ref lama saat kode diedit ketika halaman terbuka; hanya mode dev), aspect canvas 0×0 tidak lagi ditulis, langkah waktu dibatasi, dan error pada rig tidak lagi membuat canvas hitam (kamera kembali ke sudut GLB, dilaporkan sekali di console dengan awalan `[SceneRig]`). Juga: frame digambar ulang setelah GLB tiba saat loop dijeda.
+- **File dibuat/diubah:** `src/components/three/scene/` (`SceneCanvas.tsx`, `SceneRenderer.tsx`, `config.ts`, `scene-context.tsx`, baru: `ImersifScene.tsx`), `src/app/(imersif)/story/[bab]/page.tsx`, `src/app/(imersif)/resources/[kategori]/page.tsx`.
+- **Hasil uji:** lint, `tsc`, dan build lolos. Di browser pane: Moon, Mars, dan Deep Space tampil di HUD; seret, geser dua jari (peristiwa roda sintetis), zoom, reset, jeda, dan fallback bekerja; Deep Space diputar 150° tanpa celah; atas-bawah Moon tanpa lubang.
+- **Belum diuji:** trackpad dan layar sentuh asli (arah geser bisa terasa terbalik), Mars dan Resources dengan gerak baru, GPU dan perangkat nyata, fokus keyboard bersama pass aksesibilitas Pace.
+- **Untuk Zhafran dan Pace:** Titik Info masih posisi layar statis (`posisiTitik`); HotspotLayer asli memakai `useScene().worldToScreen`, ditulis langsung ke `style.transform`. HUD menskalakan scene 1,07 → 1 selama 3 detik saat masuk, sehingga posisi layar hasil `worldToScreen` bergeser sedikit selama itu.
+- **Belum selesai:** revisi aset (360° Moon/Mars, ketajaman, temuan audit) menunggu modeler; kode scene belum dipindah ke `feat/scene-canvas` (branch PR).
+- **Status:** Review
+
 ### [2026-11-15] Pembersihan kode uji sebelum commit pertama
 - **Tugas / klaim:** merapikan `feat/scene-canvas` untuk commit dan push (belum PR)
 - **Branch / PR:** `feat/scene-canvas` / belum dibuka

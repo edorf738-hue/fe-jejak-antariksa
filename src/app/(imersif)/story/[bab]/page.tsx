@@ -2,12 +2,18 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DokBab, HalamanImersif, PanelMisi, PanelSumber } from "@/components/hud";
 import { getBabImersif, getDaftarBab } from "@/data";
+import type { Environment } from "@/components/three/scene/config";
+import { ImersifScene } from "@/components/three/scene/ImersifScene";
+import { SceneProvider } from "@/components/three/scene/scene-context";
 
 /**
  * Story Bab 1-4 sebagai tampilan imersif satu layar (tanpa Navbar). Sumber desain: Figma
  * `Story — Bab 1..4` (1440x900), `(Tablet)` (768x1024), `(Mobile)` (390x844).
- * Scene 3D (Edo) dan hotspot/objek (Zhafran) dipasang kemudian; sementara latar gambar.
+ * Scene 3D (Edo) dipasang di slot `scene` untuk Bab 2-4; Bab 1 belum punya aset 3D (latar gambar).
+ * Hotspot/objek (Zhafran) dipasang kemudian.
  */
+/** Bab -> environment 3D. Bab 1 tidak ada. */
+const LINGKUNGAN: Partial<Record<number, Environment>> = { 2: "moon", 3: "mars", 4: "deep-space" };
 export function generateStaticParams() {
   return getDaftarBab().map((b) => ({ bab: String(b.id) }));
 }
@@ -26,12 +32,14 @@ export default async function StoryBabPage(props: PageProps<"/story/[bab]">) {
   const id = data.bab.id;
   const jumlah = data.labelBab.length;
   const terakhir = id === jumlah;
+  const lingkungan = LINGKUNGAN[id];
 
   return (
     <main>
       <h1 className="sr-only">
         Bab {id}: {data.bab.judul}
       </h1>
+      <SceneProvider>
       <HalamanImersif
         gambar={data.gambar}
         scenePlaceholder={data.scenePlaceholder}
@@ -41,6 +49,7 @@ export default async function StoryBabPage(props: PageProps<"/story/[bab]">) {
         benda={data.benda}
         posisiTitik={data.posisiTitik}
         fokusGambar={data.fokusGambar}
+        scene={lingkungan ? <ImersifScene environment={lingkungan} /> : undefined}
         jenisPanel={["misi", "sumber"]}
         panelKonten={{
           misi: <PanelMisi misi={data.panel.misi} />,
@@ -58,6 +67,7 @@ export default async function StoryBabPage(props: PageProps<"/story/[bab]">) {
           />
         }
       />
+      </SceneProvider>
     </main>
   );
 }
