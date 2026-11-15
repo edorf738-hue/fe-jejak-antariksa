@@ -75,7 +75,8 @@ export function Navbar() {
                 open ? "block" : "hidden",
                 // Menu turun (tablet/mobile): kaca yang sama dengan pill. Penyimpangan sementara dari Figma
                 // (komponen 91:97 belum didesain ulang); `max-lg:` agar cincin kaca tidak ikut ke desktop.
-                "absolute inset-x-0 top-full mt-3 rounded-card p-3 max-lg:kaca-tepi max-lg:shadow-[inset_0_0_24px_rgba(8,11,18,0.5)]",
+                // Fill gelap 80% menjaga kontras teks di atas hero (tanpa fill, teks hero tembus ke tautan).
+                "absolute inset-x-0 top-full mt-3 rounded-card p-3 max-lg:bg-bg-primary-normal/80 max-lg:kaca-tepi max-lg:shadow-[inset_0_0_24px_rgba(8,11,18,0.5)]",
                 // Baris tautan (desktop)
                 "lg:static lg:mt-0 lg:block lg:justify-self-end xl:-ml-[13px] xl:justify-self-start lg:rounded-none lg:p-0",
               ].join(" ")}
