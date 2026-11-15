@@ -3,7 +3,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 
 const API = process.env.API_URL ?? process.env.NEXT_PUBLIC_API_URL;
-const RESOURCES = ["chapters", "scene-objects", "source-catalog", "galleries"];
+const RESOURCES = ["chapters", "scene-objects", "source-catalog", "galleries", "journeys"];
 
 if (!API) {
   console.log("[sync-data] API_URL not set: using the committed snapshot in src/data/api");

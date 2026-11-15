@@ -1,8 +1,10 @@
 import chapters from "./api/chapters.json";
+import journeys from "./api/journeys.json";
 import galleries from "./api/galleries.json";
 import sceneObjects from "./api/scene-objects.json";
 import sourceCatalog from "./api/source-catalog.json";
 import type { CeritaBab } from "./cerita";
+import type { JourneyTujuan } from "./journey";
 import type { MediaBenda } from "./media";
 import type { SumberItem } from "./source";
 import type { DataBenda } from "./types";
@@ -49,3 +51,16 @@ export const MEDIA_API: Record<string, MediaBenda> = Object.fromEntries(
 export const GALERI_API = Object.fromEntries(galleries.map((g) => [g.slug, g.photos])) as Record<"moon" | "mars" | "deep-space", { src: string; keterangan: string; kredit: string }[]>;
 
 export const KATALOG_API = sourceCatalog as unknown as SumberItem[];
+
+export const JOURNEYS_API = journeys as unknown as (JourneyTujuan & { slug: string })[];
+
+/** Bab untuk halaman cerita/imersif: judul, narasi, ringkasan, hotspot, dan semua benda. */
+export const BAB_API = chapters.map((c) => ({
+  id: c.chapter_number,
+  judul: c.title,
+  status: c.status,
+  narasi: c.narration,
+  ringkasan: c.summary,
+  hotspot: c.hotspots,
+  benda: bendaBab(c.chapter_number),
+})) as unknown as import("./types").Bab[];

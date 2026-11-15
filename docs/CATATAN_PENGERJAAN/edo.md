@@ -7,7 +7,7 @@ Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 - Konten bab cerita, benda 3D beserta media popup, galeri, dan katalog Sumber dipindah ke `be-wayang-antariksa` (`/api/v1/chapters`, `scene-objects`, `galleries`, `source-catalog`).
 - FE membaca snapshot `src/data/api/*.json` lewat `src/data/api.ts`. `npm run data:sync` memperbarui snapshot dari API (jalan otomatis sebelum build bila `API_URL` diatur; bila API mati, snapshot yang di-commit dipakai).
 - Keluaran `getCerita`, `MEDIA_BENDA`, `GALERI_FOTO`, dan `getKatalogSumber` sama persis dengan sebelumnya (dibandingkan dengan dump JSON). `benda-tambahan.ts` dihapus (isinya ada di BE).
-- Belum dipindah: data Peta Perjalanan (`journey.ts`, area Zhafran) dan `content-data.json`.
+- Peta Perjalanan (`journey.ts`, area Zhafran), narasi bab, dan kategori juga dari API (`/api/v1/journeys`, `chapters`). `content.ts` dan `journey.ts` kini hanya membaca snapshot; `content-data.json` tidak diimpor lagi (keluaran fungsi sama persis, dibandingkan dengan dump JSON). Zhafran dan Dhika perlu tahu: edit konten di BE, bukan di `content-data.json`.
 
 ## Entri
 
