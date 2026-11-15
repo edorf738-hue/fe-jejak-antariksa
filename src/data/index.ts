@@ -6,3 +6,5 @@ export * from "./source";
 export * from "./journey";
 export * from "./imersif";
 export * from "./status";
+export * from "./media";
+export * from "./cerita";
