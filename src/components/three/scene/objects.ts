@@ -45,15 +45,16 @@ export const objek: Record<Environment, ObjekDef[]> = {
     },
     // No models exist for these (not in the NASA pack): each stands as a framed NASA photo plate, placed roughly (PSE about 17 m from the lander,
     // LRRR about 5 m from it, per NSSDCA); the data card says so.
-    { id: "bendera", foto: "/images/galeri/moon-bendera-terpasang.webp", fotoLebarM: 3, at: [-9, -38], ground: true, yawDeg: 0, titik: [{ bendaIdx: 2, offset: [0, 0, 0] }] },
-    { id: "seismometer", foto: "/images/galeri/moon-komponen-easep.webp", fotoLebarM: 2.1, at: [-3.5, -23], ground: true, yawDeg: 0, titik: [{ bendaIdx: 3, offset: [0, 0, 0] }] },
-    { id: "bootprint", foto: "/images/objek/bootprint.webp", fotoLebarM: 1.8, at: [0.5, -17], ground: true, yawDeg: 0, titik: [{ bendaIdx: 6, offset: [0, 0, 0] }] },
-    { id: "angin-matahari", foto: "/images/galeri/moon-angin-matahari.webp", fotoLebarM: 2, at: [7.5, -21], ground: true, yawDeg: 0, titik: [{ bendaIdx: 9, offset: [0, 0, 0] }] },
-    { id: "sampel-bulan", foto: "/images/galeri/moon-armstrong-sampel.webp", fotoLebarM: 2.2, at: [-8, -27], ground: true, yawDeg: 0, titik: [{ bendaIdx: 10, offset: [0, 0, 0] }] },
+    // Layout: every item gets its own slice of the view (left to right) so no plate covers another or the lander; near ones sit low, far ones high.
+    { id: "bendera", foto: "/images/galeri/moon-bendera-terpasang.webp", fotoLebarM: 2.4, at: [-10.5, -34], ground: true, yawDeg: 0, titik: [{ bendaIdx: 2, offset: [0, 0, 0] }] },
+    { id: "seismometer", foto: "/images/galeri/moon-komponen-easep.webp", fotoLebarM: 2, at: [-12, -30], ground: true, yawDeg: 0, titik: [{ bendaIdx: 3, offset: [0, 0, 0] }] },
+    { id: "bootprint", foto: "/images/objek/bootprint.webp", fotoLebarM: 1.8, at: [-2.3, -18], ground: true, yawDeg: 0, titik: [{ bendaIdx: 6, offset: [0, 0, 0] }] },
+    { id: "angin-matahari", foto: "/images/galeri/moon-angin-matahari.webp", fotoLebarM: 1.8, at: [7.8, -26], ground: true, yawDeg: 0, titik: [{ bendaIdx: 9, offset: [0, 0, 0] }] },
+    { id: "sampel-bulan", foto: "/images/galeri/moon-armstrong-sampel.webp", fotoLebarM: 2, at: [-6.9, -28], ground: true, yawDeg: 0, titik: [{ bendaIdx: 10, offset: [0, 0, 0] }] },
     // Text-only items (no model and no photo exist): a plain ground marker, the popup shows the information.
-    { id: "paket-peringatan", at: [-1.5, -33], ground: true, yawDeg: 0, titik: [{ bendaIdx: 7, offset: [0, 0, 0] }] },
-    { id: "peralatan-lain", at: [6, -36], ground: true, yawDeg: 0, titik: [{ bendaIdx: 8, offset: [0, 0, 0] }] },
-    { id: "retroreflektor", foto: "/images/galeri/moon-aldrin-membawa-easep.webp", fotoLebarM: 2.4, at: [10, -27], ground: true, yawDeg: 0, titik: [{ bendaIdx: 4, offset: [0, 0, 0] }] },
+    { id: "paket-peringatan", at: [1.5, -14], ground: true, yawDeg: 0, titik: [{ bendaIdx: 7, offset: [0, 0, 0] }] },
+    { id: "peralatan-lain", at: [4, -17], ground: true, yawDeg: 0, titik: [{ bendaIdx: 8, offset: [0, 0, 0] }] },
+    { id: "retroreflektor", foto: "/images/galeri/moon-aldrin-membawa-easep.webp", fotoLebarM: 2, at: [12, -30], ground: true, yawDeg: 0, titik: [{ bendaIdx: 4, offset: [0, 0, 0] }] },
   ],
   // Spirit uses the official "Mars Exploration Rovers 3D Model" (one rover mesh; Spirit and Opportunity are twins of one design).
   // Opportunity uses NASA's own "Mars Exploration Rover - Opportunity (MER-B)" model. Heat Shield Rock has no model.
