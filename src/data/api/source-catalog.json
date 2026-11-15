@@ -463,17 +463,82 @@
     ]
   },
   {
-    "id": "media-latar-beranda",
+    "id": "media-hero-beranda",
     "kategori": "media",
     "jenis": "Foto",
-    "nama": "Foto latar Beranda: lengkung Bumi dari orbit",
-    "penerbit": "Belum diketahui",
-    "kredit": "Belum diketahui",
+    "nama": "Latar hero Beranda: Buzz Aldrin di samping bendera AS (Apollo 11)",
+    "penerbit": "NASA",
+    "kredit": "NASA; nomor foto dan fotografer belum dicatat di berkas",
     "url": null,
     "lisensi": "Belum ada pernyataan lisensi untuk aset ini. Jangan dianggap bebas hak cipta sebelum diperiksa.",
     "diakses": null,
-    "status": "belum-tersedia",
-    "catatan": "Foto ini diberikan tim tanpa catatan asal. Folder aset memiliki berkas bernama \"Earth's Glowing Limb in Space\"; sumber dan fotografernya belum dipastikan."
+    "status": "perlu-verifikasi",
+    "catatan": "Foto asli Apollo 11 dari paket aset NASA tim (Apollo-11-Buzz-Aldrin-Lunar-Module.jpg), dipotong 16:9. Nomor foto di NASA Image Library belum dicocokkan. Menggantikan gambar hero buatan AI."
+  },
+  {
+    "id": "media-latar-beranda",
+    "kategori": "media",
+    "jenis": "Foto",
+    "nama": "Latar Pilih Lingkungan: matahari terbit di atas lengkung Bumi (ISS)",
+    "penerbit": "NASA",
+    "kredit": "NASA; fotografer tidak tercatat di halaman sumber",
+    "url": "https://www.nasa.gov/image-article/suns-first-rays-peek-above-earths-limb",
+    "lisensi": "Menurut panduan NASA, konten NASA umumnya tidak berhak cipta di Amerika Serikat, tetapi logo dan materi pihak ketiga dikecualikan; NASA harus dicantumkan sebagai sumber dan tidak boleh tampak mendukung produk. Halaman sumber ini tidak mencantumkan pembatasan khusus. Jangan dianggap bebas hak cipta tanpa memeriksa panduan.",
+    "diakses": "15 November 2026",
+    "status": "terverifikasi",
+    "catatan": "\"The sun's first rays peek above Earth's limb\", iss059e027932, 21 April 2019, di atas Indonesia. Dipotong (perangkat ISS di tepi kanan dibuang), dicerahkan, dan dianimasikan dengan kode. Menggantikan latar Bumi buatan AI."
+  },
+  {
+    "id": "media-header-cerita",
+    "kategori": "media",
+    "jenis": "Foto",
+    "nama": "Header Cerita: \"Earthrise\", Apollo 8 (AS08-14-2383)",
+    "penerbit": "NASA (Johnson Space Center)",
+    "kredit": "NASA (JSC); fotografer tidak tercatat di metadata",
+    "url": "https://images.nasa.gov/details/as08-14-2383",
+    "lisensi": "Menurut panduan NASA, konten NASA umumnya tidak berhak cipta di Amerika Serikat, tetapi logo dan materi pihak ketiga dikecualikan; NASA harus dicantumkan sebagai sumber dan tidak boleh tampak mendukung produk. Halaman sumber ini tidak mencantumkan pembatasan khusus. Jangan dianggap bebas hak cipta tanpa memeriksa panduan.",
+    "diakses": "15 November 2026",
+    "status": "terverifikasi",
+    "catatan": "Foto 24 Desember 1968: Bumi terbit di atas cakrawala Bulan. Dipotong dan diletakkan di kanvas gelap (sisi kiri cakrawala dipudarkan, bintang kecil buatan kode). Menggantikan header buatan AI."
+  },
+  {
+    "id": "media-latar-peta",
+    "kategori": "media",
+    "jenis": "Citra",
+    "nama": "Header dan latar Peta Perjalanan: Galaxy Panorama (Spitzer)",
+    "penerbit": "NASA's Goddard Space Flight Center",
+    "kredit": "NASA/JPL-Caltech",
+    "url": "https://svs.gsfc.nasa.gov/11543",
+    "lisensi": "Menurut panduan NASA, konten NASA umumnya tidak berhak cipta di Amerika Serikat, tetapi logo dan materi pihak ketiga dikecualikan; NASA harus dicantumkan sebagai sumber dan tidak boleh tampak mendukung produk. Halaman sumber ini tidak mencantumkan pembatasan khusus. Jangan dianggap bebas hak cipta tanpa memeriksa panduan.",
+    "diakses": "15 November 2026",
+    "status": "terverifikasi",
+    "catatan": "Satu potongan pita Bima Sakti dari s3-original.jpg (mosaik inframerah Spitzer), digelapkan, dimiringkan, dan dihaluskan. Bintang kecil dan gradien dibuat dengan kode, bukan citra NASA dan bukan AI generatif."
+  },
+  {
+    "id": "media-latar-sumber",
+    "kategori": "media",
+    "jenis": "Foto",
+    "nama": "Header dan latar Sumber: \"Pale Blue Dot\" ditinjau ulang (Voyager 1)",
+    "penerbit": "NASA/JPL-Caltech",
+    "kredit": "NASA/JPL-Caltech; nomor PIA belum dicatat",
+    "url": null,
+    "lisensi": "Belum ada pernyataan lisensi untuk aset ini. Jangan dianggap bebas hak cipta sebelum diperiksa.",
+    "diakses": null,
+    "status": "perlu-verifikasi",
+    "catatan": "Berkas Voyager_Pale_Blue_Dot_Revisited.jpg dari paket aset NASA tim; halaman asalnya belum dicatat. Dipotong dan digelapkan: header memakai bagian berkas cahaya dan titik Bumi, latar memakai sisi kiri foto."
+  },
+  {
+    "id": "media-tekstur-bulan",
+    "kategori": "media",
+    "jenis": "Tekstur",
+    "nama": "Tekstur Bulan pada planet di Beranda dan Peta Perjalanan",
+    "penerbit": "NASA's Goddard Space Flight Center",
+    "kredit": "NASA's Goddard Space Flight Center; produser Dan Gallagher (eMITS), penyedia data Ernie Wright (STC); citra Lunar Reconnaissance Orbiter",
+    "url": "https://svs.gsfc.nasa.gov/14959/",
+    "lisensi": "Menurut panduan NASA, konten NASA umumnya tidak berhak cipta di Amerika Serikat, tetapi logo dan materi pihak ketiga dikecualikan; NASA harus dicantumkan sebagai sumber dan tidak boleh tampak mendukung produk. Halaman sumber ini tidak mencantumkan pembatasan khusus. Jangan dianggap bebas hak cipta tanpa memeriksa panduan.",
+    "diakses": "15 November 2026",
+    "status": "terverifikasi",
+    "catatan": "Dari moon_small.glb (\"Moon 3D Models for Web, AR, and Animation\", NASA SVS #14959). Tekstur cube-map diubah menjadi peta ekuirektangular 2048x1024 dan dipakai sebagai tekstur bola di shader WebGL. Planet Mars dan raksasa es bercincin dibuat dengan kode (bukan citra atau data NASA)."
   },
   {
     "id": "media-desain",
@@ -486,7 +551,7 @@
     "lisensi": "Belum ada pernyataan lisensi untuk aset ini. Jangan dianggap bebas hak cipta sebelum diperiksa.",
     "diakses": null,
     "status": "perlu-verifikasi",
-    "catatan": "Dibuat tim lewat desain Figma. Asal citra dasar di dalamnya (mis. bagian yang berasal dari foto NASA) belum dicatat."
+    "catatan": "Dibuat tim lewat desain Figma. Asal citra dasar di dalamnya (mis. bagian yang berasal dari foto NASA) belum dicatat. Header Beranda, Cerita, Peta Perjalanan, dan Sumber kini memakai foto NASA (lihat entri tersendiri)."
   },
   {
     "id": "media-bab-1",
