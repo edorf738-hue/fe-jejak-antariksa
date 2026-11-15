@@ -205,6 +205,7 @@
         "sumber": "NASA Science"
       }
     ],
+    "galeriMars": [],
     "panelTambahan": {
       "Moon": {
         "fakta": [
@@ -528,5 +529,47 @@
       "status": "Masih beroperasi · diverifikasi: tabel NASA 17 April 2026",
       "temuan": "Membawa Golden Record: salam 55 bahasa, 115 gambar"
     }
+  },
+  "kredit": {
+    "_catatan": "Disalin dari frame Figma Source dan README paket model 3D. Nilai TBD tetap TBD. Usulan: konfirmasi tim konten.",
+    "gambar": [
+      {
+        "id": "gambar-aldrin",
+        "judul": "Foto Buzz Aldrin memberi hormat di dekat bendera AS, Apollo 11 (Apollo11_BuzzAldrin_Salutes_USFlag)",
+        "meta": "Kredit: TBD (cek caption di halaman NASA) · Diakses: TBD",
+        "url": "https://www.nasa.gov/mission/apollo-11/",
+        "atribusi": "Ketentuan penggunaan: TBD (jangan menganggap semua aset NASA bebas ketentuan pihak ketiga)"
+      },
+      {
+        "id": "gambar-golden-record",
+        "judul": "Voyager Golden Record (Voyager_Golden_Record)",
+        "meta": "Kredit: TBD · Diakses: TBD",
+        "url": "URL halaman sumber: TBD",
+        "atribusi": "Ketentuan penggunaan: TBD (jangan menganggap semua aset NASA bebas ketentuan pihak ketiga)"
+      }
+    ],
+    "model3d": [
+      {
+        "id": "model-mars",
+        "judul": "Model environment Mars v3 (mars_environment_v3.glb)",
+        "meta": "Pembuat: TBD · Lisensi: TBD",
+        "url": "Sumber file: repo proyek › NASA 3D Resources/Mars Environment",
+        "atribusi": "GLB 4,6 MB (Draco), 3 kamera. Dibuat di Blender lewat skrip build; asal tekstur: TBD. Belum diuji di GPU atau perangkat nyata."
+      },
+      {
+        "id": "model-moon",
+        "judul": "Model environment Moon v4 (lunar_environment_v4.glb + _tablet + _mobile)",
+        "meta": "Pembuat: TBD · Lisensi: TBD",
+        "url": "Sumber file: repo proyek › NASA 3D Resources/Lunar Environment dn Earthrise",
+        "atribusi": "GLB per perangkat: 3,7 MB, 2,1 MB, 1,0 MB (Draco). Medan prosedural, bukan data DEM asli. Bumi berupa garis besar sederhana, bukan geografi asli. Belum diuji di WebGL."
+      },
+      {
+        "id": "model-deep-space",
+        "judul": "Model environment Deep Space v1 (deep_space_environment_v1.glb)",
+        "meta": "Pembuat: TBD · Lisensi: TBD",
+        "url": "Sumber file: repo proyek › NASA 3D Resources/Deep Space Environment",
+        "atribusi": "GLB 2,8 MB (tanpa Draco), 46 ribu segitiga. Tekstur prosedural, bukan data astronomi. Diuji di Three.js (headless), belum di GPU nyata."
+      }
+    ]
   }
 }

@@ -45,6 +45,8 @@ type RawContent = {
     Moon: RawKategori;
     "Deep Space": RawKategori;
     faktaMars: Fakta[];
+    /** Keterangan gambar galeri Mars; [] = belum ada data (panel menampilkan "Belum ada data."). */
+    galeriMars: (string | null)[];
     panelTambahan: Record<
       "Moon" | "Deep Space",
       { fakta: RawFaktaTuple[]; galeri: (string | null)[] }
@@ -52,6 +54,7 @@ type RawContent = {
   };
   misi: Record<"Bulan" | "Mars" | "Deep Space", (Misi | null)[]>;
   sumber: Sumber[];
+  kredit: { gambar: KreditEntri[]; model3d: KreditEntri[] };
   ringkasanBab: Record<string, string>;
 };
 
@@ -126,11 +129,24 @@ export function getKategori(slug: KategoriSlug): Kategori {
     fakta: tambahan
       ? tambahan.fakta.map(([isi, sumber]) => ({ isi, sumber }))
       : content.resources.faktaMars,
-    galeri: tambahan?.galeri ?? [],
+    galeri: tambahan?.galeri ?? content.resources.galeriMars,
     misi: content.misi[misiKey],
   };
 }
 
 export function getSumber(): Sumber[] {
   return content.sumber;
+}
+
+export type KreditEntri = {
+  id: string;
+  judul: string;
+  meta: string;
+  url: string;
+  atribusi: string;
+};
+
+/** Kredit gambar dan model 3D (`kredit` di content-data.json). */
+export function getKredit(): { gambar: KreditEntri[]; model3d: KreditEntri[] } {
+  return content.kredit;
 }

@@ -58,9 +58,10 @@ const JUDUL_KRONOLOGI: Record<KategoriSlug, string> = {
 };
 
 /**
- * Indeks `sumber` di content-data.json yang dipakai tiap tujuan (usulan: content-data.json
- * belum memetakan sumber ke tujuan). Moon cocok dengan frame Figma (Apollo 11 Mission
- * Overview, NSSDCA Eagle); Mars dan Deep Space dipilih menurut topiknya.
+ * Indeks `sumber` di content-data.json yang dipakai tiap tujuan.
+ * USULAN, MENUNGGU KONFIRMASI TIM KONTEN: content-data.json belum memetakan sumber ke
+ * tujuan. Moon cocok dengan frame Figma (Apollo 11 Mission Overview, NSSDCA Eagle); Mars
+ * dan Deep Space dipilih menurut topiknya.
  */
 const INDEKS_SUMBER: Record<KategoriSlug, number[]> = {
   moon: [0, 2],

@@ -17,7 +17,7 @@ export const IMERSIF_COPY = {
   tutup: "Tutup",
 } as const;
 
-/** Bab -> tujuan (kategori) yang scene dan datanya dipakai. Bab 1 belum punya aset 3D (memakai Moon untuk misi/sumber). */
+/** Bab -> tujuan (kategori) yang scene dan datanya dipakai. Bab 1 (Bumi dari orbit saat matahari terbit) belum punya aset 3D dan data panelnya sendiri: narasi, hotspot, dan data benda sudah dari content-data.json (`bab`), sedangkan fakta/misi/sumber/galeri panel sementara memakai Moon. TBD: menunggu tim konten (Dhika). */
 const BAB_KATEGORI: Record<BabId, KategoriSlug> = {
   1: "moon",
   2: "moon",
