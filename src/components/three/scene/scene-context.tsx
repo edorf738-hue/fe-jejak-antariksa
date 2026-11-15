@@ -12,6 +12,8 @@ export type SceneImpl = {
   worldToScreen: (pos: [number, number, number]) => ScreenPoint;
   resetCamera: () => void;
   rotateYaw: (deltaDeg: number) => void;
+  rotatePitch: (deltaDeg: number) => void;
+  zoomBy: (factor: number) => void;
 };
 
 export type SceneApi = {
@@ -26,6 +28,10 @@ export type SceneApi = {
   resetCamera: () => void;
   /** Turn the view left (+) or right (-) by some degrees, within the yaw limit. For buttons and keyboard. */
   rotateYaw: (deltaDeg: number) => void;
+  /** Look up (+) or down (-) by some degrees, within the limit. */
+  rotatePitch: (deltaDeg: number) => void;
+  /** Multiply the field of view: below 1 zooms in, above 1 zooms out. Clamped to the environment's zoom range. */
+  zoomBy: (factor: number) => void;
 };
 
 // Internal: used by <SceneCanvas> only, not part of the public contract.
@@ -61,6 +67,8 @@ export function SceneProvider({ children }: { children: ReactNode }) {
       worldToScreen: (pos) => impl.current?.worldToScreen(pos) ?? { x: 0, y: 0, terlihat: false },
       resetCamera: () => impl.current?.resetCamera(),
       rotateYaw: (d) => impl.current?.rotateYaw(d),
+      rotatePitch: (d) => impl.current?.rotatePitch(d),
+      zoomBy: (f) => impl.current?.zoomBy(f),
     }),
     [status, paused],
   );

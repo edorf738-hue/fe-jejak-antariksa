@@ -1,7 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
-import { Canvas, useFrame, useThree } from "@react-three/fiber";
+import { Canvas, useFrame, useThree, type RootState } from "@react-three/fiber";
 import { useGLTF } from "@react-three/drei";
 import {
   ACESFilmicToneMapping,
@@ -85,11 +85,17 @@ function disposeScene(root: Object3D) {
 }
 
 function fitCamera(cam: PerspectiveCamera, width: number, height: number) {
-  cam.aspect = width / height;
+  // Before the canvas is measured its size is 0 x 0, and 0 / 0 is NaN: keep the aspect the GLB camera came with.
+  if (width > 0 && height > 0) cam.aspect = width / height;
   cam.updateProjectionMatrix();
 }
 
-type RigControls = { reset: () => void; rotate: (deltaDeg: number) => void };
+type RigControls = {
+  reset: () => void;
+  rotate: (deltaDeg: number) => void;
+  rotatePitch: (deltaDeg: number) => void;
+  zoom: (factor: number) => void;
+};
 
 // Earth: position, radius and the direction to the sun, read from the GLB nodes.
 function readEarth(root: Object3D) {
@@ -222,7 +228,13 @@ function Environment3D({
   shadowExtent: number;
 }) {
   const gltf = useGLTF(url);
-  const { set, size, gl, invalidate } = useThree();
+  const { set, size, gl, invalidate, advance, get } = useThree();
+  // Draw a frame now. While paused the frame loop is "never" (Jeda Gerak, or reduced motion), where invalidate() does nothing
+  // and the canvas would stay black after the GLB arrives.
+  const redraw = useCallback(() => {
+    if (get().frameloop === "never") advance(performance.now());
+    else invalidate();
+  }, [get, advance, invalidate]);
   const camera = (gltf.cameras.find((c) => c.name === cameraName) ?? gltf.cameras[0]) as PerspectiveCamera | undefined;
   const earth = useMemo(() => readEarth(gltf.scene), [gltf.scene]);
 
@@ -240,6 +252,8 @@ function Environment3D({
       },
       resetCamera: () => getRig()?.reset(),
       rotateYaw: (d) => getRig()?.rotate(d),
+      rotatePitch: (d) => getRig()?.rotatePitch(d),
+      zoomBy: (f) => getRig()?.zoom(f),
     });
     onReady();
     return () => register(null);
@@ -248,14 +262,14 @@ function Environment3D({
   useLayoutEffect(() => {
     prepareSky(gltf.scene);
     if (shadows) enableShadows(gl, gltf.scene, shadowExtent);
-    invalidate();
-  }, [gltf, gl, shadows, shadowExtent, invalidate]);
+    redraw();
+  }, [gltf, gl, shadows, shadowExtent, redraw]);
 
   useLayoutEffect(() => {
     if (!camera) return;
     fitCamera(camera, size.width, size.height);
-    invalidate();
-  }, [camera, size, invalidate]);
+    redraw();
+  }, [camera, size, redraw]);
 
   // Free GPU/CPU memory once nobody uses this GLB anymore (scene swapped or unmounted).
   // Deferred check: React strict mode unmounts and remounts right away, and clearing then would reload the file in a loop.
@@ -293,13 +307,38 @@ function styleCanvas(el: HTMLElement, touchAction: string, cursor: string) {
 const rad = MathUtils.degToRad;
 const easeOutCubic = (k: number) => 1 - (1 - k) ** 3;
 
+// State of the camera rig. A function, because Fast Refresh keeps the OLD ref object when this file is edited while a page is
+// open: fields added since then would be undefined (-> NaN camera, black canvas). step() fills in whatever is missing.
+function newRigState() {
+  return {
+    homeFor: "",
+    home: new Quaternion(),
+    baseFov: 50,
+    glb: new Quaternion(), // the GLB camera's own orientation, as it came out of the file
+    warned: false,
+    homeAz: 0, // where the GLB camera looks, as an azimuth (radians, + = right of straight ahead)
+    user: 0, // yaw, radians
+    pitch: 0, // radians, + = up
+    zoom: 1, // field of view as a fraction of the GLB camera's
+    guided: 0,
+    guidedT: -1,
+    parallax: 0,
+    parallaxTarget: 0,
+    dragging: false,
+    lastX: 0,
+    lastY: 0,
+    pinch: 0, // distance between two fingers, 0 = not pinching
+  };
+}
+
 /**
- * Camera rig. Final view = GLB camera turned left/right by three stacked yaw layers:
- *   1. guided intro (eases from the side to the GLB angle, once),
- *   2. drag / arrow keys by the visitor (clamped, stays where it is when released),
- *   3. small parallax that follows the mouse.
- * Pitch is never touched and the camera never moves. Renders only while something is moving (frameloop "demand").
- * While paused (Jeda Gerak / reduced motion) layers 1 and 3 are off; dragging still works.
+ * Camera rig. Final view = the GLB camera, turned by stacked layers:
+ *   1. guided intro (yaw only: eases from the side to the GLB angle, once),
+ *   2. the visitor's own view: drag / arrow keys turn it left-right and up-down, wheel / pinch / +- zoom the field of
+ *      view; clamped, and it stays where it is when released,
+ *   3. small yaw parallax that follows the mouse.
+ * The camera only rotates and zooms, it never moves. Renders only while something is moving (frameloop "demand").
+ * While paused (Jeda Gerak / reduced motion) layers 1 and 3 are off; the visitor's own controls still work.
  */
 function CameraRig({
   cfg,
@@ -316,17 +355,7 @@ function CameraRig({
 }) {
   const { gl, advance, invalidate, get } = useThree();
   const pausedRef = useRef(paused);
-  const s = useRef({
-    homeFor: "",
-    home: new Quaternion(),
-    user: 0,
-    guided: 0,
-    guidedT: -1,
-    parallax: 0,
-    parallaxTarget: 0,
-    dragging: false,
-    lastX: 0,
-  });
+  const s = useRef(newRigState());
 
   // frameloop is "never" while paused, so a single frame has to be pushed by hand
   const request = useCallback(() => {
@@ -344,7 +373,25 @@ function CameraRig({
     request();
   }, [paused, request]);
 
-  const limit = rad(cfg.yawLimitDeg);
+  const yawCap = rad(cfg.yawLimitDeg);
+  // Keep the whole view inside the wedge of world that exists (see RigConfig.worldHalfDeg). Yaw is + = turn left, so the
+  // view's azimuth is homeAz - yaw; zooming in or a narrower screen widens the allowed turn.
+  const limitYaw = useCallback(
+    (yaw: number) => {
+      const r = s.current;
+      const cam = get().camera as PerspectiveCamera;
+      const aspect = Number.isFinite(cam.aspect) && cam.aspect > 0 ? cam.aspect : 16 / 9;
+      const hfov = 2 * Math.atan(Math.tan(rad(r.baseFov * r.zoom) / 2) * aspect);
+      const wedge = Number.isFinite(cfg.worldHalfDeg) ? Math.max(0, rad(cfg.worldHalfDeg) - hfov / 2 + rad(cfg.edgeMarginDeg)) : Infinity;
+      const reach = Math.min(yawCap, wedge);
+      const out = MathUtils.clamp(yaw, r.homeAz - reach, r.homeAz + reach);
+      return Number.isFinite(out) ? out : 0;
+    },
+    [get, yawCap, cfg.worldHalfDeg, cfg.edgeMarginDeg],
+  );
+  const up = rad(cfg.pitchUpDeg);
+  const down = rad(cfg.pitchDownDeg);
+  const { zoomIn, zoomOut } = cfg;
   // a view that is mid-intro becomes the visitor's own view as soon as they take over
   const takeOver = () => {
     const r = s.current;
@@ -358,24 +405,37 @@ function CameraRig({
     onControls({
       reset: () => {
         r.user = 0;
+        r.pitch = 0;
+        r.zoom = 1;
         r.guided = 0;
         r.guidedT = -1;
         request();
       },
       rotate: (deltaDeg) => {
         takeOver();
-        r.user = MathUtils.clamp(r.user + rad(deltaDeg), -limit, limit);
+        r.user = limitYaw(r.user + rad(deltaDeg));
+        request();
+      },
+      rotatePitch: (deltaDeg) => {
+        takeOver();
+        r.pitch = MathUtils.clamp(r.pitch + rad(deltaDeg), -down, up);
+        request();
+      },
+      zoom: (factor) => {
+        r.zoom = MathUtils.clamp(r.zoom * factor, zoomIn, zoomOut);
+        r.user = limitYaw(r.user);
         request();
       },
     });
     return () => onControls(null);
-  }, [onControls, request, limit]);
+  }, [onControls, request, limitYaw, up, down, zoomIn, zoomOut]);
 
   // mouse parallax (touch has no hover, so nothing to follow there)
   useEffect(() => {
     if (cfg.parallaxDeg <= 0) return;
     const onMove = (e: PointerEvent) => {
       if (e.pointerType !== "mouse" || s.current.dragging || pausedRef.current) return;
+      if (!(window.innerWidth > 0)) return;
       s.current.parallaxTarget = -((e.clientX / window.innerWidth) * 2 - 1) * rad(cfg.parallaxDeg);
       request();
     };
@@ -383,62 +443,148 @@ function CameraRig({
     return () => window.removeEventListener("pointermove", onMove);
   }, [cfg.parallaxDeg, request]);
 
-  // drag
+  // drag to look around, wheel or two-finger pinch to zoom
   useEffect(() => {
     if (!interactive) return;
     const el = gl.domElement;
     const r = s.current;
+    const fingers = new Map<number, { x: number; y: number }>();
+    const spread = () => {
+      const [a, b] = [...fingers.values()];
+      return Math.hypot(a.x - b.x, a.y - b.y);
+    };
     styleCanvas(el, "none", "grab");
     const down = (e: PointerEvent) => {
       takeOver();
+      fingers.set(e.pointerId, { x: e.clientX, y: e.clientY });
       r.dragging = true;
       r.lastX = e.clientX;
+      r.lastY = e.clientY;
+      r.pinch = fingers.size === 2 ? spread() : 0;
       el.setPointerCapture(e.pointerId);
       styleCanvas(el, "none", "grabbing");
     };
     const move = (e: PointerEvent) => {
+      if (!fingers.has(e.pointerId)) return;
+      fingers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+      if (fingers.size === 2) {
+        const d = spread();
+        if (r.pinch > 0 && d > 0) r.zoom = MathUtils.clamp((r.zoom * r.pinch) / d, zoomIn, zoomOut);
+        r.pinch = d;
+        request();
+        return;
+      }
       if (!r.dragging) return;
       const cam = get().camera as PerspectiveCamera;
-      const hfov = 2 * Math.atan(Math.tan(rad(cam.fov) / 2) * cam.aspect);
-      // dragging right drags the scene right = turn the camera left (+yaw)
-      r.user = MathUtils.clamp(r.user + (e.clientX - r.lastX) * (hfov / el.clientWidth), -limit, limit);
+      const vfov = rad(cam.fov);
+      const hfov = 2 * Math.atan(Math.tan(vfov / 2) * (Number.isFinite(cam.aspect) && cam.aspect > 0 ? cam.aspect : 16 / 9));
+      // dragging right drags the scene right = turn the camera left (+yaw); dragging down = look up
+      r.user = limitYaw(r.user + (e.clientX - r.lastX) * (hfov / el.clientWidth));
+      r.pitch = MathUtils.clamp(r.pitch + (e.clientY - r.lastY) * (vfov / el.clientHeight), -down, up);
       r.lastX = e.clientX;
+      r.lastY = e.clientY;
       request();
     };
-    const up = () => {
-      r.dragging = false;
-      styleCanvas(el, "none", "grab");
+    const end = (e: PointerEvent) => {
+      fingers.delete(e.pointerId);
+      r.pinch = 0;
+      if (fingers.size === 1) {
+        // one finger left after a pinch: carry on dragging from where it is
+        const [rest] = [...fingers.values()];
+        r.lastX = rest.x;
+        r.lastY = rest.y;
+      }
+      if (fingers.size === 0) {
+        r.dragging = false;
+        styleCanvas(el, "none", "grab");
+      }
+    };
+    const wheel = (e: WheelEvent) => {
+      e.preventDefault();
+      // line and page units to pixels
+      const unit = e.deltaMode === 1 ? 16 : e.deltaMode === 2 ? el.clientHeight : 1;
+      const dx = e.deltaX * unit;
+      const dy = e.deltaY * unit;
+      if (e.ctrlKey) {
+        // a pinch on a trackpad arrives as ctrl + wheel (so does Ctrl + scroll with a mouse): zoom
+        r.zoom = MathUtils.clamp(r.zoom * Math.exp(dy * 0.01), zoomIn, zoomOut);
+        r.user = limitYaw(r.user);
+      } else {
+        // two fingers swiping on a trackpad, or the mouse wheel: look around, no click needed
+        takeOver();
+        const cam = get().camera as PerspectiveCamera;
+        const vfov = rad(cam.fov);
+        const aspect = Number.isFinite(cam.aspect) && cam.aspect > 0 ? cam.aspect : 16 / 9;
+        const hfov = 2 * Math.atan(Math.tan(vfov / 2) * aspect);
+        r.user = limitYaw(r.user - dx * (hfov / Math.max(1, el.clientWidth)));
+        r.pitch = MathUtils.clamp(r.pitch - dy * (vfov / Math.max(1, el.clientHeight)), -down, up);
+      }
+      request();
     };
     el.addEventListener("pointerdown", down);
     el.addEventListener("pointermove", move);
-    el.addEventListener("pointerup", up);
-    el.addEventListener("pointercancel", up);
+    el.addEventListener("pointerup", end);
+    el.addEventListener("pointercancel", end);
+    el.addEventListener("wheel", wheel, { passive: false });
     return () => {
       el.removeEventListener("pointerdown", down);
       el.removeEventListener("pointermove", move);
-      el.removeEventListener("pointerup", up);
-      el.removeEventListener("pointercancel", up);
+      el.removeEventListener("pointerup", end);
+      el.removeEventListener("pointercancel", end);
+      el.removeEventListener("wheel", wheel);
       styleCanvas(el, "", "");
     };
-  }, [gl, get, interactive, limit, request]);
+  }, [gl, get, interactive, limitYaw, up, down, zoomIn, zoomOut, request]);
 
-  useFrame((state, delta) => {
+  const step = (state: RootState, delta: number) => {
     const cam = state.camera as PerspectiveCamera;
     const r = s.current;
+    for (const [key, value] of Object.entries(newRigState())) {
+      if (!(key in r)) (r as Record<string, unknown>)[key] = value;
+    }
     const homeKey = `${cam.uuid}:${pitchDeg}`;
     if (r.homeFor !== homeKey) {
-      // new GLB camera: remember its angle, and play the intro once
+      // new GLB camera: remember its angle and field of view, and play the intro once
       r.homeFor = homeKey;
+      r.glb.copy(cam.quaternion);
       r.home.copy(cam.quaternion).multiply(PITCH.setFromAxisAngle(X_AXIS, rad(pitchDeg)));
+      r.baseFov = cam.fov;
+      const ahead = new Vector3(0, 0, -1).applyQuaternion(r.home);
+      r.homeAz = Math.atan2(ahead.x, -ahead.z);
       if (!pausedRef.current && cfg.guidedStartDeg > 0) {
         r.guidedT = 0;
         r.guided = rad(cfg.guidedStartDeg);
       }
     }
 
+    // a bad or huge time step (first frame, a tab that was in the background) must not poison the state
+    const dt = Number.isFinite(delta) && delta > 0 ? Math.min(delta, 0.1) : 0;
+    const bad: string[] = [];
+    const repair = (name: "user" | "pitch" | "guided" | "parallax" | "parallaxTarget", fallback = 0) => {
+      if (Number.isFinite(r[name])) return;
+      bad.push(name);
+      r[name] = fallback;
+    };
+    repair("user");
+    repair("pitch");
+    repair("guided");
+    repair("parallax");
+    repair("parallaxTarget");
+    if (!Number.isFinite(r.zoom)) {
+      bad.push("zoom");
+      r.zoom = 1;
+    }
+    if (!Number.isFinite(r.baseFov) || r.baseFov <= 0) {
+      bad.push("baseFov");
+      r.baseFov = cam.fov > 0 ? cam.fov : 50;
+    }
+    if (bad.length && !r.warned) {
+      r.warned = true; // one report is enough
+      console.warn("[SceneRig] repaired values that were not numbers:", bad, { delta, aspect: cam.aspect, size: state.size, homeAz: r.homeAz });
+    }
     let moving = false;
     if (r.guidedT >= 0) {
-      r.guidedT += delta;
+      r.guidedT += dt;
       const k = Math.min(r.guidedT / cfg.guidedSeconds, 1);
       r.guided = rad(cfg.guidedStartDeg) * (1 - easeOutCubic(k));
       if (k < 1) moving = true;
@@ -448,14 +594,64 @@ function CameraRig({
       }
     }
     if (!pausedRef.current) {
-      r.parallax += (r.parallaxTarget - r.parallax) * (1 - Math.exp(-delta * 6));
+      r.parallax += (r.parallaxTarget - r.parallax) * (1 - Math.exp(-dt * 6));
       if (Math.abs(r.parallaxTarget - r.parallax) > 1e-4) moving = true;
       else r.parallax = r.parallaxTarget;
     }
 
-    const yaw = MathUtils.clamp(r.user, -limit, limit) + r.guided + r.parallax;
-    cam.quaternion.setFromAxisAngle(Y_AXIS, yaw).multiply(r.home);
+    r.user = limitYaw(r.user); // the allowed turn changes with zoom and screen shape
+    const yaw = r.user + r.guided + r.parallax;
+    // yaw about the world's up axis, then the GLB camera's own angle, then the visitor's pitch about the camera's own X axis
+    cam.quaternion.setFromAxisAngle(Y_AXIS, yaw).multiply(r.home).multiply(PITCH.setFromAxisAngle(X_AXIS, r.pitch));
+    const fov = r.baseFov * r.zoom;
+    if (Math.abs(cam.fov - fov) > 1e-4) {
+      cam.fov = fov;
+      cam.updateProjectionMatrix();
+    }
     if (moving && !pausedRef.current) invalidate();
+  };
+
+  // R3F skips drawing the frame if a useFrame callback throws, which would leave a black canvas. Keep the GLB camera instead.
+  useFrame((state, delta) => {
+    try {
+      step(state, delta);
+      const q = state.camera.quaternion;
+      if (![q.x, q.y, q.z, q.w, (state.camera as PerspectiveCamera).fov].every(Number.isFinite)) throw new Error("camera became NaN");
+    } catch (error) {
+      const r = s.current;
+      const cam = state.camera as PerspectiveCamera;
+      if (!r.warned) {
+        r.warned = true; // one report is enough; the same failure would repeat every frame
+        console.error("[SceneRig] camera rig failed, using the GLB camera as is", error, {
+          delta,
+          user: r.user,
+          pitch: r.pitch,
+          zoom: r.zoom,
+          guided: r.guided,
+          parallax: r.parallax,
+          baseFov: r.baseFov,
+          homeAz: r.homeAz,
+          aspect: cam.aspect,
+          fov: cam.fov,
+          size: state.size,
+          home: r.home.toArray(),
+          glb: r.glb.toArray(),
+          camera: cam.quaternion.toArray(),
+        });
+      }
+      r.user = 0;
+      r.pitch = 0;
+      r.zoom = 1;
+      r.guided = 0;
+      r.guidedT = -1;
+      r.parallax = 0;
+      r.parallaxTarget = 0;
+      if (![r.glb.x, r.glb.y, r.glb.z, r.glb.w].every(Number.isFinite)) r.glb.identity();
+      r.home.copy(r.glb);
+      cam.quaternion.copy(r.glb);
+      cam.fov = r.baseFov;
+      cam.updateProjectionMatrix();
+    }
   });
 
   return null;

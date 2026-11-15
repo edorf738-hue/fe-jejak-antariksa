@@ -2,7 +2,7 @@
 
 import { Component, useCallback, useEffect, useState, useSyncExternalStore, type ReactNode } from "react";
 import dynamic from "next/dynamic";
-import { useProgress } from "@react-three/drei";
+import { useGLTF, useProgress } from "@react-three/drei";
 import { altText, assets, deviceForWidth, type Device, type Environment } from "./config";
 import { useScene, useSceneInternals, type SceneStatus } from "./scene-context";
 
@@ -53,14 +53,20 @@ export function SceneCanvas({
   environment = "moon",
   className = "",
   interactive = true,
+  headless = false,
+  onStatusChange,
 }: {
   environment?: Environment;
   className?: string;
   /** Drag (and arrow keys) turn the view left/right. Turn off on pages that scroll, so touch scrolling still works. */
   interactive?: boolean;
+  /** The page draws its own loading and fallback messages (the HUD does): keep the poster, skip our status text. */
+  headless?: boolean;
+  /** Called whenever the status or the load progress (0 to 1) changes. Read straight from here, not from useScene(), which can still hold the previous scene's status right after a remount. */
+  onStatusChange?: (status: SceneStatus, progress: number) => void;
 }) {
   const { setStatus, register, paused } = useSceneInternals();
-  const { rotateYaw } = useScene();
+  const { rotateYaw, rotatePitch, zoomBy } = useScene();
   const device = useSyncExternalStore(subscribeDevice, getDevice, () => null);
   const webgl = useSyncExternalStore(noop, getWebgl, () => null);
   const { progress } = useProgress();
@@ -71,11 +77,19 @@ export function SceneCanvas({
   const [readyKey, setReadyKey] = useState<string | null>(null);
   const [failedKey, setFailedKey] = useState<string | null>(null);
   const onReady = useCallback(() => setReadyKey(key), [key]);
-  const onError = useCallback(() => setFailedKey(key), [key]);
+  const onError = useCallback(() => {
+    // A GLB that failed to load stays cached (drei keeps the rejected promise), so "Coba Lagi" would fail instantly
+    // without a request. Drop it from the cache so the next mount tries the network again.
+    if (device) useGLTF.clear(assets[environment][device].model);
+    setFailedKey(key);
+  }, [key, device, environment]);
   const status: SceneStatus = webgl === false || failedKey === key ? "fallback" : readyKey === key ? "siap" : "memuat";
   useEffect(() => {
     setStatus(status);
   }, [status, setStatus]);
+  useEffect(() => {
+    onStatusChange?.(status, progress / 100);
+  }, [status, progress, onStatusChange]);
 
   const show3d = device !== null && webgl !== false && status !== "fallback";
 
@@ -85,11 +99,21 @@ export function SceneCanvas({
       {...(interactive && {
         tabIndex: 0,
         role: "group",
-        "aria-label": "Scene 3D. Seret atau tekan tombol panah kiri dan kanan untuk memutar pandangan.",
+        "aria-label": "Scene 3D. Seret atau tekan tombol panah untuk melihat sekeliling, plus dan minus untuk zoom.",
         onKeyDown: (e: React.KeyboardEvent) => {
-          if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+          const act: Record<string, () => void> = {
+            ArrowLeft: () => rotateYaw(5),
+            ArrowRight: () => rotateYaw(-5),
+            ArrowUp: () => rotatePitch(5),
+            ArrowDown: () => rotatePitch(-5),
+            "+": () => zoomBy(0.85),
+            "=": () => zoomBy(0.85),
+            "-": () => zoomBy(1 / 0.85),
+          };
+          const fn = act[e.key];
+          if (fn) {
             e.preventDefault();
-            rotateYaw(e.key === "ArrowLeft" ? 5 : -5);
+            fn();
           }
         },
       })}
@@ -121,7 +145,7 @@ export function SceneCanvas({
         </div>
       )}
 
-      {status === "memuat" && show3d && (
+      {!headless && status === "memuat" && show3d && (
         <div role="status" className="absolute inset-x-0 bottom-6 flex flex-col items-center gap-2 text-sm text-[#a8b1c2]">
           <span>Memuat scene 3D… {Math.round(progress)}%</span>
           <span className="h-1 w-40 overflow-hidden rounded-full bg-white/15">
@@ -129,7 +153,7 @@ export function SceneCanvas({
           </span>
         </div>
       )}
-      {status === "fallback" && (
+      {!headless && status === "fallback" && (
         <p role="status" className="absolute inset-x-0 bottom-6 text-center text-sm text-[#a8b1c2]">
           Tampilan 3D tidak tersedia, menampilkan gambar statis.
         </p>

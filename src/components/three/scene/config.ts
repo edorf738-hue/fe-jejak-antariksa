@@ -9,24 +9,47 @@ export const deviceForWidth = (width: number): Device =>
 
 export const DRACO_PATH = "/draco/";
 
-// Camera rig: three layers that only ROTATE the camera left/right (yaw). Pitch stays at the GLB camera's angle, and the
-// camera never moves (Deep Space's baked atmosphere needs the camera at the origin). Degrees, tune per environment.
+// Camera rig: the visitor looks around freely (drag, arrow keys, wheel / pinch zoom). The camera only ROTATES and zooms,
+// it never moves: Deep Space's baked atmosphere needs the camera at the origin, and the Moon and Mars terrain only exists
+// in front of the camera (z from -800 m to -1.5 m), so walking around would show its edges. Degrees; limits are measured
+// from the GLB camera's own angle.
 export type RigConfig = {
-  yawLimitDeg: number; // how far the visitor can drag away from the GLB camera, each way
+  yawLimitDeg: number; // hard cap on how far left and right the visitor can turn (Infinity = all the way round)
+  // The Moon and Mars terrain is a wedge in front of the camera (about 62 degrees to each side of straight ahead). The
+  // view is kept inside it: the allowed turn is worldHalfDeg - half the horizontal field of view (+ edgeMarginDeg), so
+  // zooming in or a narrow phone screen lets the visitor look further to the side. Infinity = no wedge, free all round.
+  worldHalfDeg: number;
+  edgeMarginDeg: number; // how far the edge of the screen may poke past the wedge
+  pitchUpDeg: number; // how far up
+  pitchDownDeg: number; // how far down (the Moon and Mars ground starts 1.5 m ahead, so very steep views show a void)
+  zoomIn: number; // narrowest field of view, as a fraction of the GLB camera's (0.35 = about 3x closer)
+  zoomOut: number; // widest field of view, as a fraction of the GLB camera's
   parallaxDeg: number; // small extra turn that follows the mouse (0 = off)
   guidedStartDeg: number; // intro: starts this far to the side and eases to the GLB angle (0 = off)
   guidedSeconds: number;
-  // Fixed tilt added to the GLB camera angle (+ = look up). 0 since Lunar v5, whose cameras already carry the render's pitch. Not interactive.
+  // Fixed tilt added to the GLB camera angle (+ = look up). 0 since Lunar v5, whose cameras already carry the render's pitch.
   pitchDeg: Record<Device, number>;
 };
 
-const defaultRig = { yawLimitDeg: 25, parallaxDeg: 3, guidedStartDeg: 6, guidedSeconds: 2.2, pitchDeg: { desktop: 0, tablet: 0, mobile: 0 } };
+const defaultRig: RigConfig = {
+  yawLimitDeg: 90,
+  worldHalfDeg: 62,
+  edgeMarginDeg: 6,
+  pitchUpDeg: 70,
+  pitchDownDeg: 35,
+  zoomIn: 0.35,
+  zoomOut: 1.15,
+  parallaxDeg: 3,
+  guidedStartDeg: 6,
+  guidedSeconds: 2.2,
+  pitchDeg: { desktop: 0, tablet: 0, mobile: 0 },
+};
 export const rig: Record<Environment, RigConfig> = {
   moon: defaultRig,
   mars: defaultRig, // Mars v3 GLB cameras already carry the render's pitch (about 8 degrees)
-  // Deep Space: the planet's atmosphere is baked for a camera at the origin. Turning in place is fine; the camera never moves.
-  // The planet and moon are the only subjects and sit to one side, so a wide turn (25 degrees) pushes them off screen, most of all on mobile.
-  "deep-space": { ...defaultRig, yawLimitDeg: 10, guidedStartDeg: 4 },
+  // Deep Space is a sky only (dome + stars + planet), so it can be explored in every direction.
+  // Its atmosphere is baked for a camera at the origin: turning in place is fine.
+  "deep-space": { ...defaultRig, yawLimitDeg: Infinity, worldHalfDeg: Infinity, pitchUpDeg: 85, pitchDownDeg: 85, zoomIn: 0.3, zoomOut: 1.3, guidedStartDeg: 4 },
 };
 
 // Look of each environment. The GLB sun is exported raw, so exposure and fill light are set here.
