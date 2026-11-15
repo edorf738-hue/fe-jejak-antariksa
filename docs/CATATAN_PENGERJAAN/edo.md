@@ -2,6 +2,13 @@
 
 Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 
+
+## 2026-11-15: Konten FE dibaca dari backend (snapshot API)
+- Konten bab cerita, benda 3D beserta media popup, galeri, dan katalog Sumber dipindah ke `be-wayang-antariksa` (`/api/v1/chapters`, `scene-objects`, `galleries`, `source-catalog`).
+- FE membaca snapshot `src/data/api/*.json` lewat `src/data/api.ts`. `npm run data:sync` memperbarui snapshot dari API (jalan otomatis sebelum build bila `API_URL` diatur; bila API mati, snapshot yang di-commit dipakai).
+- Keluaran `getCerita`, `MEDIA_BENDA`, `GALERI_FOTO`, dan `getKatalogSumber` sama persis dengan sebelumnya (dibandingkan dengan dump JSON). `benda-tambahan.ts` dihapus (isinya ada di BE).
+- Belum dipindah: data Peta Perjalanan (`journey.ts`, area Zhafran) dan `content-data.json`.
+
 ## Entri
 
 ### [2026-11-15] Revisi halaman Sumber (katalog arsip)

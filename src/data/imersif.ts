@@ -1,4 +1,4 @@
-import { BENDA_TAMBAHAN } from "./benda-tambahan";
+import { bendaBab } from "./api";
 import { getBab } from "./content";
 import { getJourneyTujuan } from "./journey";
 import { getKategori, KATEGORI_SLUGS } from "./content";
@@ -97,7 +97,7 @@ export function getBabImersif(id: number): (HalamanImersifData & { bab: Bab; lab
     gambar: bab.id === 1 ? "/images/imersif/bab-1-bumi.webp" : GAMBAR_KATEGORI[slug],
     scenePlaceholder: bab.id === 1,
     narasi: { eyebrow: `BAB ${bab.id}`, judul: bab.judul, isi: bab.narasi },
-    benda: [...bab.benda, ...(BENDA_TAMBAHAN[bab.id] ?? [])],
+    benda: bendaBab(bab.id),
     posisiTitik: TITIK_STORY[bab.id],
     fokusGambar: bab.id === 1 ? FOKUS_BAB_1 : FOKUS[slug],
     panel: { fakta: tujuan.kategori.fakta, misi: tujuan.misi, galeri: tujuan.kategori.galeri, sumber: tujuan.sumber },
@@ -115,7 +115,7 @@ export function getResourcesImersif(slug: KategoriSlug): HalamanImersifData & {
     gambar: GAMBAR_KATEGORI[slug],
     scenePlaceholder: false,
     narasi: { eyebrow: "RESOURCES", judul: k.nama, isi: k.ringkasan },
-    benda: [...k.bab.benda, ...(BENDA_TAMBAHAN[k.bab.id] ?? [])],
+    benda: bendaBab(k.bab.id),
     posisiTitik: TITIK_RESOURCES[slug],
     fokusGambar: FOKUS[slug],
     panel: { fakta: k.fakta, misi: tujuan.misi, galeri: k.galeri, sumber: tujuan.sumber },
