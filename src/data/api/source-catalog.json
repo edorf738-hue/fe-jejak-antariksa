@@ -462,7 +462,8 @@
       },
       {
         "nama": "Perubahan atmosfer Saturnus",
-        "kredit": "NASA"
+        "kredit": "NASA/JPL-Caltech (PIA03152, Voyager 2, Juli 1981)",
+        "url": "https://science.nasa.gov/image-detail/pia03152/"
       },
       {
         "nama": "Saturnus dalam perjalanan Voyager",
@@ -480,7 +481,7 @@
         "url": "https://science.nasa.gov/resource/two-interstellar-travelers/"
       }
     ],
-    "catatan": "Enam dari delapan foto sudah dicocokkan dengan halaman NASA (berkas identik dengan gambar di halaman): Pale Blue Dot Revisited, Saturn's Rings, Io 2x2 Mosaic, Crescent Saturn, Golden Record, dan Two Interstellar Travelers. Dua foto belum ditemukan halaman asalnya: Jupiter dan Bintik Merah Besar, serta Perubahan atmosfer Saturnus (tidak ada di 23 halaman yang diperiksa). Foto isi Golden Record (48 gambar) tidak dipakai: menurut NASA gambar-gambar itu berhak cipta."
+    "catatan": "Tujuh dari delapan foto sudah dicocokkan dengan halaman NASA (berkas identik dengan gambar di halaman): Pale Blue Dot Revisited, Saturn's Rings, Io 2x2 Mosaic, Crescent Saturn, Saturn's Atmospheric Changes, Golden Record, dan Two Interstellar Travelers. Satu foto belum ditemukan halaman asalnya: Jupiter dan Bintik Merah Besar. Foto isi Golden Record (48 gambar) tidak dipakai: menurut NASA gambar-gambar itu berhak cipta."
   },
   {
     "id": "media-golden-sampul",
@@ -501,14 +502,15 @@
       },
       {
         "nama": "Diagram sampul dengan instruksi",
-        "kredit": "Tidak dinyatakan"
+        "kredit": "Tidak dinyatakan",
+        "url": "https://science.nasa.gov/mission/voyager/golden-record-cover/"
       },
       {
         "nama": "Penjelasan diagram sampul",
         "kredit": "Tidak dinyatakan"
       }
     ],
-    "catatan": "Foto piringan sampul identik dengan gambar di halaman Golden Record Contents (NASA); halaman itu tidak menyebut kredit foto. NASA menyatakan gambar-gambar yang ada di dalam Golden Record berhak cipta dan tidak boleh direproduksi tanpa izin; kita hanya menampilkan foto piringan dan sampul."
+    "catatan": "Foto piringan sampul dan diagram sampul identik dengan gambar di halaman NASA (Golden Record Contents dan Golden Record Cover); penjelasan diagram belum ditemukan halamannya. Foto piringan sampul identik dengan gambar di halaman Golden Record Contents (NASA); halaman itu tidak menyebut kredit foto. NASA menyatakan gambar-gambar yang ada di dalam Golden Record berhak cipta dan tidak boleh direproduksi tanpa izin; kita hanya menampilkan foto piringan dan sampul."
   },
   {
     "id": "media-hero-beranda",
