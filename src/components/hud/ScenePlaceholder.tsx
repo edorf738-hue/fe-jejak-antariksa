@@ -109,7 +109,7 @@ export function TitikInfoPlaceholder({ label, aktif = false, onClick, urutan = 0
         {/* Denyut: cincin tipis membesar 1 -> 2x sambil memudar, siklus 2 dtk, tiap titik bergeser 0,4 dtk. */}
         <span
           aria-hidden="true"
-          className={`absolute inset-0 rounded-full border-[1.5px] opacity-0 motion-safe:hud-denyut ${aktif ? "border-aksen-informasi-normal" : "border-text-primary-normal"}`}
+          className={`absolute inset-0 rounded-full border-[1.5px] opacity-0 motion-safe:hud-denyut in-data-[jeda]:[animation-play-state:paused]! ${aktif ? "border-aksen-informasi-normal" : "border-text-primary-normal"}`}
         />
         <span
           // Cincin dari bayangan dalam (bukan border): lebar pecahan 1,5 / 2,5 px tidak dibulatkan browser.

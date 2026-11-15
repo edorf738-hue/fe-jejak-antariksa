@@ -233,6 +233,8 @@ export function HalamanImersif({
     <div
       ref={akar}
       onKeyDown={onKeyDown}
+      // Jeda Gerak: animasi berulang di dalam (mis. denyut Titik Info) memakai `in-data-[jeda]:` untuk berhenti.
+      data-jeda={paused || undefined}
       className="relative h-dvh min-h-[640px] w-full overflow-hidden bg-bg-primary-normal"
     >
       <LatarScene gambar={gambar} fokus={fokusGambar}>
