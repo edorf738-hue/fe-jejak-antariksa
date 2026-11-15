@@ -2,7 +2,8 @@ import { Navbar } from "@/components/ui";
 
 /**
  * Layout halaman biasa (Beranda, Cerita, Peta Perjalanan, Sumber): ada Navbar.
- * Navbar `fixed`, jadi konten diberi ruang di atas lewat `--navbar-offset`
+ * Navbar `fixed` (tetap terlihat di atas layar saat digulir) dan tidak ikut alur, jadi konten
+ * diberi ruang di atas lewat `--navbar-offset`
  * (halaman dengan hero di bawah navbar boleh menimpanya dengan margin negatif).
  * Halaman imersif (Story Bab dan Resources) menyembunyikan navbar dan akan
  * memakai layout sendiri.

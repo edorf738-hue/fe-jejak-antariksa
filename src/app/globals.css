@@ -270,8 +270,8 @@ body {
  * pantulan cahaya di tepi. Gradasi cincin bisa diganti lewat `--rim`. Elemen harus punya `position`.
  */
 @utility kaca-tepi {
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  /* Hanya bentuk standar: menulis `-webkit-backdrop-filter` di sampingnya membuat bundler membuang yang standar (blur tidak aktif di Chrome). */
+  backdrop-filter: blur(var(--kaca-blur, 4px));
   &::before {
     content: "";
     position: absolute;
