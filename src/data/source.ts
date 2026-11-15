@@ -627,8 +627,10 @@ const TEKS_BARU_EN: Record<string, string> = {
     "There is no license statement for this source yet. Do not assume it is free of copyright before checking.",
   "Dipindahkan dari daftar sumber lama; halaman belum dibuka ulang, jadi belum diverifikasi.":
     "Moved over from the old source list; the page has not been reopened, so it is not verified.",
-  "Dua dari delapan foto sudah dicocokkan dengan halaman NASA (Pale Blue Dot Revisited dan Saturn's Rings, berkas identik); enam lainnya belum dicatat halaman asal dan kredit rincinya.":
-    "Two of the eight photos have been matched to NASA pages (Pale Blue Dot Revisited and Saturn's Rings, identical files); the source page and detailed credit of the other six have not been recorded yet.",
+  "Enam dari delapan foto sudah dicocokkan dengan halaman NASA (berkas identik dengan gambar di halaman): Pale Blue Dot Revisited, Saturn's Rings, Io 2x2 Mosaic, Crescent Saturn, Golden Record, dan Two Interstellar Travelers. Dua foto belum ditemukan halaman asalnya: Jupiter dan Bintik Merah Besar, serta Perubahan atmosfer Saturnus (tidak ada di 23 halaman yang diperiksa). Foto isi Golden Record (48 gambar) tidak dipakai: menurut NASA gambar-gambar itu berhak cipta.":
+    "Six of the eight photos have been matched to NASA pages (files identical to the images on the page): Pale Blue Dot Revisited, Saturn's Rings, Io 2x2 Mosaic, Crescent Saturn, Golden Record, and Two Interstellar Travelers. Two photos have no source page yet: Jupiter and the Great Red Spot, and Changes in Saturn's atmosphere (not found on any of the 23 pages checked). The Golden Record content photos (48 images) are not used: according to NASA they are copyrighted.",
+  "Foto piringan sampul identik dengan gambar di halaman Golden Record Contents (NASA); halaman itu tidak menyebut kredit foto. NASA menyatakan gambar-gambar yang ada di dalam Golden Record berhak cipta dan tidak boleh direproduksi tanpa izin; kita hanya menampilkan foto piringan dan sampul.":
+    "The photo of the disc and cover is identical to the image on the Golden Record Contents page (NASA); that page does not state a photo credit. NASA states that the images inside the Golden Record are copyrighted and may not be reproduced without permission; we only show the photo of the disc and cover.",
 };
 const dalamEn = (i: SumberItem): SumberItem => ({
   ...i,
