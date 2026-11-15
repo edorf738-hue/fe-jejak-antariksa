@@ -1,0 +1,86 @@
+"use client";
+
+import { createContext, useCallback, useContext, useMemo, useRef, useState, type ReactNode } from "react";
+import type { Camera } from "three";
+
+export type SceneStatus = "memuat" | "siap" | "fallback";
+export type ScreenPoint = { x: number; y: number; terlihat: boolean };
+
+// What <SceneCanvas> registers once its 3D scene is ready.
+export type SceneImpl = {
+  camera: Camera;
+  worldToScreen: (pos: [number, number, number]) => ScreenPoint;
+  resetCamera: () => void;
+  rotateYaw: (deltaDeg: number) => void;
+};
+
+export type SceneApi = {
+  status: SceneStatus;
+  paused: boolean;
+  setPaused: (paused: boolean) => void;
+  /** Camera of the active scene, null until status is "siap". */
+  getCamera: () => Camera | null;
+  /** 3D world position -> CSS pixels inside the canvas. */
+  worldToScreen: (pos: [number, number, number]) => ScreenPoint;
+  /** Back to the GLB camera angle (also cancels the intro animation). */
+  resetCamera: () => void;
+  /** Turn the view left (+) or right (-) by some degrees, within the yaw limit. For buttons and keyboard. */
+  rotateYaw: (deltaDeg: number) => void;
+};
+
+// Internal: used by <SceneCanvas> only, not part of the public contract.
+export type SceneInternals = {
+  status: SceneStatus;
+  setStatus: (status: SceneStatus) => void;
+  register: (impl: SceneImpl | null) => void;
+  paused: boolean;
+};
+
+const ApiContext = createContext<SceneApi | null>(null);
+const InternalsContext = createContext<SceneInternals | null>(null);
+
+/** Wrap the page with this so <SceneCanvas> and anything that reads useScene() (hotspots, HUD) share one scene. */
+export function SceneProvider({ children }: { children: ReactNode }) {
+  const [status, setStatus] = useState<SceneStatus>("memuat");
+  // Start paused (one still frame) for visitors who asked the OS for reduced motion.
+  const [paused, setPaused] = useState(
+    () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
+  );
+  const impl = useRef<SceneImpl | null>(null);
+
+  const register = useCallback((next: SceneImpl | null) => {
+    impl.current = next;
+  }, []);
+
+  const api = useMemo<SceneApi>(
+    () => ({
+      status,
+      paused,
+      setPaused,
+      getCamera: () => impl.current?.camera ?? null,
+      worldToScreen: (pos) => impl.current?.worldToScreen(pos) ?? { x: 0, y: 0, terlihat: false },
+      resetCamera: () => impl.current?.resetCamera(),
+      rotateYaw: (d) => impl.current?.rotateYaw(d),
+    }),
+    [status, paused],
+  );
+  const internals = useMemo<SceneInternals>(() => ({ status, setStatus, register, paused }), [status, register, paused]);
+
+  return (
+    <ApiContext.Provider value={api}>
+      <InternalsContext.Provider value={internals}>{children}</InternalsContext.Provider>
+    </ApiContext.Provider>
+  );
+}
+
+export function useScene(): SceneApi {
+  const api = useContext(ApiContext);
+  if (!api) throw new Error("useScene() must be used inside <SceneProvider>");
+  return api;
+}
+
+export function useSceneInternals(): SceneInternals {
+  const internals = useContext(InternalsContext);
+  if (!internals) throw new Error("<SceneCanvas> must be used inside <SceneProvider>");
+  return internals;
+}
