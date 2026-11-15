@@ -14,7 +14,7 @@ export default function GlobalError({ retry }: { error: unknown; retry: () => vo
   return (
     <html lang={useLang()} className="h-full antialiased">
       <body className="flex min-h-full flex-col">
-        <title>Wayang Antariksa</title>
+        <title>Jejak Antariksa</title>
         <main className="flex flex-1 items-center py-24">
           <Container>
             <PanelStatus

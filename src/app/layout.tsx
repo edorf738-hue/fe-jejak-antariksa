@@ -30,7 +30,7 @@ const DESKRIPSI = {
 } as const;
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: "Wayang Antariksa", description: DESKRIPSI[await getLang()] };
+  return { title: "Jejak Antariksa", description: DESKRIPSI[await getLang()] };
 }
 
 export default async function RootLayout({ children }: LayoutProps<"/">) {

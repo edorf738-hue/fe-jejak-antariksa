@@ -1,4 +1,4 @@
-# PEMBAGIAN TUGAS — Wayang Antariksa (NASA Hackathon 2026)
+# PEMBAGIAN TUGAS — Jejak Antariksa (NASA Hackathon 2026)
 
 **Status:** Usulan awal. Dilengkapi dengan nama PIC yang di `SPRINT.md` masih TBD. Tanggal dan jadwal checkpoint: **TBD** (isi dari jadwal hackathon sebenarnya).
 **Dasar:** desain Figma (halaman Prototype), `FIGMA_HANDOFF.md`, `content-data.json`, `SPRINT.md`, `DEVELOPMENT_GUIDELINE.md`.

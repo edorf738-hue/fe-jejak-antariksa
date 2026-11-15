@@ -19,9 +19,9 @@ export function generateStaticParams() {
 export async function generateMetadata(props: PageProps<"/cerita/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
   const lang = await getLang();
-  if (!isCeritaSlug(slug)) return { title: `${TX[lang].cerita} — Wayang Antariksa` };
+  if (!isCeritaSlug(slug)) return { title: `${TX[lang].cerita} — Jejak Antariksa` };
   const c = getCerita(slug, lang);
-  return { title: `${TX[lang].bab} ${c.nomor}: ${c.judul} — Wayang Antariksa`, description: c.pengantar };
+  return { title: `${TX[lang].bab} ${c.nomor}: ${c.judul} — Jejak Antariksa`, description: c.pengantar };
 }
 
 type Tx = {

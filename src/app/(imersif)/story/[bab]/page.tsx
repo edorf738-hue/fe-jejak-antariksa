@@ -26,7 +26,7 @@ export async function generateMetadata(props: PageProps<"/story/[bab]">): Promis
   const lang = await getLang();
   const data = getBabImersif(Number(bab), lang);
   const kata = HUD[lang].bab;
-  return { title: data ? `${kata} ${data.bab.id}: ${data.bab.judul} — Wayang Antariksa` : `${UI[lang].nav.story} — Wayang Antariksa` };
+  return { title: data ? `${kata} ${data.bab.id}: ${data.bab.judul} — Jejak Antariksa` : `${UI[lang].nav.story} — Jejak Antariksa` };
 }
 
 export default async function StoryBabPage(props: PageProps<"/story/[bab]">) {

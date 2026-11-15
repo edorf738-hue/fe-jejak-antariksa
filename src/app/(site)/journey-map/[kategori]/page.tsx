@@ -16,7 +16,7 @@ export function generateStaticParams() {
 export async function generateMetadata(props: PageProps<"/journey-map/[kategori]">): Promise<Metadata> {
   const { kategori } = await props.params;
   const lang = await getLang();
-  return { title: `${lang === "en" ? "Journey Map" : "Peta Perjalanan"}: ${isKategoriSlug(kategori) ? getJourneyTujuan(kategori, lang).kategori.nama : ""} — Wayang Antariksa` };
+  return { title: `${lang === "en" ? "Journey Map" : "Peta Perjalanan"}: ${isKategoriSlug(kategori) ? getJourneyTujuan(kategori, lang).kategori.nama : ""} — Jejak Antariksa` };
 }
 
 export default async function JourneyMapPage(props: PageProps<"/journey-map/[kategori]">) {

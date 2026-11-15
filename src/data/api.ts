@@ -10,7 +10,7 @@ import type { SumberItem } from "./source";
 import type { DataBenda } from "./types";
 
 /**
- * Konten dari backend (be-wayang-antariksa). Berkas di ./api/*.json adalah snapshot yang diperbarui `npm run data:sync`
+ * Konten dari backend Jejak Antariksa. Berkas di ./api/*.json adalah snapshot yang diperbarui `npm run data:sync`
  * (otomatis sebelum build bila API_URL diatur); jangan diedit tangan, ubah datanya di backend.
  * Fungsi di bawah hanya memetakan nama field API (Inggris) ke bentuk yang dipakai komponen (Indonesia).
  */

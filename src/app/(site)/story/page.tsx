@@ -6,7 +6,7 @@ import { getLang } from "@/lib/lang-server";
 import { BabEditorial } from "./BabEditorial";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: `${(await getLang()) === "en" ? "Story" : "Cerita"} — Wayang Antariksa` };
+  return { title: `${(await getLang()) === "en" ? "Story" : "Cerita"} — Jejak Antariksa` };
 }
 
 /**

@@ -5,7 +5,7 @@ import { getLang } from "@/lib/lang-server";
 import { SumberDaftar } from "./SumberDaftar";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: `${SOURCE_COPY[await getLang()].header.judul} — Wayang Antariksa` };
+  return { title: `${SOURCE_COPY[await getLang()].header.judul} — Jejak Antariksa` };
 }
 
 /**

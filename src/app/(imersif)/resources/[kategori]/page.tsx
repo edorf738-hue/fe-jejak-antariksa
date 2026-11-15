@@ -20,7 +20,7 @@ export function generateStaticParams() {
 export async function generateMetadata(props: PageProps<"/resources/[kategori]">): Promise<Metadata> {
   const { kategori } = await props.params;
   const lang = await getLang();
-  return { title: `Resources: ${isKategoriSlug(kategori) ? getResourcesImersif(kategori, lang).nama : ""} — Wayang Antariksa` };
+  return { title: `Resources: ${isKategoriSlug(kategori) ? getResourcesImersif(kategori, lang).nama : ""} — Jejak Antariksa` };
 }
 
 export default async function ResourcesPage(props: PageProps<"/resources/[kategori]">) {

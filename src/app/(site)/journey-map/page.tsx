@@ -4,7 +4,7 @@ import { STATUS_COPY } from "@/data";
 import { getLang } from "@/lib/lang-server";
 
 export async function generateMetadata(): Promise<Metadata> {
-  return { title: `${(await getLang()) === "en" ? "Journey Map" : "Peta Perjalanan"} — Wayang Antariksa` };
+  return { title: `${(await getLang()) === "en" ? "Journey Map" : "Peta Perjalanan"} — Jejak Antariksa` };
 }
 
 // Belum ada tujuan dipilih: peta tanpa penanda terpilih (di layout) dan panel state Kosong.
