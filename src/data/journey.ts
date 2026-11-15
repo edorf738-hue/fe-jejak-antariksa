@@ -1,6 +1,6 @@
 import { JOURNEYS_API } from "./api";
 import { getKategori } from "./content";
-import rawEn from "../../docs/content-data.en.json";
+import rawEn from "./content-data.en.json";
 import { DEFAULT_LANG, type Lang, type Widen } from "../lib/i18n";
 import type { Kategori, KategoriSlug, Misi, Sumber } from "./types";
 

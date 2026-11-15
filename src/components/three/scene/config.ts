@@ -1,4 +1,4 @@
-// Config for the 3D scene layer (owner: Edo). Asset names follow kebab-case (docs/ASSET_DOCUMENTATION.md).
+// Config for the 3D scene layer (owner: Edo). Asset names follow kebab-case.
 
 export type Environment = "moon" | "mars" | "deep-space";
 export type Device = "desktop" | "tablet" | "mobile";

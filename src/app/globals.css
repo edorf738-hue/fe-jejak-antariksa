@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 /*
- * Token desain: sumber kebenaran adalah Figma (lihat docs/FIGMA_HANDOFF.md bagian 2).
+ * Token desain: sumber kebenaran adalah Figma.
  * Konvensi nama warna: --color-<family>-<level>, huruf kecil, spasi -> "-", " :" -> "-".
  * Di Tailwind menjadi utilitas, contoh: bg-bg-primary-normal, text-text-primary-normal,
  * border-archive-slate-normal, hover:bg-aksen-informasi-normal-hover.

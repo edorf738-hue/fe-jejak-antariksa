@@ -5,7 +5,7 @@ import { RevealObserver } from "@/components/ui/RevealObserver";
 import { getLang } from "@/lib/lang-server";
 import "./globals.css";
 
-// Font sesuai text style di Figma (docs/FIGMA_HANDOFF.md bagian 2).
+// Font sesuai text style di Figma.
 const spaceGrotesk = Space_Grotesk({
   variable: "--font-space-grotesk",
   subsets: ["latin"],

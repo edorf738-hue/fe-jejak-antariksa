@@ -1,4 +1,4 @@
-/** Tipe data konten. Sumber: docs/content-data.json (bukan teks layer Figma). */
+/** Tipe data konten. Sumber: backend (snapshot di ./api) dan content-data.en.json. */
 
 export type BabId = 1 | 2 | 3 | 4;
 export type KategoriSlug = "mars" | "moon" | "deep-space";

@@ -1,4 +1,4 @@
-import rawEn from "../../docs/content-data.en.json";
+import rawEn from "./content-data.en.json";
 import { DEFAULT_LANG, type Lang } from "../lib/i18n";
 import { BAB_API, JOURNEYS_API } from "./api";
 import type {
@@ -15,7 +15,7 @@ import type {
 
 /**
  * Pemuat konten bab dan kategori. Bahasa Indonesia berasal dari backend lewat snapshot di ./api (lihat api.ts);
- * English dari docs/content-data.en.json (terjemahan, struktur sama dengan content-data.json). Komponen tidak boleh
+ * English dari content-data.en.json (terjemahan, struktur sama dengan content-data.json). Komponen tidak boleh
  * menulis fakta sendiri: ambil lewat fungsi di sini. Nilai "TBD" dan null dipertahankan.
  */
 type RawBenda = {
