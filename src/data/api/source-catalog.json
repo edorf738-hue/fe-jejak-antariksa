@@ -156,6 +156,45 @@
     "status": "terverifikasi"
   },
   {
+    "id": "referensi-13",
+    "kategori": "referensi",
+    "jenis": "Halaman NASA",
+    "nama": "JPL — The Apollo experiment that keeps on giving",
+    "penerbit": "NASA JPL",
+    "kredit": "NASA JPL",
+    "url": "https://www.jpl.nasa.gov/news/the-apollo-experiment-that-keeps-on-giving/",
+    "lisensi": "Belum ada pernyataan lisensi untuk sumber ini. Jangan dianggap bebas hak cipta sebelum diperiksa.",
+    "diakses": null,
+    "status": "perlu-verifikasi",
+    "catatan": "Dipindahkan dari daftar sumber lama; halaman belum dibuka ulang, jadi belum diverifikasi."
+  },
+  {
+    "id": "referensi-14",
+    "kategori": "referensi",
+    "jenis": "Halaman NASA",
+    "nama": "NASA Science — Spirit",
+    "penerbit": "NASA Science",
+    "kredit": "NASA Science",
+    "url": "https://science.nasa.gov/mission/mer-spirit/",
+    "lisensi": "Belum ada pernyataan lisensi untuk sumber ini. Jangan dianggap bebas hak cipta sebelum diperiksa.",
+    "diakses": null,
+    "status": "perlu-verifikasi",
+    "catatan": "Dipindahkan dari daftar sumber lama; halaman belum dibuka ulang, jadi belum diverifikasi."
+  },
+  {
+    "id": "referensi-15",
+    "kategori": "referensi",
+    "jenis": "Halaman NASA",
+    "nama": "NASA Science — Opportunity",
+    "penerbit": "NASA Science",
+    "kredit": "NASA Science",
+    "url": "https://science.nasa.gov/mission/mer-opportunity/",
+    "lisensi": "Belum ada pernyataan lisensi untuk sumber ini. Jangan dianggap bebas hak cipta sebelum diperiksa.",
+    "diakses": null,
+    "status": "perlu-verifikasi",
+    "catatan": "Dipindahkan dari daftar sumber lama; halaman belum dibuka ulang, jadi belum diverifikasi."
+  },
+  {
     "id": "media-apollo-library",
     "kategori": "media",
     "jenis": "Foto",
