@@ -51,7 +51,7 @@ const ICONS = {
 
 export type IconName = keyof typeof ICONS;
 
-/** Daftar nama ikon (dipakai halaman ui-kit dan untuk iterasi). */
+/** Daftar nama ikon (untuk iterasi). */
 export const ICON_NAMES = Object.keys(ICONS) as IconName[];
 
 type IconProps = Omit<SVGProps<SVGSVGElement>, "name" | "children"> & {
