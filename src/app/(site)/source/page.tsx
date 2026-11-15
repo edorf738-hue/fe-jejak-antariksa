@@ -12,9 +12,10 @@ export const metadata: Metadata = { title: "Sumber — Wayang Antariksa" };
 export default function SourcePage() {
   return (
     <>
-      <PageHeader {...SOURCE_COPY.header} gambar="/images/source/header-sumber.webp" />
-      <div className="relative flex-1">
-        <LatarBerulang gambar="/images/source/latar-arsip.webp" />
+      <PageHeader {...SOURCE_COPY.header} gambar="/images/source/header-sumber-nasa.webp" />
+      {/* Pangkal section: gradien dari warna dasar header (#10131b) agar sambungan header ke latar tidak terlihat. */}
+      <div className="relative flex-1 bg-[linear-gradient(to_bottom,#10131b_0,transparent_260px)] bg-no-repeat">
+        <LatarBerulang gambar="/images/source/latar-arsip-nasa.webp" />
         <SumberDaftar katalog={getKatalogSumber()} />
       </div>
     </>
