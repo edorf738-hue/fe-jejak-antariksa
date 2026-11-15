@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Inter, Rajdhani, Space_Grotesk } from "next/font/google";
+import { LangProvider } from "@/components/ui/LangProvider";
 import { RevealObserver } from "@/components/ui/RevealObserver";
+import { getLang } from "@/lib/lang-server";
 import "./globals.css";
 
 // Font sesuai text style di Figma (docs/FIGMA_HANDOFF.md bagian 2).
@@ -22,17 +24,21 @@ const inter = Inter({
   weight: ["400", "500", "700"],
 });
 
-export const metadata: Metadata = {
-  title: "Wayang Antariksa",
-  description:
-    "Website eksplorasi luar angkasa: storytelling, informasi ilmiah, perjalanan misi, dan visualisasi 3D.",
-};
+const DESKRIPSI = {
+  en: "A space exploration website: storytelling, scientific information, mission journeys, and 3D visualization.",
+  id: "Website eksplorasi luar angkasa: storytelling, informasi ilmiah, perjalanan misi, dan visualisasi 3D.",
+} as const;
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: "Wayang Antariksa", description: DESKRIPSI[await getLang()] };
+}
+
+export default async function RootLayout({ children }: LayoutProps<"/">) {
+  const lang = await getLang();
   return (
     // suppressHydrationWarning: skrip di <head> menambah kelas `js` ke <html> sebelum hidrasi.
     <html
-      lang="id"
+      lang={lang}
       suppressHydrationWarning
       className={`${spaceGrotesk.variable} ${rajdhani.variable} ${inter.variable} h-full antialiased`}
     >
@@ -41,7 +47,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
       </head>
       <body className="min-h-full flex flex-col">
-        {children}
+        <LangProvider lang={lang}>{children}</LangProvider>
         <RevealObserver />
       </body>
     </html>

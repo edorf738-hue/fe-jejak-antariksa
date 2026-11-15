@@ -15,9 +15,12 @@ type BabEditorialProps = {
   keterangan: string;
   /** Susunan dibalik (foto di kiri pada desktop). */
   balik?: boolean;
+  /** Teks per bahasa: label atas ("Bab 01") dan tombol ("Buka Bab 01"). */
+  labelBab: string;
+  labelTombol: string;
 };
 
-export function BabEditorial({ nomor, judul, ringkasan, href, gambar, keterangan, balik = false }: BabEditorialProps) {
+export function BabEditorial({ nomor, judul, ringkasan, href, gambar, keterangan, balik = false, labelBab, labelTombol }: BabEditorialProps) {
   return (
     <div {...reveal(0)}>
       <article className="group grid items-center gap-6 md:gap-8 lg:grid-cols-12 lg:gap-14">
@@ -46,12 +49,12 @@ export function BabEditorial({ nomor, judul, ringkasan, href, gambar, keterangan
           >
             {nomor}
           </span>
-          <p className="text-eyebrow-15 uppercase text-aksen-warisan-normal">Bab {nomor}</p>
+          <p className="text-eyebrow-15 uppercase text-aksen-warisan-normal">{labelBab}</p>
           <h3 className="text-heading-card text-text-primary-normal md:text-heading-section">{judul}</h3>
           <p className="text-body-large max-w-[520px] text-text-secondary-normal">{ringkasan}</p>
           <div className="pt-2">
             <Button href={href} variant="secondary" glass iconRight="panah-kanan" className="max-md:w-full">
-              {`Buka Bab ${nomor}`}
+              {labelTombol}
             </Button>
           </div>
         </div>

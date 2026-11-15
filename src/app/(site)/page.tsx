@@ -1,6 +1,7 @@
 import Image from "next/image";
 import { Button, Container, hitungKata, KartuPlanet, reveal, revealKata, revealKataMuat, revealMuat, SplitText, type JenisPlanet } from "@/components/ui";
 import { getKartuLingkungan, HOME_COPY, type KategoriSlug } from "@/data";
+import { getLang } from "@/lib/lang-server";
 
 /**
  * Beranda. Sumber desain: Figma halaman Prototype, frame `Home — Desktop`
@@ -10,9 +11,10 @@ import { getKartuLingkungan, HOME_COPY, type KategoriSlug } from "@/data";
 /** Jenis planet per lingkungan: Mars, Bulan (tekstur NASA), dan raksasa es bercincin untuk Deep Space (Voyager). */
 const PLANET: Record<KategoriSlug, JenisPlanet> = { mars: "mars", moon: "bulan", "deep-space": "raksasa" };
 
-export default function Home() {
-  const { hero, lingkungan } = HOME_COPY;
-  const kartu = getKartuLingkungan();
+export default async function Home() {
+  const lang = await getLang();
+  const { hero, lingkungan } = HOME_COPY[lang];
+  const kartu = getKartuLingkungan(lang);
 
   return (
     <>
@@ -115,6 +117,7 @@ export default function Home() {
                   delay={i * 140}
                   judul={k.judul}
                   ringkasan={k.ringkasan}
+                  deskripsi={k.deskripsi}
                   href={k.href}
                 />
               ))}

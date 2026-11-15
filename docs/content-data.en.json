@@ -1,0 +1,555 @@
+{
+  "bab": [
+    {
+      "id": 1,
+      "judul": "The Beginning of Exploration",
+      "status": "sebagian",
+      "narasi": "NASA was founded in 1958. Apollo 11 was the result of a long process, not a sudden success.",
+      "hotspot": [
+        "The founding of NASA",
+        "Apollo 8 and 10",
+        "Kennedy's goal"
+      ],
+      "dataBenda": {
+        "nama": "The founding of NASA",
+        "kategori": "History",
+        "deskripsi": "The law establishing NASA was signed on 29 July 1958.",
+        "fakta": "NASA began operating on 1 October 1958",
+        "sumber": "NASA — NASA's Origins"
+      },
+      "catatan": "Hotspot 2 dan 3 belum punya isi data benda (hanya judul).",
+      "dataBendaLain": [
+        {
+          "hotspot": "Apollo 8 and 10",
+          "nama": "Apollo 8 and 10",
+          "kategori": "Missions before Apollo 11",
+          "deskripsi": "Helped prove that a trip to the Moon was possible.",
+          "fakta": "Mentioned in a NASA article",
+          "sumber": "NASA"
+        },
+        {
+          "hotspot": "Kennedy's goal",
+          "nama": "Kennedy's goal",
+          "kategori": "History",
+          "deskripsi": "Kennedy set the goal of landing a human on the Moon.",
+          "fakta": "Set on 25 May 1961",
+          "sumber": "NASA"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "judul": "Exploring the Moon",
+      "status": "lengkap",
+      "narasi": "On 20 July 1969, Eagle landed in the Sea of Tranquility. The first humans landed on the Moon.",
+      "hotspot": [
+        "Eagle descent stage",
+        "Commemorative plaque",
+        "American flag"
+      ],
+      "dataBenda": {
+        "nama": "Eagle descent stage",
+        "kategori": "Left on the Moon",
+        "deskripsi": "The lower part of the Eagle lander, 4.2 m wide.",
+        "fakta": "Dry mass 2,034 kg",
+        "sumber": "NSSDCA",
+        "model3d": {
+          "file": "Apollo Lunar Module.glb",
+          "jenis": "model umum",
+          "catatan": "Bukan model khusus Eagle. Tulis 'model umum' di web."
+        }
+      },
+      "catatan": "Model Apollo Lunar Module adalah model umum, bukan khusus Eagle. Tulis 'model umum' di web.",
+      "dataBendaLain": [
+        {
+          "hotspot": "Commemorative plaque",
+          "nama": "Commemorative plaque",
+          "kategori": "Left on the Moon",
+          "deskripsi": "Mounted on a leg of the Eagle lander.",
+          "fakta": "\"We came in peace for all mankind\"",
+          "sumber": "NSSDCA"
+        },
+        {
+          "hotspot": "American flag",
+          "nama": "American flag",
+          "kategori": "Left on the Moon",
+          "deskripsi": "Planted by the astronauts.",
+          "fakta": "Aldrin saluted it nearby",
+          "sumber": "NASA"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "judul": "Exploring Mars",
+      "status": "teks saja",
+      "narasi": "Two twin rovers landed on Mars in January 2004 to look for traces of water.",
+      "hotspot": [
+        "Spirit rover",
+        "Opportunity rover",
+        "Heat Shield Rock"
+      ],
+      "dataBenda": {
+        "nama": "Spirit rover",
+        "kategori": "Left on Mars, inactive",
+        "deskripsi": "Landed in Gusev Crater on 3 January 2004.",
+        "fakta": "Travelled 7.73 km",
+        "sumber": "NASA Science",
+        "model3d": null,
+        "model3dCatatan": "Belum ada file di repo. Sumber yang disebut dokumen: 'Spirit and Opportunity' (.blend 12 MB, perlu diekspor ke .glb) dan MER Opportunity (MER-B, .glb 36 KB, kemungkinan sederhana). Satu model rover bisa dipakai untuk keduanya."
+      },
+      "catatan": "Belum ada gambar atau model 3D rover. Tanggal peluncuran dan pendaratan Opportunity punya dua versi (NASA Science vs NSSDCA).",
+      "dataBendaLain": [
+        {
+          "hotspot": "Opportunity rover",
+          "nama": "Opportunity rover",
+          "kategori": "Left on Mars, inactive",
+          "deskripsi": "Landed on Meridiani Planum, 24 January 2004.",
+          "fakta": "Travelled 45.16 km",
+          "sumber": "NASA Science"
+        },
+        {
+          "hotspot": "Heat Shield Rock",
+          "nama": "Heat Shield Rock",
+          "kategori": "A find, not an artifact",
+          "deskripsi": "An iron-nickel meteorite found by Opportunity.",
+          "fakta": "TBD",
+          "sumber": "TBD"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "judul": "Exploring Deep Space",
+      "status": "tanpa dokumen sejarah",
+      "narasi": "Voyager 1 and 2 launched in 1977 and are now in interstellar space.",
+      "hotspot": [
+        "Voyager 1",
+        "Voyager 2",
+        "Golden Record"
+      ],
+      "dataBenda": {
+        "nama": "Voyager 1",
+        "kategori": "Still operating",
+        "deskripsi": "Launched on 5 September 1977.",
+        "fakta": "Interstellar since 2012",
+        "sumber": "NASA Science",
+        "model3d": {
+          "file": "Voyager Probe (B).glb",
+          "jenis": "model umum",
+          "catatan": "Voyager 1 dan 2 memakai model yang sama. Versi (antenna) tanpa tekstur dan lebih ringan."
+        }
+      },
+      "catatan": "Data jarak dan kecepatan Voyager 2 belum ada. Posisi terkini berubah tiap hari, tulis tanggal pengambilan data.",
+      "dataBendaLain": [
+        {
+          "hotspot": "Voyager 2",
+          "nama": "Voyager 2",
+          "kategori": "Still operating",
+          "deskripsi": "Launched on 20 August 1977.",
+          "fakta": "Interstellar since 2018",
+          "sumber": "NASA Science"
+        },
+        {
+          "hotspot": "Golden Record",
+          "nama": "Golden Record",
+          "kategori": "Carried aboard",
+          "deskripsi": "A gold-plated copper disc, 30 cm.",
+          "fakta": "Holds greetings in 55 languages and 115 images",
+          "sumber": "NASA"
+        }
+      ]
+    }
+  ],
+  "resources": {
+    "Mars": {
+      "ringkasan": "Twin rovers have been searching for traces of water on Mars since 2004.",
+      "pakaiBab": 3
+    },
+    "Moon": {
+      "ringkasan": "Tranquility Base: the Eagle landing site, 20 July 1969.",
+      "pakaiBab": 2
+    },
+    "Deep Space": {
+      "ringkasan": "Voyager 1 and 2 speed through interstellar space carrying the Golden Record.",
+      "pakaiBab": 4
+    },
+    "faktaMars": [
+      {
+        "isi": "Opportunity travelled 45.16 km, Spirit 7.73 km.",
+        "sumber": "NASA Science"
+      },
+      {
+        "isi": "Opportunity found the mineral hematite; Spirit found goethite and soil that is 90 percent silica.",
+        "sumber": "NASA Science"
+      },
+      {
+        "isi": "Spirit got stuck in soft soil on 1 May 2009; last communication on 22 March 2010.",
+        "sumber": "NASA Science"
+      }
+    ],
+    "galeriMars": [],
+    "panelTambahan": {
+      "Moon": {
+        "fakta": [
+          [
+            "The Eagle descent stage is 4.2 m wide and 1.7 m thick, with a dry mass of 2,034 kg.",
+            "NSSDCA"
+          ],
+          [
+            "Total time on the lunar surface was 21 hours 36 minutes, with about 2.5 hours spent walking on the Moon.",
+            "NASA — Apollo 11 Mission Overview"
+          ],
+          [
+            "Lunar rock and soil samples brought home: 21.55 kg.",
+            "NASA (verification: TBD)"
+          ]
+        ],
+        "galeri": [
+          "Buzz Aldrin saluting near the U.S. flag, Apollo 11, July 1969 (credit: TBD)",
+          null
+        ]
+      },
+      "Deep Space": {
+        "fakta": [
+          [
+            "Voyager 1 was 164.7 AU from the Sun as of 21 August 2024 (older data).",
+            "NASA Science — Voyager 1"
+          ],
+          [
+            "Voyager 2 flew past Uranus on 24 January 1986 and Neptune on 25 August 1989.",
+            "NASA Science"
+          ],
+          [
+            "The Golden Record holds greetings in 55 languages, 35 natural sounds, about 90 minutes of music, and 115 images.",
+            "NASA Science"
+          ]
+        ],
+        "galeri": [
+          "Voyager Golden Record: a 30 cm gold-plated copper disc (credit: TBD)",
+          null
+        ]
+      }
+    }
+  },
+  "misi": {
+    "Bulan": [
+      {
+        "nama": "Apollo 11",
+        "wahana": "Columbia and Eagle",
+        "peluncuran": "16 July 1969",
+        "status": "Completed, splashed down on Earth 24 July 1969",
+        "tiba": "20 July 1969 (U.S. time), Sea of Tranquility",
+        "tujuan": "Land humans on the Moon and bring them back to Earth",
+        "temuan": "Brought home 21.55 kg of lunar rock and soil samples",
+        "kisah": [
+          "In July 1969, three astronauts flew the Apollo 11 mission: Neil Armstrong, Buzz Aldrin, and Michael Collins. Its goal was the national target set by President John F. Kennedy on 25 May 1961: land a human on the Moon and bring them back to Earth.",
+          "On 20 July 1969 (U.S. time), Eagle landed in the Sea of Tranquility. Armstrong and Aldrin went down to the surface while Collins stayed in lunar orbit. They walked on the Moon for about 2.5 hours, collecting rock samples and setting up experiments, then flew home and splashed down in the Pacific Ocean on 24 July."
+        ]
+      },
+      {
+        "nama": "Apollo 8",
+        "wahana": "TBD",
+        "peluncuran": "TBD",
+        "status": "A mission before Apollo 11 (source: NASA)",
+        "temuan": "Helped prove that a trip to the Moon could be done",
+        "kisah": [
+          "Apollo 8 was a mission before Apollo 11. NASA says Apollo 8 helped prove that a trip to the Moon could be done and prepared the next step.",
+          "The full story of this mission is not available yet (TBD)."
+        ]
+      },
+      {
+        "nama": "Apollo 10",
+        "wahana": "TBD",
+        "peluncuran": "TBD",
+        "status": "A mission before Apollo 11 (source: NASA)",
+        "temuan": "Helped prove that a trip to the Moon could be done",
+        "kisah": [
+          "Apollo 10 was a mission before Apollo 11. NASA says Apollo 10 helped prove that a trip to the Moon could be done and prepared the next step.",
+          "The full story of this mission is not available yet (TBD)."
+        ]
+      }
+    ],
+    "Mars": [
+      {
+        "nama": "Spirit",
+        "wahana": "Spirit rover",
+        "peluncuran": "10 June 2003",
+        "status": "Inactive: last communication 22 March 2010; recovery efforts ended 25 May 2011",
+        "tiba": "3 January 2004, Gusev Crater",
+        "tujuan": "Look for traces of water on Mars",
+        "temuan": "The mineral goethite and soil that is 90 percent silica, both linked to water",
+        "kisah": [
+          "In 2003, NASA sent two twin rovers to Mars to look for traces of water. Mars is dry and cold today, but scientists suspected it was once wet. Spirit was sent to Gusev Crater, a large crater that may once have been a lake.",
+          "Spirit found the mineral goethite and soil that is 90 percent silica, both linked to water. It got stuck in soft soil on 1 May 2009 and travelled 7.73 km. Its last communication came on 22 March 2010; official recovery efforts ended on 25 May 2011."
+        ]
+      },
+      {
+        "nama": "Opportunity",
+        "wahana": "Opportunity rover (MER-B)",
+        "peluncuran": "8 July 2003 (UT)",
+        "status": "Inactive: last contact 10 June 2018; NASA declared the mission over on 13 February 2019",
+        "tiba": "24 January 2004, Meridiani Planum",
+        "tujuan": "Look for traces of water on Mars",
+        "temuan": "Found the mineral hematite and traces of salty water; travelled 45.16 km",
+        "catatan": "NASA Science writes 7 July 2003; choose one and note the time zone.",
+        "kisah": [
+          "In 2003, NASA sent two twin rovers to Mars to look for traces of water. Opportunity was sent to Meridiani Planum, a place with minerals that usually form in water.",
+          "Opportunity found the mineral hematite and traces of salty water. On 2 March 2004, NASA announced strong evidence that Meridiani Planum was once wet. Opportunity travelled 45.16 km; last contact came on 10 June 2018 during a global dust storm, and NASA declared the mission over on 13 February 2019."
+        ]
+      },
+      null
+    ],
+    "Deep Space": [
+      {
+        "nama": "Voyager 1",
+        "wahana": "Voyager 1",
+        "peluncuran": "5 September 1977",
+        "status": "Still operating (extended mission)",
+        "tiba": "Entered interstellar space in August 2012",
+        "tujuan": "TBD",
+        "temuan": "Carries the Golden Record: greetings in 55 languages, 115 images",
+        "kisah": [
+          "Voyager 1 launched on 5 September 1977 with a mass of 721.9 kg. It entered interstellar space in August 2012, and since 17 February 1998 it has been the most distant human-made object from the Sun.",
+          "Voyager 1 carries the Golden Record, a gold-plated copper disc holding greetings in 55 languages, 35 natural sounds, about 90 minutes of music, and 115 images. Its mission has been extended and the spacecraft is still operating, although some instruments have been switched off to save power."
+        ]
+      },
+      {
+        "nama": "Voyager 2",
+        "wahana": "Voyager 2",
+        "peluncuran": "20 August 1977",
+        "status": "Still operating (extended mission)",
+        "tiba": "Entered interstellar space on 5 November 2018",
+        "temuan": "Flew past Jupiter, Saturn, Uranus (24 January 1986), and Neptune (25 August 1989)",
+        "kisah": [
+          "Voyager 2 launched on 20 August 1977. It flew past Jupiter, Saturn, Uranus (24 January 1986), and Neptune (25 August 1989), then entered interstellar space on 5 November 2018.",
+          "Like Voyager 1, Voyager 2 carries the Golden Record. Its mission has been extended and the spacecraft is still operating."
+        ]
+      },
+      null
+    ]
+  },
+  "lokasi": [
+    {
+      "nama": "Tranquility Base",
+      "benda": "Moon",
+      "lintang": "0.67416° N",
+      "bujur": "23.47314° E",
+      "sumber": "NSSDCA"
+    },
+    {
+      "nama": "Gusev Crater (Spirit)",
+      "benda": "Mars",
+      "lintang": "14.572° S",
+      "bujur": "175.478° E",
+      "sumber": "NSSDCA"
+    },
+    {
+      "nama": "Meridiani Planum (Opportunity)",
+      "benda": "Mars",
+      "lintang": "1.946° S",
+      "bujur": "354.473° E",
+      "sumber": "NSSDCA"
+    },
+    {
+      "nama": "Where Spirit and Opportunity stopped",
+      "benda": "Mars",
+      "lintang": null,
+      "bujur": null,
+      "catatan": "The source gives no coordinates. Do not invent them."
+    }
+  ],
+  "sumber": [
+    {
+      "judul": "NASA — Apollo 11 Mission Overview",
+      "penerbit": "NASA",
+      "url": "https://www.nasa.gov/missions/apollo/apollo-11/apollo-11-mission-overview/",
+      "diakses": null
+    },
+    {
+      "judul": "NASA — Apollo 11 (mission page)",
+      "penerbit": "NASA",
+      "url": "https://www.nasa.gov/mission/apollo-11",
+      "diakses": null
+    },
+    {
+      "judul": "NSSDCA — Eagle, EASEP, LRRR",
+      "penerbit": "NASA (NSSDCA)",
+      "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=1969-059C",
+      "diakses": null
+    },
+    {
+      "judul": "NASA Science — Mars Exploration Rovers",
+      "penerbit": "NASA",
+      "url": "https://science.nasa.gov/mission/mars-exploration-rovers-spirit-and-opportunity/",
+      "diakses": null
+    },
+    {
+      "judul": "NSSDCA — Spirit",
+      "penerbit": "NASA (NSSDCA)",
+      "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2003-027A",
+      "diakses": null
+    },
+    {
+      "judul": "NSSDCA — Opportunity",
+      "penerbit": "NASA (NSSDCA)",
+      "url": "https://nssdc.gsfc.nasa.gov/nmc/spacecraft/display.action?id=2003-032A",
+      "diakses": null
+    },
+    {
+      "judul": "NASA Science — Voyager 1",
+      "penerbit": "NASA",
+      "url": "https://science.nasa.gov/mission/voyager/voyager-1/",
+      "diakses": null
+    },
+    {
+      "judul": "NASA Science — Where Are They Now",
+      "penerbit": "NASA",
+      "url": "https://science.nasa.gov/mission/voyager/where-are-they-now/",
+      "diakses": null
+    }
+  ],
+  "ringkasanBab": {
+    "1": "NASA was founded in 1958 and began preparing the way to Apollo 11.",
+    "2": "On 20 July 1969, Eagle landed in the Sea of Tranquility and humans set foot on the Moon.",
+    "3": "Two twin rovers, Spirit and Opportunity, have been searching for traces of water on Mars since 2004.",
+    "4": "Voyager 1 and 2 flew into interstellar space carrying the Golden Record."
+  },
+  "detailMisiTambahan": {
+    "Bulan": {
+      "lokasi": "Tranquility Base: 0.67416° N, 23.47314° E (NSSDCA)",
+      "kru": "Neil Armstrong (commander), Michael Collins (command module pilot), Buzz Aldrin (lunar module pilot)",
+      "faktaMenarik": "Medals for three Apollo 1 astronauts and two cosmonauts, and a silicon disc with messages from 73 countries"
+    },
+    "Mars": {
+      "lokasi": "Gusev Crater: 14.572° S, 175.478° E (NSSDCA)",
+      "tokoh": "Steve Squyres, science lead of both rovers (official title: TBD)"
+    },
+    "Deep Space": {
+      "lokasi": "Interstellar space; Voyager 1: 164.7 AU from the Sun as of 21 August 2024 (older data)",
+      "faktaMenarik": "Golden Record: a 30 cm gold-plated copper disc with natural sounds, music, and greetings in 55 languages"
+    }
+  },
+  "kronologi": {
+    "Bulan": [
+      [
+        "16 July 1969",
+        "Saturn V launches from Kennedy Space Center at 09:32 EDT"
+      ],
+      [
+        "19 July",
+        "Enters lunar orbit"
+      ],
+      [
+        "20 July",
+        "Eagle separates from Columbia"
+      ],
+      [
+        "20 July",
+        "Eagle lands in the Sea of Tranquility"
+      ],
+      [
+        "20 July",
+        "Armstrong steps onto the Moon; Aldrin follows about 20 minutes later"
+      ],
+      [
+        "21 July",
+        "Eagle lifts off and docks with Columbia again"
+      ],
+      [
+        "21 July",
+        "Engine fires to head home to Earth"
+      ],
+      [
+        "24 July",
+        "Splashes down in the Pacific Ocean near the USS Hornet"
+      ]
+    ],
+    "Mars": [
+      [
+        "10 June 2003",
+        "Spirit launches (Delta II rocket)"
+      ],
+      [
+        "8 July 2003 (UT)",
+        "Opportunity launches"
+      ],
+      [
+        "3 January 2004",
+        "Spirit lands in Gusev Crater"
+      ],
+      [
+        "24 January 2004",
+        "Opportunity lands on Meridiani Planum"
+      ],
+      [
+        "2 March 2004",
+        "NASA announces strong evidence that Meridiani Planum was once wet"
+      ],
+      [
+        "22 March 2010",
+        "Spirit's last transmission (stuck in sand since 2009)"
+      ],
+      [
+        "10 June 2018",
+        "Last contact with Opportunity during a global dust storm"
+      ]
+    ],
+    "Deep Space": [
+      [
+        "20 August 1977",
+        "Voyager 2 launches"
+      ],
+      [
+        "5 September 1977",
+        "Voyager 1 launches"
+      ],
+      [
+        "24 January 1986",
+        "Voyager 2 flies past Uranus"
+      ],
+      [
+        "25 August 1989",
+        "Voyager 2 flies past Neptune"
+      ],
+      [
+        "August 2012",
+        "Voyager 1 enters interstellar space"
+      ],
+      [
+        "5 November 2018",
+        "Voyager 2 enters interstellar space"
+      ]
+    ]
+  },
+  "detailMisi": {
+    "Bulan": {
+      "wahana": "Columbia (command module), Eagle (lander), Saturn V rocket",
+      "peluncuran": "16 July 1969",
+      "tiba": "20 July 1969 (U.S. time), Sea of Tranquility",
+      "tujuan": "Land humans on the Moon and bring them back to Earth",
+      "status": "Completed · verified: NASA Mission Overview",
+      "temuan": "Brought home 21.55 kg of lunar rock and soil samples"
+    },
+    "Mars": {
+      "wahana": "Spirit rover",
+      "peluncuran": "10 June 2003 (Delta II rocket)",
+      "tiba": "3 January 2004, Gusev Crater",
+      "tujuan": "Look for traces of water on Mars",
+      "status": "Inactive · last communication 22 March 2010; recovery ended 25 May 2011",
+      "temuan": "The mineral goethite and soil that is 90 percent silica, both linked to water"
+    },
+    "Deep Space": {
+      "wahana": "Voyager 1 (mass 721.9 kg)",
+      "peluncuran": "5 September 1977",
+      "tiba": "Entered interstellar space in August 2012",
+      "tujuan": "TBD",
+      "status": "Still operating · verified: NASA table, 17 April 2026",
+      "temuan": "Carries the Golden Record: greetings in 55 languages, 115 images"
+    }
+  },
+  "kredit": {
+    "gambar": [],
+    "model3d": []
+  }
+}

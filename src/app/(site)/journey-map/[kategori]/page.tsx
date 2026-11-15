@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { getJourneyTujuan, isKategoriSlug, KATEGORI_SLUGS } from "@/data";
+import { getLang } from "@/lib/lang-server";
 import { DetailDestinasi } from "./DetailDestinasi";
 
 /**
@@ -14,12 +15,14 @@ export function generateStaticParams() {
 
 export async function generateMetadata(props: PageProps<"/journey-map/[kategori]">): Promise<Metadata> {
   const { kategori } = await props.params;
-  return { title: `Peta Perjalanan: ${isKategoriSlug(kategori) ? getJourneyTujuan(kategori).kategori.nama : ""} — Wayang Antariksa` };
+  const lang = await getLang();
+  return { title: `${lang === "en" ? "Journey Map" : "Peta Perjalanan"}: ${isKategoriSlug(kategori) ? getJourneyTujuan(kategori, lang).kategori.nama : ""} — Wayang Antariksa` };
 }
 
 export default async function JourneyMapPage(props: PageProps<"/journey-map/[kategori]">) {
   const { kategori } = await props.params;
   if (!isKategoriSlug(kategori)) notFound();
+  const lang = await getLang();
   // Peta (planet, jalur) ada di layout; halaman ini hanya detail tujuan, dimuat ulang per tujuan agar reveal-nya berulang.
-  return <DetailDestinasi key={kategori} tujuan={getJourneyTujuan(kategori)} />;
+  return <DetailDestinasi key={kategori} tujuan={getJourneyTujuan(kategori, lang)} />;
 }

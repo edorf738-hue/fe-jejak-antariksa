@@ -1,5 +1,7 @@
-/** Teks state halaman (FIGMA frame "Panel — Kosong / Memuat / Galat" dan "Kosong (Source)"). Draf. */
-export const STATUS_COPY = {
+import type { Lang, Widen } from "../lib/i18n";
+
+/** Teks state halaman (FIGMA frame "Panel — Kosong / Memuat / Galat" dan "Kosong (Source)"), per bahasa. Draf. */
+const ID = {
   tujuanKosong: {
     judul: "Belum ada tujuan dipilih",
     isi: "Pilih Mars, Moon, atau Deep Space di peta untuk melihat misi terkait.",
@@ -41,3 +43,43 @@ export const STATUS_COPY = {
     lanjut: "Lanjut tanpa 3D",
   },
 } as const;
+
+const EN: Widen<typeof ID> = {
+  tujuanKosong: {
+    judul: "No destination selected",
+    isi: "Choose Mars, the Moon, or Deep Space on the map to see its missions.",
+  },
+  misiMemuat: "Loading mission data…",
+  misiGalat: {
+    judul: "Mission data could not be loaded",
+    isi: "Check your connection and try again.",
+    coba: "Try Again",
+  },
+  sumberKosong: {
+    judul: "No sources in this category yet",
+    isi: "Choose another category or go back to All.",
+  },
+  tidakDitemukan: {
+    judul: "Page not found",
+    isi: "The address you opened does not exist or has been moved.",
+    kembali: "Back to Home",
+  },
+  halamanGalat: {
+    judul: "Something went wrong",
+    isi: "The page could not be displayed. Try again, or go back to Home.",
+    coba: "Try Again",
+    kembali: "Back to Home",
+  },
+  scene3dMemuat: {
+    judul: "Loading the 3D environment…",
+    isi: "A still image is shown while the assets load.",
+  },
+  scene3dFallback: {
+    judul: "The 3D environment could not be loaded",
+    isi: "Showing a still image. Check your connection or try again.",
+    cobaLagi: "Try Again",
+    lanjut: "Continue without 3D",
+  },
+};
+
+export const STATUS_COPY: Record<Lang, Widen<typeof ID>> = { id: ID, en: EN };

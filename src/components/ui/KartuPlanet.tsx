@@ -13,13 +13,15 @@ type KartuPlanetProps = {
   jenis: JenisPlanet;
   judul: string;
   ringkasan: string;
+  /** Teks khusus pembaca layar (mis. "Explore the Mars 3D environment."). */
+  deskripsi: string;
   href: string;
   /** Bila diisi (ms), muncul saat masuk layar dengan jeda ini (lihat reveal.ts). */
   delay?: number;
   className?: string;
 };
 
-export function KartuPlanet({ jenis, judul, ringkasan, href, delay, className = "" }: KartuPlanetProps) {
+export function KartuPlanet({ jenis, judul, ringkasan, deskripsi, href, delay, className = "" }: KartuPlanetProps) {
   return (
     <Link
       href={href}
@@ -40,7 +42,7 @@ export function KartuPlanet({ jenis, judul, ringkasan, href, delay, className = 
       >
         <Icon name="panah-kanan" size={20} />
       </span>
-      <span className="sr-only">Jelajahi lingkungan 3D {judul}</span>
+      <span className="sr-only">{deskripsi}</span>
     </Link>
   );
 }

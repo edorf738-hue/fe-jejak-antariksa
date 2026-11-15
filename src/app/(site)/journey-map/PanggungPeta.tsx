@@ -3,7 +3,8 @@
 import Link from "next/link";
 import { useSelectedLayoutSegment } from "next/navigation";
 import type { CSSProperties } from "react";
-import { PlanetCanvas, reveal, type JenisPlanet } from "@/components/ui";
+import { PlanetCanvas, reveal, useLang, type JenisPlanet } from "@/components/ui";
+import { MISC } from "@/lib/ui-copy";
 import type { KategoriSlug } from "@/data";
 
 /**
@@ -116,13 +117,14 @@ function Jalur({ mode, slugs, slug }: { mode: "d" | "m"; slugs: KategoriSlug[]; 
 }
 
 export function PanggungPeta({ daftar, catatan }: { daftar: TujuanPeta[]; catatan: string }) {
+  const m = MISC[useLang()];
   const segmen = useSelectedLayoutSegment();
   const slug = daftar.find((t) => t.slug === segmen)?.slug;
   const slugs = daftar.map((t) => t.slug);
   const bumi = SIMPUL.bumi;
   return (
     <nav
-      aria-label="Tujuan"
+      aria-label={m.tujuan}
       className="relative h-[1130px] overflow-hidden rounded-card border border-archive-slate-normal/70 bg-bg-primary-normal/40 bg-[radial-gradient(ellipse_at_16%_52%,rgba(46,100,180,0.22),transparent_58%)] md:aspect-[1268/620] md:h-auto"
       {...reveal(160)}
     >
@@ -136,7 +138,7 @@ export function PanggungPeta({ daftar, catatan }: { daftar: TujuanPeta[]; catata
           className="text-button-label absolute left-1/2 -translate-x-1/2 text-center text-text-primary-normal [text-shadow:0_1px_12px_rgba(8,11,18,0.95)]"
           style={{ top: `${50 + bumi.radius * 50 + 2}%` }}
         >
-          Bumi
+          {m.bumi}
         </p>
       </div>
 

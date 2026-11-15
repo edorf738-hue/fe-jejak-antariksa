@@ -2,10 +2,9 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Button, Linimasa, revealKata, revealMuat, revealUrut, SplitText } from "@/components/ui";
+import { Button, Linimasa, revealKata, revealMuat, revealUrut, SplitText, useLang } from "@/components/ui";
 import { JOURNEY_COPY, type JourneyTujuan, type PratinjauMisi } from "@/data";
 
-const T = JOURNEY_COPY.pratinjau;
 
 /**
  * Isi Peta Perjalanan setelah tujuan dipilih: Daftar Misi (kartu ringkas), lalu Pratinjau Misi
@@ -23,6 +22,7 @@ function Info({ label, nilai }: { label: string; nilai: string }) {
 }
 
 function Pratinjau({ m, namaTujuan, kisahBuka, onKisah }: { m: PratinjauMisi; namaTujuan: string; kisahBuka: boolean; onKisah: () => void }) {
+  const T = JOURNEY_COPY[useLang()].pratinjau;
   return (
     // `key` di pemanggil memasang ulang panel saat misi berganti, sehingga gerak masuk ringan terulang.
     <article
@@ -87,6 +87,8 @@ function Pratinjau({ m, namaTujuan, kisahBuka, onKisah }: { m: PratinjauMisi; na
 
 /** Kisah misi yang dibuka di tempat (bukan pindah halaman): paragraf kisah, lalu kronologinya bila ada. */
 function KisahMisi({ m }: { m: PratinjauMisi }) {
+  const copy = JOURNEY_COPY[useLang()];
+  const T = copy.pratinjau;
   return (
     <div id="kisah-misi" className="flex scroll-mt-36 flex-col gap-6" {...revealMuat(0)}>
       <section
@@ -109,12 +111,13 @@ function KisahMisi({ m }: { m: PratinjauMisi }) {
           )}
         </div>
       </section>
-      {m.kronologi.length > 0 && <Linimasa eyebrow={JOURNEY_COPY.kronologi.eyebrow} judul={m.judulKronologi} baris={m.kronologi} />}
+      {m.kronologi.length > 0 && <Linimasa eyebrow={copy.kronologi.eyebrow} judul={m.judulKronologi} baris={m.kronologi} />}
     </div>
   );
 }
 
 export function DetailDestinasi({ tujuan }: { tujuan: JourneyTujuan }) {
+  const T = JOURNEY_COPY[useLang()].pratinjau;
   const [dipilih, setDipilih] = useState(0);
   const [kisahBuka, setKisahBuka] = useState(false);
   const { kategori, pratinjau } = tujuan;

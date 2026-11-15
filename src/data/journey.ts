@@ -1,12 +1,14 @@
 import { getKategori, getSumber } from "./content";
 import raw from "../../docs/content-data.json";
+import rawEn from "../../docs/content-data.en.json";
+import { DEFAULT_LANG, type Lang, type Widen } from "../lib/i18n";
 import type { Kategori, KategoriSlug, Misi, Sumber } from "./types";
 
 /**
  * Data halaman Peta Perjalanan (Journey Map) per tujuan: misi terkait, detail misi,
  * kronologi, sumber. Semua dari content-data.json; nilai kosong menjadi TBD di UI.
  */
-export const JOURNEY_COPY = {
+const COPY_ID = {
   header: {
     eyebrow: "Journey Map",
     judul: "Peta perjalanan",
@@ -35,6 +37,29 @@ export const JOURNEY_COPY = {
   sumber: "Sumber",
 } as const;
 
+const COPY_EN: Widen<typeof COPY_ID> = {
+  header: { eyebrow: "Journey Map", judul: "Journey map", deskripsi: "Choose a destination, then choose a mission." },
+  peta: { judul: "Choose a Destination", catatan: "A symbolic layout. Not the real route, distance, or scale." },
+  detail: { eyebrow: "MISSION DETAILS" },
+  pratinjau: {
+    judulMisi: "Missions",
+    labelTahun: "Year",
+    labelStatus: "Status",
+    labelWahana: "Spacecraft",
+    labelTujuan: "Main goal",
+    labelTemuan: "Key achievement",
+    ctaCerita: "Read the Mission Story",
+    tutupKisah: "Close the Mission Story",
+    eyebrowKisah: "MISSION STORY",
+    cta3d: "Explore the 3D Environment",
+    kredit: "Credit",
+  },
+  kronologi: { eyebrow: "TIMELINE" },
+  sumber: "Sources",
+};
+
+export const JOURNEY_COPY: Record<Lang, Widen<typeof COPY_ID>> = { id: COPY_ID, en: COPY_EN };
+
 type DetailTambahan = {
   lokasi?: string;
   kru?: string;
@@ -56,7 +81,7 @@ type RawJourney = {
   detailMisiTambahan: Record<"Bulan" | "Mars" | "Deep Space", DetailTambahan>;
   kronologi: Record<"Bulan" | "Mars" | "Deep Space", [string, string][]>;
 };
-const data = raw as unknown as RawJourney;
+const DATA: Record<Lang, RawJourney> = { id: raw as unknown as RawJourney, en: rawEn as unknown as RawJourney };
 
 const KEY: Record<KategoriSlug, "Bulan" | "Mars" | "Deep Space"> = {
   moon: "Bulan",
@@ -65,10 +90,9 @@ const KEY: Record<KategoriSlug, "Bulan" | "Mars" | "Deep Space"> = {
 };
 
 /** Judul panel kronologi (handoff bagian 5a: Apollo 11, Spirit dan Opportunity, Voyager). */
-const JUDUL_KRONOLOGI: Record<KategoriSlug, string> = {
-  moon: "Kronologi Apollo 11",
-  mars: "Kronologi Spirit dan Opportunity",
-  "deep-space": "Kronologi Voyager",
+const JUDUL_KRONOLOGI: Record<Lang, Record<KategoriSlug, string>> = {
+  id: { moon: "Kronologi Apollo 11", mars: "Kronologi Spirit dan Opportunity", "deep-space": "Kronologi Voyager" },
+  en: { moon: "Apollo 11 Timeline", mars: "Spirit and Opportunity Timeline", "deep-space": "Voyager Timeline" },
 };
 
 /**
@@ -108,7 +132,7 @@ export type PratinjauMisi = {
 /** Foto dokumentasi NASA untuk Pratinjau Misi (berkas di public/images/misi; kredit lengkap di content-data.json `kredit.gambar`). */
 export type FotoMisi = { src: string; alt: string; keterangan: string; kredit: string; posisi?: string };
 
-const FOTO_MISI: Record<string, FotoMisi> = {
+const FOTO_ID: Record<string, FotoMisi> = {
   "Apollo 11": {
     src: "/images/misi/apollo-11.webp",
     alt: "Astronaut Buzz Aldrin berdiri di samping bendera Amerika Serikat di permukaan Bulan",
@@ -142,12 +166,38 @@ const FOTO_MISI: Record<string, FotoMisi> = {
   },
 };
 
+const FOTO_EN: Record<string, FotoMisi> = {
+  "Apollo 11": {
+    ...FOTO_ID["Apollo 11"],
+    alt: "Astronaut Buzz Aldrin standing beside the flag of the United States on the Moon's surface",
+    keterangan: "Edwin Aldrin beside the U.S. flag, Apollo 11, July 1969 (AS11-40-5875)",
+  },
+  Spirit: { ...FOTO_ID.Spirit, alt: "The Spirit rover on the surface of Mars", keterangan: "The Spirit rover in Gusev Crater, Mars (PIA05040)" },
+  Opportunity: { ...FOTO_ID.Opportunity, alt: "A self-portrait of the Opportunity rover on Mars", keterangan: "Self-portrait of the Opportunity rover, January 2014 (PIA17759)" },
+  "Voyager 1": {
+    ...FOTO_ID["Voyager 1"],
+    alt: "An illustration of the Voyager spacecraft in interstellar space",
+    keterangan: "Voyager in interstellar space, artist's concept (not a photo) (PIA21839)",
+  },
+  "Voyager 2": { ...FOTO_ID["Voyager 2"], alt: "The planet Uranus as seen by the Voyager 2 spacecraft", keterangan: "Uranus as seen by Voyager 2 (PIA18182)" },
+};
+
 /** Misi tanpa foto sendiri (Apollo 8, Apollo 10): peta Bulan NASA, diberi keterangan bahwa foto khusus belum ada. */
-const FOTO_CADANGAN: FotoMisi = {
+const CADANGAN_ID: FotoMisi = {
   src: "/images/planet/bulan.webp",
   alt: "Peta permukaan Bulan",
   keterangan: "Peta Bulan NASA (citra LRO), bukan foto misi ini: foto khusus belum tersedia",
   kredit: "NASA's Goddard Space Flight Center",
+};
+const CADANGAN_EN: FotoMisi = {
+  ...CADANGAN_ID,
+  alt: "A map of the Moon's surface",
+  keterangan: "NASA Moon map (LRO imagery), not a photo of this mission: no dedicated photo is available yet",
+};
+
+const FOTO: Record<Lang, { misi: Record<string, FotoMisi>; cadangan: FotoMisi }> = {
+  id: { misi: FOTO_ID, cadangan: CADANGAN_ID },
+  en: { misi: FOTO_EN, cadangan: CADANGAN_EN },
 };
 
 const tahunDari = (teks?: string) => teks?.match(/\b(19|20)\d{2}\b/)?.[0] ?? TBD;
@@ -165,7 +215,13 @@ export type JourneyTujuan = {
   pratinjau: PratinjauMisi[];
 };
 
+const LABEL_DETAIL: Record<Lang, string[]> = {
+  id: ["Wahana", "Tanggal peluncuran", "Tanggal tiba / landing", "Tujuan misi", "Status misi", "Temuan penting", "Lokasi", "Kru", "Tokoh", "Fakta menarik", "Sumber"],
+  en: ["Spacecraft", "Launch date", "Arrival / landing date", "Mission goal", "Mission status", "Key finding", "Location", "Crew", "Key figure", "Fun fact", "Source"],
+};
+
 function detailMisi(
+  lang: Lang,
   m: Misi | null,
   utama: DetailUtama | undefined,
   tambahan: DetailTambahan | undefined,
@@ -173,28 +229,30 @@ function detailMisi(
 ): BarisDetail[] {
   // Misi pertama tiap tujuan memakai teks rinci (`detailMisi` di content-data.json, sama dengan Figma);
   // misi lain memakai field di `misi`.
+  const L = LABEL_DETAIL[lang];
   const baris: BarisDetail[] = [
-    { label: "Wahana", nilai: utama?.wahana ?? m?.wahana ?? TBD },
-    { label: "Tanggal peluncuran", nilai: utama?.peluncuran ?? m?.peluncuran ?? TBD },
-    { label: "Tanggal tiba / landing", nilai: utama?.tiba ?? m?.tiba ?? TBD },
-    { label: "Tujuan misi", nilai: utama?.tujuan ?? m?.tujuan ?? TBD },
-    { label: "Status misi", nilai: utama?.status ?? m?.status ?? TBD },
-    { label: "Temuan penting", nilai: utama?.temuan ?? m?.temuan ?? TBD },
+    { label: L[0], nilai: utama?.wahana ?? m?.wahana ?? TBD },
+    { label: L[1], nilai: utama?.peluncuran ?? m?.peluncuran ?? TBD },
+    { label: L[2], nilai: utama?.tiba ?? m?.tiba ?? TBD },
+    { label: L[3], nilai: utama?.tujuan ?? m?.tujuan ?? TBD },
+    { label: L[4], nilai: utama?.status ?? m?.status ?? TBD },
+    { label: L[5], nilai: utama?.temuan ?? m?.temuan ?? TBD },
   ];
   if (tambahan) {
-    baris.push({ label: "Lokasi", nilai: tambahan.lokasi ?? TBD });
-    if (tambahan.kru) baris.push({ label: "Kru", nilai: tambahan.kru });
-    if (tambahan.tokoh) baris.push({ label: "Tokoh", nilai: tambahan.tokoh });
-    if (tambahan.faktaMenarik) baris.push({ label: "Fakta menarik", nilai: tambahan.faktaMenarik });
+    baris.push({ label: L[6], nilai: tambahan.lokasi ?? TBD });
+    if (tambahan.kru) baris.push({ label: L[7], nilai: tambahan.kru });
+    if (tambahan.tokoh) baris.push({ label: L[8], nilai: tambahan.tokoh });
+    if (tambahan.faktaMenarik) baris.push({ label: L[9], nilai: tambahan.faktaMenarik });
   }
-  baris.push({ label: "Sumber", nilai: sumber?.judul ?? TBD });
+  baris.push({ label: L[10], nilai: sumber?.judul ?? TBD });
   return baris;
 }
 
-export function getJourneyTujuan(slug: KategoriSlug): JourneyTujuan {
-  const kategori = getKategori(slug);
+export function getJourneyTujuan(slug: KategoriSlug, lang: Lang = DEFAULT_LANG): JourneyTujuan {
+  const data = DATA[lang];
+  const kategori = getKategori(slug, lang);
   const key = KEY[slug];
-  const semuaSumber = getSumber();
+  const semuaSumber = getSumber(lang);
   const sumber = INDEKS_SUMBER[slug].flatMap((i) => (semuaSumber[i] ? [semuaSumber[i]] : []));
   const misi = kategori.misi;
   return {
@@ -202,6 +260,7 @@ export function getJourneyTujuan(slug: KategoriSlug): JourneyTujuan {
     misi,
     detail: misi.map((m, i) =>
       detailMisi(
+        lang,
         m,
         i === 0 ? data.detailMisi[key] : undefined,
         i === 0 ? data.detailMisiTambahan[key] : undefined,
@@ -223,13 +282,13 @@ export function getJourneyTujuan(slug: KategoriSlug): JourneyTujuan {
           kisah: m.kisah ?? [],
           // Kronologi di content-data.json milik tujuan: Apollo 11 untuk Bulan (Apollo 8 dan 10 belum punya), seluruh misi di Mars dan Deep Space.
           kronologi: slug !== "moon" || i === 0 ? data.kronologi[key].map(([label, nilai]) => ({ label, nilai })) : [],
-          judulKronologi: JUDUL_KRONOLOGI[slug],
+          judulKronologi: JUDUL_KRONOLOGI[lang][slug],
           hrefLingkungan: `/resources/${slug}`,
-          foto: FOTO_MISI[m.nama] ?? FOTO_CADANGAN,
+          foto: FOTO[lang].misi[m.nama] ?? FOTO[lang].cadangan,
         },
       ];
     }),
-    judulKronologi: JUDUL_KRONOLOGI[slug],
+    judulKronologi: JUDUL_KRONOLOGI[lang][slug],
     kronologi: data.kronologi[key].map(([label, nilai]) => ({ label, nilai })),
     sumber,
   };

@@ -1,4 +1,6 @@
 import raw from "../../docs/content-data.json";
+import rawEn from "../../docs/content-data.en.json";
+import { DEFAULT_LANG, type Lang } from "../lib/i18n";
 import type {
   Bab,
   BabId,
@@ -58,7 +60,8 @@ type RawContent = {
   ringkasanBab: Record<string, string>;
 };
 
-const content = raw as unknown as RawContent;
+/** Konten per bahasa: Indonesia (content-data.json, sumber utama) dan English (content-data.en.json, terjemahan dengan struktur sama). */
+const CONTENT: Record<Lang, RawContent> = { id: raw as unknown as RawContent, en: rawEn as unknown as RawContent };
 
 function toBenda(babId: number, hotspot: string, index: number, b: RawBenda): DataBenda {
   return {
@@ -73,7 +76,7 @@ function toBenda(babId: number, hotspot: string, index: number, b: RawBenda): Da
   };
 }
 
-function toBab(b: RawBab): Bab {
+function toBab(b: RawBab, content: RawContent): Bab {
   const semua = [b.dataBenda, ...b.dataBendaLain];
   // Urutan benda mengikuti urutan hotspot; cocokkan lewat label hotspot atau nama.
   const benda = b.hotspot.flatMap((label, i) => {
@@ -91,14 +94,17 @@ function toBab(b: RawBab): Bab {
   };
 }
 
-const BAB: Bab[] = content.bab.map(toBab);
+const BAB: Record<Lang, Bab[]> = {
+  id: CONTENT.id.bab.map((b) => toBab(b, CONTENT.id)),
+  en: CONTENT.en.bab.map((b) => toBab(b, CONTENT.en)),
+};
 
-export function getDaftarBab(): Bab[] {
-  return BAB;
+export function getDaftarBab(lang: Lang = DEFAULT_LANG): Bab[] {
+  return BAB[lang];
 }
 
-export function getBab(id: number): Bab | undefined {
-  return BAB.find((b) => b.id === id);
+export function getBab(id: number, lang: Lang = DEFAULT_LANG): Bab | undefined {
+  return BAB[lang].find((b) => b.id === id);
 }
 
 const KATEGORI_META: Record<
@@ -116,10 +122,11 @@ export function isKategoriSlug(value: string): value is KategoriSlug {
   return value in KATEGORI_META;
 }
 
-export function getKategori(slug: KategoriSlug): Kategori {
+export function getKategori(slug: KategoriSlug, lang: Lang = DEFAULT_LANG): Kategori {
+  const content = CONTENT[lang];
   const { nama, misiKey } = KATEGORI_META[slug];
   const res = content.resources[nama];
-  const bab = getBab(res.pakaiBab) as Bab;
+  const bab = getBab(res.pakaiBab, lang) as Bab;
   const tambahan = nama === "Mars" ? undefined : content.resources.panelTambahan[nama];
   return {
     slug,
@@ -134,8 +141,8 @@ export function getKategori(slug: KategoriSlug): Kategori {
   };
 }
 
-export function getSumber(): Sumber[] {
-  return content.sumber;
+export function getSumber(lang: Lang = DEFAULT_LANG): Sumber[] {
+  return CONTENT[lang].sumber;
 }
 
 export type KreditEntri = {
@@ -148,5 +155,5 @@ export type KreditEntri = {
 
 /** Kredit gambar dan model 3D (`kredit` di content-data.json). */
 export function getKredit(): { gambar: KreditEntri[]; model3d: KreditEntri[] } {
-  return content.kredit;
+  return CONTENT.id.kredit;
 }

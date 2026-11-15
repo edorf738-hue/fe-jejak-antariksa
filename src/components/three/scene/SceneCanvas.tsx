@@ -5,6 +5,15 @@ import dynamic from "next/dynamic";
 import { useGLTF, useProgress } from "@react-three/drei";
 import { altText, assets, deviceForWidth, type Device, type Environment } from "./config";
 import { useScene, useSceneInternals, type SceneStatus } from "./scene-context";
+import { useLang } from "@/components/ui/LangProvider";
+import { HUD } from "@/lib/ui-copy";
+
+/** English alt text for the poster image (Indonesian lives in config.ts `altText`). */
+const ALT_EN: Record<Environment, string> = {
+  moon: "The lunar surface with Earth rising on the horizon",
+  mars: "The dusty red surface of Mars with rocks and hills under an orange sky",
+  "deep-space": "Deep space with stars, a dusty nebula, a rust-colored planet, and one small moon",
+};
 
 // The 3D bundle (three + R3F) is only downloaded on the client when a scene is shown.
 const SceneRenderer = dynamic(() => import("./SceneRenderer"), { ssr: false });
@@ -66,6 +75,7 @@ export function SceneCanvas({
   onStatusChange?: (status: SceneStatus, progress: number) => void;
 }) {
   const { setStatus, register, setAnchors, paused } = useSceneInternals();
+  const lang = useLang();
   const { rotateYaw, rotatePitch, zoomBy } = useScene();
   const device = useSyncExternalStore(subscribeDevice, getDevice, () => null);
   const webgl = useSyncExternalStore(noop, getWebgl, () => null);
@@ -99,7 +109,7 @@ export function SceneCanvas({
       {...(interactive && {
         tabIndex: 0,
         role: "group",
-        "aria-label": "Scene 3D. Seret atau tekan tombol panah untuk melihat sekeliling, plus dan minus untuk zoom.",
+        "aria-label": HUD[lang].sceneAria,
         onKeyDown: (e: React.KeyboardEvent) => {
           const act: Record<string, () => void> = {
             ArrowLeft: () => rotateYaw(5),
@@ -123,7 +133,7 @@ export function SceneCanvas({
       <picture>
         <source media="(max-width: 575.98px)" srcSet={assets[environment].mobile.poster} />
         <source media="(max-width: 1103.98px)" srcSet={assets[environment].tablet.poster} />
-        <img src={assets[environment].desktop.poster} alt={altText[environment]} fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" />
+        <img src={assets[environment].desktop.poster} alt={lang === "en" ? ALT_EN[environment] : altText[environment]} fetchPriority="high" className="absolute inset-0 h-full w-full object-cover" />
       </picture>
 
       {show3d && (
@@ -148,7 +158,7 @@ export function SceneCanvas({
 
       {!headless && status === "memuat" && show3d && (
         <div role="status" className="absolute inset-x-0 bottom-6 flex flex-col items-center gap-2 text-sm text-[#a8b1c2]">
-          <span>Memuat scene 3D… {Math.round(progress)}%</span>
+          <span>{HUD[lang].sceneMemuat} {Math.round(progress)}%</span>
           <span className="h-1 w-40 overflow-hidden rounded-full bg-white/15">
             <span className="block h-full bg-[#72b8d5]" style={{ width: `${progress}%` }} />
           </span>
@@ -156,7 +166,7 @@ export function SceneCanvas({
       )}
       {!headless && status === "fallback" && (
         <p role="status" className="absolute inset-x-0 bottom-6 text-center text-sm text-[#a8b1c2]">
-          Tampilan 3D tidak tersedia, menampilkan gambar statis.
+          {HUD[lang].sceneFallback}
         </p>
       )}
     </div>

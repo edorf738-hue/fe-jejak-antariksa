@@ -1,3 +1,6 @@
+"use client";
+
+import { useLang } from "@/components/ui";
 import { SOURCE_COPY, type StatusSumber } from "@/data";
 
 const GAYA: Record<StatusSumber, string> = {
@@ -8,9 +11,10 @@ const GAYA: Record<StatusSumber, string> = {
 
 /** Status verifikasi sumber: satu dari tiga (Terverifikasi, Perlu verifikasi, Informasi belum tersedia). */
 export function LencanaStatus({ status }: { status: StatusSumber }) {
+  const c = SOURCE_COPY[useLang()];
   return (
     <span className={`inline-flex w-fit items-center rounded-pill border px-3 py-0.5 text-sm ${GAYA[status]}`}>
-      {SOURCE_COPY.status[status].label}
+      {c.status[status].label}
     </span>
   );
 }

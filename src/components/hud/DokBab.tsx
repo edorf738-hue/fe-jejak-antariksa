@@ -23,6 +23,10 @@ type DokBabProps = {
   labelSebelumnya?: string;
   hrefBerikutnya: string;
   labelBerikutnya: string;
+  /** Teks per bahasa untuk label aksesibilitas: "Navigasi bab", kata "Bab", dan "selesai". */
+  labelNav?: string;
+  kataBab?: string;
+  kataSelesai?: string;
   className?: string;
 };
 
@@ -34,13 +38,16 @@ export function DokBab({
   labelSebelumnya = "Sebelumnya",
   hrefBerikutnya,
   labelBerikutnya,
+  labelNav = "Navigasi bab",
+  kataBab = "Bab",
+  kataSelesai = "selesai",
   className = "",
 }: DokBabProps) {
   return (
     <div
       className={`glass flex w-full flex-col gap-3 rounded-[24px] border border-white/10 p-3 lg:w-[760px] lg:flex-row lg:items-center lg:gap-4 lg:px-4 ${className}`}
     >
-      <nav aria-label="Navigasi bab" className="order-1 min-w-0 lg:order-2 lg:flex-1">
+      <nav aria-label={labelNav} className="order-1 min-w-0 lg:order-2 lg:flex-1">
         <ol className="flex items-start gap-3">
           {label.map((nama, i) => {
             const bab = i + 1;
@@ -58,7 +65,7 @@ export function DokBab({
                 <Link
                   href={hrefBab(bab)}
                   aria-current={sekarang ? "step" : undefined}
-                  aria-label={`Bab ${bab}: ${nama}${selesai ? " (selesai)" : ""}`}
+                  aria-label={`${kataBab} ${bab}: ${nama}${selesai ? ` (${kataSelesai})` : ""}`}
                   className="flex shrink-0 flex-col items-center gap-2.5"
                 >
                   <span

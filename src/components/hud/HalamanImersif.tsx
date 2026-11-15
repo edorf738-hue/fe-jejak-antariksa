@@ -21,8 +21,9 @@ import { Panel } from "./Panel";
 import { LatarScene, Objek3DPlaceholder, PenandaPlaceholder, TitikInfoPlaceholder } from "./ScenePlaceholder";
 import { OverlayMemuat3D, PesanFallback3D } from "./StatusScene";
 import { TombolKembali } from "./TombolKembali";
-import { Button } from "@/components/ui";
-import { PANEL_META, type PanelJenis } from "./TombolPanel";
+import { Button, useLang } from "@/components/ui";
+import { HUD } from "@/lib/ui-copy";
+import type { PanelJenis } from "./TombolPanel";
 
 /**
  * Kerangka halaman imersif (Story Bab 1-4 dan Resources): scene 3D memenuhi layar
@@ -133,6 +134,9 @@ export function HalamanImersif({
   hotspots,
   objek,
 }: HalamanImersifProps) {
+  const lang = useLang();
+  const ic = IMERSIF_COPY[lang];
+  const h = HUD[lang];
   const [panel, setPanel] = useState<PanelJenis | null>(null);
   const [bendaIdx, setBendaIdx] = useState<number | null>(null);
   const gerakDikurangi = useGerakDikurangi();
@@ -258,8 +262,8 @@ export function HalamanImersif({
     else void akar.current?.requestFullscreen?.();
   }
 
-  const media = bendaAktif ? MEDIA_BENDA[bendaAktif.id] : undefined;
-  const catatanModel = media?.catatanModel ?? (bendaAktif?.model3d ? `Model 3D: ${bendaAktif.model3d.jenis}` : undefined);
+  const media = bendaAktif ? MEDIA_BENDA[lang][bendaAktif.id] : undefined;
+  const catatanModel = media?.catatanModel ?? (bendaAktif?.model3d ? `${h.model3d}: ${bendaAktif.model3d.jenis}` : undefined);
   const kartuBawah = bendaAktif && !desktop ? (
     <ObjectPopup
       key={bendaAktif.id}
@@ -267,7 +271,7 @@ export function HalamanImersif({
       media={media?.media}
       catatanModel={catatanModel}
       onTutup={() => setBendaIdx(null)}
-      eyebrow={IMERSIF_COPY.dataBenda.toUpperCase()}
+      eyebrow={ic.dataBenda.toUpperCase()}
       className="hud-masuk [--hud-delay:0s] [--hud-dur:0.5s] [--hud-dy:20px] lg:hidden"
     />
   ) : (
@@ -295,8 +299,8 @@ export function HalamanImersif({
           <div key={bendaAktif.id} className="hud-masuk [--hud-delay:0.3s] [--hud-dur:0.5s]">
             {(pakaiSlot && objek) || (
               <Objek3DPlaceholder
-                judul={IMERSIF_COPY.placeholderModel.judul}
-                status={IMERSIF_COPY.placeholderModel.status}
+                judul={ic.placeholderModel.judul}
+                status={ic.placeholderModel.status}
               />
             )}
           </div>
@@ -339,7 +343,7 @@ export function HalamanImersif({
 
           {scenePlaceholder && (
             <PenandaPlaceholder
-              teks={IMERSIF_COPY.placeholderScene}
+              teks={ic.placeholderScene}
               className="hud-masuk absolute left-0 top-[142px] [--hud-delay:0.4s] [--hud-dur:0.5s] lg:left-28 lg:top-[26px]"
             />
           )}
@@ -347,7 +351,7 @@ export function HalamanImersif({
           {/* Desktop: narasi di kiri atas, kartu data di kanan. */}
           <KartuNarasi
             {...narasi}
-            petunjuk={IMERSIF_COPY.petunjuk}
+            petunjuk={ic.petunjuk}
             className="hud-masuk absolute left-0 top-[77px] [--hud-delay:0.3s] [--hud-dur:0.7s] [--hud-dx:-40px] max-lg:hidden"
           />
           {bendaAktif && !panel && desktop && (
@@ -357,7 +361,7 @@ export function HalamanImersif({
       media={media?.media}
               catatanModel={catatanModel}
               onTutup={() => setBendaIdx(null)}
-              eyebrow={IMERSIF_COPY.dataBenda.toUpperCase()}
+              eyebrow={ic.dataBenda.toUpperCase()}
               className="hud-masuk absolute right-0 top-[100px] max-h-[calc(100%-220px)] [--hud-delay:0s] [--hud-dur:0.5s] [--hud-dx:30px] max-lg:hidden lg:overflow-y-auto"
             />
           )}
@@ -405,10 +409,10 @@ export function HalamanImersif({
 
           {panel && (
             <Panel
-              judul={PANEL_META[panel].label}
+              judul={h.panel[panel]}
               tab={
                 jenisPanel.length > 1 ? (
-                  <div role="group" aria-label="Isi panel" className="flex flex-wrap gap-2">
+                  <div role="group" aria-label={h.isiPanel} className="flex flex-wrap gap-2">
                     {jenisPanel.map((j) => (
                       <button
                         key={j}
@@ -421,14 +425,14 @@ export function HalamanImersif({
                             : "border-archive-slate-normal text-text-primary-normal hover:border-aksen-informasi-normal"
                         }`}
                       >
-                        {PANEL_META[j].label}
+                        {h.panel[j]}
                       </button>
                     ))}
                   </div>
                 ) : undefined
               }
               onTutup={() => setPanel(null)}
-              labelTutup={IMERSIF_COPY.tutup}
+              labelTutup={ic.tutup}
               className="hud-masuk absolute inset-x-0 bottom-6 top-6 z-30 [--hud-dur:0.5s] [--hud-dy:80px] lg:[--hud-dx:60px] lg:[--hud-dy:0px] lg:inset-x-auto lg:bottom-auto lg:right-0 lg:top-[57px] lg:h-[564px] lg:w-[440px]"
             >
               {panelKonten[panel]}

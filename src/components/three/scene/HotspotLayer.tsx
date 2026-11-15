@@ -2,6 +2,8 @@
 
 import { useEffect, useMemo, useRef } from "react";
 import { useImersif } from "@/components/hud";
+import { useLang } from "@/components/ui";
+import { HUD } from "@/lib/ui-copy";
 import { TitikInfoPlaceholder } from "@/components/hud/ScenePlaceholder";
 import type { Environment } from "./config";
 import { objek } from "./objects";
@@ -15,6 +17,7 @@ import { useScene } from "./scene-context";
  */
 export function HotspotLayer({ environment }: { environment: Environment }) {
   const { benda, bendaIdx, pilihBenda, statusScene } = useImersif();
+  const lang = useLang();
   const { anchors, worldToScreen, focusOn, resetCamera } = useScene();
   const refs = useRef(new Map<string, HTMLDivElement>());
 
@@ -80,7 +83,7 @@ export function HotspotLayer({ environment }: { environment: Environment }) {
   if (objek[environment].length === 0) {
     return (
       <p className="glass pointer-events-none absolute bottom-40 left-1/2 z-10 -translate-x-1/2 rounded-pill border border-white/10 px-5 py-2 text-center text-sm text-text-secondary-normal max-lg:w-[calc(100%-48px)] lg:bottom-32">
-        Objek 3D untuk lingkungan ini belum tersedia.
+        {HUD[lang].hotspotBelum}
       </p>
     );
   }

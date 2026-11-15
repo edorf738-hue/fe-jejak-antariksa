@@ -1,11 +1,11 @@
 "use client";
 
-import { Button, Container, PanelStatus } from "@/components/ui";
+import { Button, Container, PanelStatus, useLang } from "@/components/ui";
 import { STATUS_COPY } from "@/data";
 
 /** Galat saat render halaman (di dalam root layout). Copy: draf, lihat status.ts. `retry` = API Next 16.4. */
 export default function Error({ retry }: { error: unknown; retry: () => void }) {
-  const { judul, isi, coba, kembali } = STATUS_COPY.halamanGalat;
+  const { judul, isi, coba, kembali } = STATUS_COPY[useLang()].halamanGalat;
   return (
     <main className="flex flex-1 items-center py-24">
       <Container>

@@ -2,25 +2,37 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Button, Container, SplitText, reveal, revealKataMuat, revealMuat } from "@/components/ui";
 import { getDaftarBabRingkas, STORY_COPY } from "@/data";
+import { getLang } from "@/lib/lang-server";
 import { BabEditorial } from "./BabEditorial";
 
-export const metadata: Metadata = { title: "Cerita — Wayang Antariksa" };
+export async function generateMetadata(): Promise<Metadata> {
+  return { title: `${(await getLang()) === "en" ? "Story" : "Cerita"} — Wayang Antariksa` };
+}
 
 /**
  * Cerita: hero (latar Bumi dari orbit), pengantar singkat, lalu empat bab bergaya editorial yang masing-masing menuju bab
  * imersifnya (/story/1..4). Foto bab dari folder NASA/NASA Assets (foto Apollo 11, Opportunity, ilustrasi Voyager); bab 1
  * memakai foto Apollo 11 karena bab itu menuju Apollo 11. Teks bab dari content-data.json.
  */
-const FOTO_BAB = [
-  { gambar: "/images/story/bab-1-apollo-11-orbit.webp", keterangan: "Apollo 11: modul komando di orbit Bulan. Kredit: NASA." },
-  { gambar: "/images/galeri/moon-aldrin-bendera.webp", keterangan: "Buzz Aldrin memberi hormat di dekat bendera AS. Kredit: NASA." },
-  { gambar: "/images/galeri/mars-opportunity-foto-diri.webp", keterangan: "Foto diri Opportunity, Januari 2014. Kredit: NASA/JPL-Caltech/Cornell Univ./Arizona State Univ." },
-  { gambar: "/images/galeri/deep-space-voyager-konsep.webp", keterangan: "Ilustrasi Voyager di ruang antarbintang. Kredit: NASA/JPL-Caltech." },
-];
+const FOTO_BAB = {
+  id: [
+    { gambar: "/images/story/bab-1-apollo-11-orbit.webp", keterangan: "Apollo 11: modul komando di orbit Bulan. Kredit: NASA." },
+    { gambar: "/images/galeri/moon-aldrin-bendera.webp", keterangan: "Buzz Aldrin memberi hormat di dekat bendera AS. Kredit: NASA." },
+    { gambar: "/images/galeri/mars-opportunity-foto-diri.webp", keterangan: "Foto diri Opportunity, Januari 2014. Kredit: NASA/JPL-Caltech/Cornell Univ./Arizona State Univ." },
+    { gambar: "/images/galeri/deep-space-voyager-konsep.webp", keterangan: "Ilustrasi Voyager di ruang antarbintang. Kredit: NASA/JPL-Caltech." },
+  ],
+  en: [
+    { gambar: "/images/story/bab-1-apollo-11-orbit.webp", keterangan: "Apollo 11: the command module in lunar orbit. Credit: NASA." },
+    { gambar: "/images/galeri/moon-aldrin-bendera.webp", keterangan: "Buzz Aldrin saluting near the U.S. flag. Credit: NASA." },
+    { gambar: "/images/galeri/mars-opportunity-foto-diri.webp", keterangan: "Self-portrait of Opportunity, January 2014. Credit: NASA/JPL-Caltech/Cornell Univ./Arizona State Univ." },
+    { gambar: "/images/galeri/deep-space-voyager-konsep.webp", keterangan: "An illustration of Voyager in interstellar space. Credit: NASA/JPL-Caltech." },
+  ],
+};
 
-export default function StoryPage() {
-  const { header, pembuka, daftar } = STORY_COPY;
-  const bab = getDaftarBabRingkas();
+export default async function StoryPage() {
+  const lang = await getLang();
+  const { header, pembuka, daftar } = STORY_COPY[lang];
+  const bab = getDaftarBabRingkas(lang);
 
   return (
     <>
@@ -68,7 +80,14 @@ export default function StoryPage() {
             {daftar.judul}
           </h2>
           {bab.map((b, i) => (
-            <BabEditorial key={b.href} {...b} {...FOTO_BAB[i]} balik={i % 2 === 1} />
+            <BabEditorial
+              key={b.href}
+              {...b}
+              {...FOTO_BAB[lang][i]}
+              balik={i % 2 === 1}
+              labelBab={lang === "en" ? `Chapter ${b.nomor}` : `Bab ${b.nomor}`}
+              labelTombol={lang === "en" ? `Open Chapter ${b.nomor}` : `Buka Bab ${b.nomor}`}
+            />
           ))}
         </section>
       </Container>

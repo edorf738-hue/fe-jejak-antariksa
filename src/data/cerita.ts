@@ -1,3 +1,5 @@
+import { DEFAULT_LANG, type Lang } from "../lib/i18n";
+import { DATA_EN } from "./cerita.en";
 import { getBab } from "./content";
 import type { BabId } from "./types";
 
@@ -57,7 +59,7 @@ const SUMBER_APOLLO = [
   { judul: "NASA: Apollo 11", url: "https://www.nasa.gov/mission/apollo-11/" },
 ];
 
-const DATA: Record<CeritaSlug, Omit<CeritaBab, "slug" | "babId" | "nomor" | "judul" | "ringkasan">> = {
+const DATA_ID: Record<CeritaSlug, Omit<CeritaBab, "slug" | "babId" | "nomor" | "judul" | "ringkasan">> = {
   "awal-eksplorasi": {
     hero: f("/images/story/bab-1-apollo-11-orbit.webp", "Apollo 11: modul komando di orbit Bulan.", "NASA"),
     pengantar:
@@ -480,15 +482,15 @@ const DATA: Record<CeritaSlug, Omit<CeritaBab, "slug" | "babId" | "nomor" | "jud
   },
 };
 
-export function getCerita(slug: CeritaSlug): CeritaBab {
+export function getCerita(slug: CeritaSlug, lang: Lang = DEFAULT_LANG): CeritaBab {
   const babId = (CERITA_SLUGS.indexOf(slug) + 1) as BabId;
-  const bab = getBab(babId);
+  const bab = getBab(babId, lang);
   return {
     slug,
     babId,
     nomor: String(babId).padStart(2, "0"),
     judul: bab?.judul ?? "",
     ringkasan: bab?.ringkasan ?? "",
-    ...DATA[slug],
+    ...(lang === "en" ? DATA_EN : DATA_ID)[slug],
   };
 }
