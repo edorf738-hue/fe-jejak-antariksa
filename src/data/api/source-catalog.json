@@ -443,7 +443,8 @@
     "rincian": [
       {
         "nama": "Voyager Golden Record (foto piringan dan sampul)",
-        "kredit": "NASA"
+        "kredit": "NASA/JPL-Caltech",
+        "url": "https://science.nasa.gov/resource/voyager-golden-record/"
       },
       {
         "nama": "Jupiter dan Bintik Merah Besar",
@@ -451,7 +452,8 @@
       },
       {
         "nama": "Mosaik bulan Io",
-        "kredit": "NASA"
+        "kredit": "NASA/JPL (PIA02294, Voyager 1)",
+        "url": "https://science.nasa.gov/photojournal/io-2x2-mosaic/"
       },
       {
         "nama": "Pale Blue Dot, ditinjau ulang",
@@ -464,7 +466,8 @@
       },
       {
         "nama": "Saturnus dalam perjalanan Voyager",
-        "kredit": "NASA"
+        "kredit": "NASA/JPL/USGS (PIA00335, Voyager 1)",
+        "url": "https://science.nasa.gov/photojournal/full-disk-color-image-of-crescent-saturn-with-rings-and-ring-shadows/"
       },
       {
         "nama": "Detail cincin Saturnus",
@@ -473,10 +476,11 @@
       },
       {
         "nama": "Voyager 2, penjelajah antarbintang (ilustrasi)",
-        "kredit": "NASA"
+        "kredit": "NASA/JPL-Caltech (PIA22835)",
+        "url": "https://science.nasa.gov/resource/two-interstellar-travelers/"
       }
     ],
-    "catatan": "Dua dari delapan foto sudah dicocokkan dengan halaman NASA (Pale Blue Dot Revisited dan Saturn's Rings, berkas identik); enam lainnya belum dicatat halaman asal dan kredit rincinya."
+    "catatan": "Enam dari delapan foto sudah dicocokkan dengan halaman NASA (berkas identik dengan gambar di halaman): Pale Blue Dot Revisited, Saturn's Rings, Io 2x2 Mosaic, Crescent Saturn, Golden Record, dan Two Interstellar Travelers. Dua foto belum ditemukan halaman asalnya: Jupiter dan Bintik Merah Besar, serta Perubahan atmosfer Saturnus (tidak ada di 23 halaman yang diperiksa). Foto isi Golden Record (48 gambar) tidak dipakai: menurut NASA gambar-gambar itu berhak cipta."
   },
   {
     "id": "media-golden-sampul",
@@ -492,7 +496,8 @@
     "rincian": [
       {
         "nama": "Piring sampul Golden Record",
-        "kredit": "Tidak dinyatakan"
+        "kredit": "Tidak dinyatakan",
+        "url": "https://science.nasa.gov/mission/voyager/golden-record-contents/"
       },
       {
         "nama": "Diagram sampul dengan instruksi",
@@ -502,7 +507,8 @@
         "nama": "Penjelasan diagram sampul",
         "kredit": "Tidak dinyatakan"
       }
-    ]
+    ],
+    "catatan": "Foto piringan sampul identik dengan gambar di halaman Golden Record Contents (NASA); halaman itu tidak menyebut kredit foto. NASA menyatakan gambar-gambar yang ada di dalam Golden Record berhak cipta dan tidak boleh direproduksi tanpa izin; kita hanya menampilkan foto piringan dan sampul."
   },
   {
     "id": "media-hero-beranda",
