@@ -26,7 +26,7 @@ const BAB_KATEGORI: Record<BabId, KategoriSlug> = {
 };
 
 /** Latar sementara per bab/kategori (gambar Figma; Bab 1 = gambar konsep, bukan render 3D). */
-const GAMBAR_KATEGORI: Record<KategoriSlug, string> = {
+export const GAMBAR_KATEGORI: Record<KategoriSlug, string> = {
   mars: "/images/home/kartu-mars.jpg",
   moon: "/images/home/kartu-moon.jpg",
   "deep-space": "/images/home/kartu-deep-space.jpg",

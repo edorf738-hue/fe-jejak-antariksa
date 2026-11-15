@@ -264,13 +264,15 @@
         "nama": "Apollo 8",
         "wahana": "TBD",
         "peluncuran": "TBD",
-        "status": "Misi sebelum Apollo 11 (sumber: NASA)"
+        "status": "Misi sebelum Apollo 11 (sumber: NASA)",
+        "temuan": "Membantu membuktikan bahwa perjalanan ke Bulan dapat dilakukan"
       },
       {
         "nama": "Apollo 10",
         "wahana": "TBD",
         "peluncuran": "TBD",
-        "status": "Misi sebelum Apollo 11 (sumber: NASA)"
+        "status": "Misi sebelum Apollo 11 (sumber: NASA)",
+        "temuan": "Membantu membuktikan bahwa perjalanan ke Bulan dapat dilakukan"
       }
     ],
     "Mars": [
@@ -278,7 +280,7 @@
         "nama": "Spirit",
         "wahana": "Rover Spirit",
         "peluncuran": "10 Juni 2003",
-        "status": "Komunikasi terakhir 22 Maret 2010",
+        "status": "Nonaktif: komunikasi terakhir 22 Maret 2010; upaya pemulihan berakhir 25 Mei 2011",
         "tiba": "3 Januari 2004, Gusev Crater",
         "tujuan": "Mencari jejak air di Mars",
         "temuan": "Mineral goethite dan tanah 90 persen silika, berkaitan dengan air"
@@ -287,7 +289,10 @@
         "nama": "Opportunity",
         "wahana": "Rover Opportunity (MER-B)",
         "peluncuran": "8 Juli 2003 (UT)",
-        "status": "Kontak terakhir 10 Juni 2018",
+        "status": "Nonaktif: kontak terakhir 10 Juni 2018; NASA menyatakan misi berakhir 13 Februari 2019",
+        "tiba": "24 Januari 2004, Meridiani Planum",
+        "tujuan": "Mencari jejak air di Mars",
+        "temuan": "Menemukan mineral hematit dan jejak air asin; menempuh 45,16 km",
         "catatan": "NASA Science menulis 7 Juli 2003; pilih satu dan beri keterangan zona waktu."
       },
       null
@@ -306,7 +311,9 @@
         "nama": "Voyager 2",
         "wahana": "Voyager 2",
         "peluncuran": "20 Agustus 1977",
-        "status": "Masih beroperasi (misi diperpanjang)"
+        "status": "Masih beroperasi (misi diperpanjang)",
+        "tiba": "Masuk ruang antarbintang 5 November 2018",
+        "temuan": "Terbang melewati Jupiter, Saturnus, Uranus (24 Januari 1986), dan Neptunus (25 Agustus 1989)"
       },
       null
     ]
@@ -546,6 +553,62 @@
         "meta": "Kredit: TBD · Diakses: TBD",
         "url": "URL halaman sumber: TBD",
         "atribusi": "Ketentuan penggunaan: TBD (jangan menganggap semua aset NASA bebas ketentuan pihak ketiga)"
+      },
+      {
+        "id": "gambar-peta-bulan-nasa",
+        "judul": "Peta warna Bulan untuk planet di Beranda (dari moon_small.glb, 'Moon 3D Models for Web, AR, and Animation', NASA SVS #14959)",
+        "meta": "Kredit: NASA's Goddard Space Flight Center (produser: Dan Gallagher, eMITS; penyedia data: Ernie Wright, STC). Data: citra Lunar Reconnaissance Orbiter (LRO). · Diakses: 15 November 2026",
+        "url": "https://svs.gsfc.nasa.gov/14959/",
+        "atribusi": "Tekstur cube-map dalam GLB diubah menjadi peta ekuirektangular 2048x1024 (WebP) dan dipakai sebagai tekstur bola di shader WebGL. Halaman sumber tidak mencantumkan lisensi khusus (merujuk Reproduction Guidelines NASA); ketentuan penggunaan: TBD."
+      },
+      {
+        "id": "gambar-planet-prosedural",
+        "judul": "Planet Mars dan raksasa es bercincin (Deep Space) di Beranda: dibuat dengan kode (shader), bukan gambar",
+        "meta": "Pembuat: tim proyek (kode di src/components/ui/PlanetCanvas.tsx) · Bukan citra atau data NASA",
+        "url": "Tidak ada halaman sumber (prosedural)",
+        "atribusi": "Bentuk ilustratif, bukan peta permukaan asli. Mars: warna dan pola karat buatan; Deep Space: raksasa es bercincin sebagai gambaran umum wahana Voyager, bukan benda tertentu."
+      },
+      {
+        "id": "gambar-latar-bumi",
+        "judul": "Latar Beranda bagian Pilih Lingkungan: Bumi dari orbit saat matahari terbit, lengkung atmosfer biru (latar-bumi.webp)",
+        "meta": "Kredit: TBD (gambar diberikan Zhafran; sumber asli belum dicatat) · Diakses: TBD",
+        "url": "URL halaman sumber: TBD",
+        "atribusi": "Ketentuan penggunaan: TBD (jangan menganggap semua aset NASA bebas ketentuan pihak ketiga). Jangan dipublikasikan sebagai foto NASA sebelum sumbernya dipastikan."
+      },
+      {
+        "id": "gambar-misi-apollo-11",
+        "judul": "Astronaut Edwin Aldrin berpose di samping bendera AS yang terpasang, Apollo 11 (AS11-40-5875) (foto Pratinjau Misi Apollo 11)",
+        "meta": "Kredit: NASA (JSC); fotografer tidak tercatat di metadata · Diakses: 15 November 2026",
+        "url": "https://images.nasa.gov/details/as11-40-5875",
+        "atribusi": "Dikonversi ke WebP 1400 px. Ketentuan penggunaan: tidak dinyatakan di halaman aset; merujuk NASA Brand & Usage Guidelines (nasa.gov/nasa-brand-center), belum diverifikasi per aset."
+      },
+      {
+        "id": "gambar-misi-spirit",
+        "judul": "Spirit Stretches Out (PIA05040) (foto Pratinjau Misi Spirit)",
+        "meta": "Kredit: NASA/JPL-Caltech · Diakses: 15 November 2026",
+        "url": "https://images.nasa.gov/details/PIA05040",
+        "atribusi": "Dikonversi ke WebP. Ketentuan penggunaan: tidak dinyatakan di halaman aset; merujuk NASA Brand & Usage Guidelines (nasa.gov/nasa-brand-center), belum diverifikasi per aset."
+      },
+      {
+        "id": "gambar-misi-opportunity",
+        "judul": "Self-Portrait by Opportunity Mars Rover in January 2014 (PIA17759) (foto Pratinjau Misi Opportunity)",
+        "meta": "Kredit: NASA/JPL-Caltech/Cornell Univ./Arizona State Univ. · Diakses: 15 November 2026",
+        "url": "https://images.nasa.gov/details/PIA17759",
+        "atribusi": "Dikonversi ke WebP 1400 px. Ketentuan penggunaan: tidak dinyatakan di halaman aset; merujuk NASA Brand & Usage Guidelines (nasa.gov/nasa-brand-center), belum diverifikasi per aset."
+      },
+      {
+        "id": "gambar-misi-voyager-1",
+        "judul": "Voyager in Deep Space, konsep seniman (PIA21839) (gambar Pratinjau Misi Voyager 1; bukan foto)",
+        "meta": "Kredit: NASA/JPL-Caltech · Diakses: 15 November 2026",
+        "url": "https://images.nasa.gov/details/PIA21839",
+        "atribusi": "Ilustrasi (artist concept). Dikonversi ke WebP. Ketentuan penggunaan: tidak dinyatakan di halaman aset; merujuk NASA Brand & Usage Guidelines (nasa.gov/nasa-brand-center), belum diverifikasi per aset."
+      },
+      {
+        "id": "gambar-misi-voyager-2",
+        "judul": "Uranus as seen by NASA Voyager 2 (PIA18182) (foto Pratinjau Misi Voyager 2)",
+        "meta": "Kredit: NASA/JPL-Caltech · Diakses: 15 November 2026",
+        "url": "https://images.nasa.gov/details/PIA18182",
+        "atribusi": "Dikonversi ke WebP 1400 px. Ketentuan penggunaan: tidak dinyatakan di halaman aset; merujuk NASA Brand & Usage Guidelines (nasa.gov/nasa-brand-center), belum diverifikasi per aset."
       }
     ],
     "model3d": [
