@@ -26,7 +26,7 @@ import { useJellyNav } from "./useJellyNav";
  */
 export const NAV_ITEMS = [
   { label: "Beranda", href: "/", alsoActiveOn: ["/resources"] },
-  { label: "Cerita", href: "/story" },
+  { label: "Cerita", href: "/story", alsoActiveOn: ["/cerita"] },
   { label: "Peta Perjalanan", href: "/journey-map" },
   { label: "Sumber", href: "/source" },
 ] as const;

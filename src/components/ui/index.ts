@@ -1,6 +1,5 @@
 export { Button, type ButtonProps } from "./Button";
 export { Container } from "./Container";
-export { EntriSumber } from "./EntriSumber";
 export { Icon, ICON_NAMES, type IconName } from "./Icon";
 export { IconButton, IconLink } from "./IconButton";
 export { ItemSumber } from "./ItemSumber";
