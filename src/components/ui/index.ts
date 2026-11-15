@@ -1,5 +1,4 @@
 export { Button, type ButtonProps } from "./Button";
-export { CeritaSinematik, type LayarCerita } from "./CeritaSinematik";
 export { Container } from "./Container";
 export { EntriSumber } from "./EntriSumber";
 export { Icon, ICON_NAMES, type IconName } from "./Icon";

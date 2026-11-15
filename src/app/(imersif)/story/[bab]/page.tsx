@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DokBab, HalamanImersif, PanelGaleri, PanelMisi, PanelSumber } from "@/components/hud";
-import { GALERI_FOTO, getBabImersif, getDaftarBab } from "@/data";
+import { GALERI_FOTO, getBabImersif, getDaftarBab, SLUG_BAB } from "@/data";
 import type { Environment } from "@/components/three/scene/config";
 import { HotspotLayer } from "@/components/three/scene/HotspotLayer";
 import { ImersifScene } from "@/components/three/scene/ImersifScene";
@@ -45,7 +45,7 @@ export default async function StoryBabPage(props: PageProps<"/story/[bab]">) {
         gambar={data.gambar}
         scenePlaceholder={data.scenePlaceholder}
         varian="story"
-        kembali={{ href: "/story", label: "Kembali ke Cerita" }}
+        kembali={{ href: `/cerita/${SLUG_BAB[id]}`, label: `Kembali ke cerita Bab ${id}` }}
         narasi={data.narasi}
         benda={data.benda}
         posisiTitik={data.posisiTitik}
