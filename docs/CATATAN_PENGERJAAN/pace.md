@@ -23,7 +23,8 @@ Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 - **Belum selesai / catatan untuk orang lain:**
   - **Zhafran:** komponen Figma **91:97 (Navbar Ringkas)** perlu diperbarui agar sama (panel menu berkaca + fill gelap 80%); sekarang kode menyimpang dari Figma. Copy 404/galat (`status.ts`) berupa **draf**, menunggu persetujuan Zhafran/Dhika.
   - **Dhika (konten):** (1) `INDEKS_SUMBER` (`journey.ts`) pemetaan sumber per tujuan hanyalah usulan menurut topik; (2) Bab 1 memakai panel Moon untuk fakta, misi, sumber, galeri: data panel Bab 1 sendiri TBD; (3) galeri Mars kosong, `resources.galeriMars` siap diisi; (4) kredit gambar/model masih banyak TBD; (5) keputusan tombol Kembali dari halaman imersif (Story -> `/story`, Resources -> `/`) adalah usulan tim dan tidak diubah, menunggu keputusan Dhika.
-  - Tugas opsional D (Jeda Gerak menghentikan animasi placeholder), E (frame Figma "5 Transition" 89:102, perlu Figma MCP), dan F (animasi Beranda) **belum dikerjakan**.
+  - Tugas opsional D (Jeda Gerak menghentikan animasi placeholder) dan F (animasi Beranda) **belum dikerjakan**.
+  - **E. Frame Figma "5 Transition" (89:102): sudah dibaca lewat Figma MCP, TIDAK dikerjakan.** Isinya dua latar render scene 3D yang saling melebur (Latar Asal Mars, Latar Tujuan Moon @50%), overlay gradien, Navbar, penanda "Mars → Moon", dan catatan **"Durasi dan easing transisi: TBD"**. Ini transisi antar scene/tujuan (milik Edo/Zhafran) dan durasi/easing belum diputuskan. Satu-satunya bagian UI murni adalah penanda teks "Mars → Moon" (pill Bg Secondary, Inter Bold 20); ditunda sampai tim 3D menentukan cara transisi dan durasinya. **Pertanyaan untuk Zhafran/Edo:** apakah penanda itu ikut dipakai, dan berapa durasi/easing-nya?
   - `npm install` memodifikasi `package-lock.json`; perubahan itu dibatalkan dan tidak ikut di-commit.
 - **Status:** Review
 
