@@ -19,3 +19,4 @@ export { PenandaDestinasi } from "./PenandaDestinasi";
 export { reveal, revealKata, revealKataMuat, revealMuat, revealUrut } from "./reveal";
 export { RevealObserver } from "./RevealObserver";
 export { hitungKata, SplitText } from "./SplitText";
+export { WatermarkAI } from "./WatermarkAI";
