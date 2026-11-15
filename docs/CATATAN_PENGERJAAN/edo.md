@@ -11,6 +11,14 @@ Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 
 ## Entri
 
+### [2026-11-15] Penggabungan `integrasi/gabungan`, backend API, dan verifikasi kredit Voyager
+- **Tugas / klaim:** menyatukan 3D/Cerita/Sumber (Edo) dengan Beranda, Peta Perjalanan, navbar, tombol, dan animasi reveal (Zhafran); memindahkan konten FE ke backend; memverifikasi kredit aset Voyager.
+- **Branch / PR:** FE `integrasi/gabungan` (sudah di-push, belum PR); BE `feat/api-readonly-awal` di `be-wayang-antariksa` (sudah di-push, belum PR).
+- **Yang dikerjakan:** (1) FE: tombol halaman 3D memakai gaya kaca Zhafran; objek Bulan diberi slot sendiri agar tidak bertumpuk; GSAP dibuang (tween kamera sendiri). (2) BE: API read-only (`chapters`, `scene-objects`, `source-catalog`, `journeys`, `galleries`, plus resource lama), `stories` dan `sources` dihapus (digantikan), tes paginasi dan validasi. (3) FE membaca snapshot `src/data/api/*.json` hasil `npm run data:sync` (otomatis sebelum build bila `API_URL` diatur; tanpa itu snapshot yang di-commit dipakai); `content-data.json` tidak diimpor lagi. (4) Verifikasi 23 halaman NASA Voyager (`docs/VERIFIKASI_VOYAGER.md` di repo BE): 7 dari 8 foto Voyager dicocokkan dengan halaman NASA lewat perbandingan piksel; kredit, URL, dan tanggal akses 15 November 2026 dicatat di katalog.
+- **Hasil uji:** `tsc`, `eslint`, `npm run build` lolos; semua rute 200 di EN dan ID, rute tak dikenal 404, tanpa teks Indonesia nyasar di mode English; tes BE lolos; simulasi merge ke `dev` dan `main` tanpa konflik.
+- **Belum / perlu keputusan:** foto Jupiter dan Bintik Merah Besar serta diagram penjelasan sampul Golden Record belum ditemukan halaman asalnya (tetap perlu verifikasi); Voyager Probe (A) di NASA berlabel misi "Viking 1" (dipakai sebagai model umum); revisi aset 3D (Moon/Mars 360 derajat, ketajaman) dan model Mars yang kurang masih tertunda; hosting BE belum ditentukan (`/assets` BE membaca folder di luar repo); terjemahan English katalog Sumber harus ikut diperbarui tiap teks BE berubah.
+- **Status:** In review
+
 ### [2026-11-15] Revisi halaman Sumber (katalog arsip)
 - **Tugas / klaim:** brief "Revisi halaman SUMBER"
 - **Branch / PR:** `feat/refinement-pengalaman-museum` / belum ada PR
