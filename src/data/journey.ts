@@ -1,6 +1,6 @@
 import { getKategori, getSumber } from "./content";
 import raw from "../../docs/content-data.json";
-import type { BabId, Kategori, KategoriSlug, Misi, Sumber } from "./types";
+import type { Kategori, KategoriSlug, Misi, Sumber } from "./types";
 
 /**
  * Data halaman Peta Perjalanan (Journey Map) per tujuan: misi terkait, detail misi,
@@ -26,6 +26,8 @@ export const JOURNEY_COPY = {
     labelTujuan: "Tujuan utama",
     labelTemuan: "Pencapaian penting",
     ctaCerita: "Baca Kisah Misi",
+    tutupKisah: "Tutup Kisah Misi",
+    eyebrowKisah: "KISAH MISI",
     cta3d: "Jelajahi Lingkungan 3D",
     kredit: "Kredit",
   },
@@ -93,8 +95,11 @@ export type PratinjauMisi = {
   wahana: string;
   tujuan: string;
   temuan: string;
-  /** Halaman Cerita (bab) yang membahas misi ini. */
-  hrefCerita: string;
+  /** Kisah singkat misi (paragraf); tampil di halaman saat tombol Baca Kisah Misi ditekan. */
+  kisah: string[];
+  /** Kronologi tujuan misi ini; kosong bila misi belum punya kronologi (Apollo 8 dan 10). */
+  kronologi: BarisDetail[];
+  judulKronologi: string;
   /** Lingkungan 3D (Resources) tujuan ini. */
   hrefLingkungan: string;
   foto: FotoMisi;
@@ -144,12 +149,6 @@ const FOTO_CADANGAN: FotoMisi = {
   keterangan: "Peta Bulan NASA (citra LRO), bukan foto misi ini: foto khusus belum tersedia",
   kredit: "NASA's Goddard Space Flight Center",
 };
-
-/**
- * Misi yang dibahas di bab lain dari bab tujuannya: Apollo 8 dan Apollo 10 disebut di Bab 1
- * ("Apollo 8 dan 10", Awal Eksplorasi), bukan di Bab 2 (Eksplorasi Bulan, khusus Apollo 11).
- */
-const BAB_MISI: Record<string, BabId> = { "Apollo 8": 1, "Apollo 10": 1 };
 
 const tahunDari = (teks?: string) => teks?.match(/\b(19|20)\d{2}\b/)?.[0] ?? TBD;
 
@@ -221,7 +220,10 @@ export function getJourneyTujuan(slug: KategoriSlug): JourneyTujuan {
           wahana: m.wahana || utama?.wahana || TBD,
           tujuan: m.tujuan ?? utama?.tujuan ?? TBD,
           temuan: m.temuan ?? utama?.temuan ?? TBD,
-          hrefCerita: `/story/${BAB_MISI[m.nama] ?? kategori.bab.id}`,
+          kisah: m.kisah ?? [],
+          // Kronologi di content-data.json milik tujuan: Apollo 11 untuk Bulan (Apollo 8 dan 10 belum punya), seluruh misi di Mars dan Deep Space.
+          kronologi: slug !== "moon" || i === 0 ? data.kronologi[key].map(([label, nilai]) => ({ label, nilai })) : [],
+          judulKronologi: JUDUL_KRONOLOGI[slug],
           hrefLingkungan: `/resources/${slug}`,
           foto: FOTO_MISI[m.nama] ?? FOTO_CADANGAN,
         },

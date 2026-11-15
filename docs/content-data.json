@@ -258,21 +258,33 @@
         "status": "Selesai, mendarat di Bumi 24 Juli 1969",
         "tiba": "20 Juli 1969 (waktu Amerika), Sea of Tranquility",
         "tujuan": "Mendaratkan manusia di Bulan dan membawanya kembali ke Bumi",
-        "temuan": "Membawa pulang 21,55 kg sampel batuan dan tanah Bulan"
+        "temuan": "Membawa pulang 21,55 kg sampel batuan dan tanah Bulan",
+        "kisah": [
+          "Pada Juli 1969, tiga astronaut menjalankan misi Apollo 11: Neil Armstrong, Buzz Aldrin, dan Michael Collins. Tujuannya menjalankan target yang ditetapkan Presiden John F. Kennedy pada 25 Mei 1961: mendaratkan manusia di Bulan dan membawanya kembali ke Bumi.",
+          "Pada 20 Juli 1969 (waktu Amerika), Eagle mendarat di Sea of Tranquility. Armstrong dan Aldrin turun ke permukaan, sementara Collins tetap di orbit Bulan. Mereka berjalan di Bulan sekitar 2,5 jam, mengumpulkan sampel batuan dan memasang alat percobaan, lalu pulang dan mendarat di Samudra Pasifik pada 24 Juli."
+        ]
       },
       {
         "nama": "Apollo 8",
         "wahana": "TBD",
         "peluncuran": "TBD",
         "status": "Misi sebelum Apollo 11 (sumber: NASA)",
-        "temuan": "Membantu membuktikan bahwa perjalanan ke Bulan dapat dilakukan"
+        "temuan": "Membantu membuktikan bahwa perjalanan ke Bulan dapat dilakukan",
+        "kisah": [
+          "Apollo 8 adalah misi sebelum Apollo 11. NASA menyebut Apollo 8 membantu membuktikan bahwa perjalanan ke Bulan dapat dilakukan dan mempersiapkan langkah berikutnya.",
+          "Kisah lengkap misi ini belum tersedia (TBD)."
+        ]
       },
       {
         "nama": "Apollo 10",
         "wahana": "TBD",
         "peluncuran": "TBD",
         "status": "Misi sebelum Apollo 11 (sumber: NASA)",
-        "temuan": "Membantu membuktikan bahwa perjalanan ke Bulan dapat dilakukan"
+        "temuan": "Membantu membuktikan bahwa perjalanan ke Bulan dapat dilakukan",
+        "kisah": [
+          "Apollo 10 adalah misi sebelum Apollo 11. NASA menyebut Apollo 10 membantu membuktikan bahwa perjalanan ke Bulan dapat dilakukan dan mempersiapkan langkah berikutnya.",
+          "Kisah lengkap misi ini belum tersedia (TBD)."
+        ]
       }
     ],
     "Mars": [
@@ -283,7 +295,11 @@
         "status": "Nonaktif: komunikasi terakhir 22 Maret 2010; upaya pemulihan berakhir 25 Mei 2011",
         "tiba": "3 Januari 2004, Gusev Crater",
         "tujuan": "Mencari jejak air di Mars",
-        "temuan": "Mineral goethite dan tanah 90 persen silika, berkaitan dengan air"
+        "temuan": "Mineral goethite dan tanah 90 persen silika, berkaitan dengan air",
+        "kisah": [
+          "Pada 2003, NASA mengirim dua rover kembar ke Mars untuk mencari jejak air. Mars saat ini kering dan dingin, tetapi ilmuwan menduga dulunya basah. Spirit dikirim ke Gusev Crater, kawah besar yang mungkin dulunya danau.",
+          "Spirit menemukan mineral goethite dan tanah yang 90 persen silika, yang berkaitan dengan air. Ia terjebak di tanah lunak pada 1 Mei 2009 dan menempuh 7,73 km. Komunikasi terakhirnya terjadi pada 22 Maret 2010; upaya pemulihan resmi berakhir 25 Mei 2011."
+        ]
       },
       {
         "nama": "Opportunity",
@@ -293,7 +309,11 @@
         "tiba": "24 Januari 2004, Meridiani Planum",
         "tujuan": "Mencari jejak air di Mars",
         "temuan": "Menemukan mineral hematit dan jejak air asin; menempuh 45,16 km",
-        "catatan": "NASA Science menulis 7 Juli 2003; pilih satu dan beri keterangan zona waktu."
+        "catatan": "NASA Science menulis 7 Juli 2003; pilih satu dan beri keterangan zona waktu.",
+        "kisah": [
+          "Pada 2003, NASA mengirim dua rover kembar ke Mars untuk mencari jejak air. Opportunity dikirim ke Meridiani Planum, tempat yang mengandung mineral yang biasanya terbentuk di air.",
+          "Opportunity menemukan mineral hematit dan jejak air asin. Pada 2 Maret 2004 NASA mengumumkan bukti kuat bahwa Meridiani Planum dulu basah. Opportunity menempuh 45,16 km; kontak terakhir terjadi pada 10 Juni 2018 saat badai debu global, dan NASA menyatakan misinya berakhir 13 Februari 2019."
+        ]
       },
       null
     ],
@@ -305,7 +325,11 @@
         "status": "Masih beroperasi (misi diperpanjang)",
         "tiba": "Masuk ruang antarbintang Agustus 2012",
         "tujuan": "TBD",
-        "temuan": "Membawa Golden Record: salam 55 bahasa, 115 gambar"
+        "temuan": "Membawa Golden Record: salam 55 bahasa, 115 gambar",
+        "kisah": [
+          "Voyager 1 diluncurkan pada 5 September 1977 dengan massa 721,9 kg. Ia memasuki ruang antarbintang pada Agustus 2012, dan sejak 17 Februari 1998 menjadi objek buatan manusia terjauh dari Matahari.",
+          "Voyager 1 membawa Golden Record, piringan tembaga berlapis emas berisi salam dalam 55 bahasa, 35 suara alam, sekitar 90 menit musik, dan 115 gambar. Misinya diperpanjang dan pesawat masih beroperasi, meski sebagian instrumen sudah dimatikan untuk menghemat daya."
+        ]
       },
       {
         "nama": "Voyager 2",
@@ -313,7 +337,11 @@
         "peluncuran": "20 Agustus 1977",
         "status": "Masih beroperasi (misi diperpanjang)",
         "tiba": "Masuk ruang antarbintang 5 November 2018",
-        "temuan": "Terbang melewati Jupiter, Saturnus, Uranus (24 Januari 1986), dan Neptunus (25 Agustus 1989)"
+        "temuan": "Terbang melewati Jupiter, Saturnus, Uranus (24 Januari 1986), dan Neptunus (25 Agustus 1989)",
+        "kisah": [
+          "Voyager 2 diluncurkan pada 20 Agustus 1977. Ia terbang melewati Jupiter, Saturnus, Uranus (24 Januari 1986), dan Neptunus (25 Agustus 1989), lalu memasuki ruang antarbintang pada 5 November 2018.",
+          "Seperti Voyager 1, Voyager 2 membawa Golden Record. Misinya diperpanjang dan pesawat masih beroperasi."
+        ]
       },
       null
     ]

@@ -47,6 +47,8 @@ export type Misi = {
   tiba?: string;
   tujuan?: string;
   temuan?: string;
+  /** Kisah singkat misi (paragraf), dari materi NASA History; tampil saat tombol Baca Kisah Misi ditekan. */
+  kisah?: string[];
   catatan?: string;
 };
 

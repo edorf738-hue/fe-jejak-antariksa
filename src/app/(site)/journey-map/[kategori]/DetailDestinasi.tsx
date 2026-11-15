@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { useState } from "react";
-import { Button, revealKata, revealMuat, revealUrut, SplitText } from "@/components/ui";
+import { Button, Linimasa, revealKata, revealMuat, revealUrut, SplitText } from "@/components/ui";
 import { JOURNEY_COPY, type JourneyTujuan, type PratinjauMisi } from "@/data";
 
 const T = JOURNEY_COPY.pratinjau;
@@ -22,7 +22,7 @@ function Info({ label, nilai }: { label: string; nilai: string }) {
   );
 }
 
-function Pratinjau({ m, namaTujuan }: { m: PratinjauMisi; namaTujuan: string }) {
+function Pratinjau({ m, namaTujuan, kisahBuka, onKisah }: { m: PratinjauMisi; namaTujuan: string; kisahBuka: boolean; onKisah: () => void }) {
   return (
     // `key` di pemanggil memasang ulang panel saat misi berganti, sehingga gerak masuk ringan terulang.
     <article
@@ -73,8 +73,8 @@ function Pratinjau({ m, namaTujuan }: { m: PratinjauMisi; namaTujuan: string }) 
         </div>
 
         <div className="flex flex-wrap gap-3 pt-1">
-          <Button href={m.hrefCerita} iconRight="panah-kanan">
-            {T.ctaCerita}
+          <Button onClick={onKisah} aria-expanded={kisahBuka} aria-controls="kisah-misi" iconRight={kisahBuka ? "panah-atas" : "panah-bawah"}>
+            {kisahBuka ? T.tutupKisah : T.ctaCerita}
           </Button>
           <Button href={m.hrefLingkungan} variant="secondary" iconRight="panah-kanan">
             {T.cta3d}
@@ -85,10 +85,50 @@ function Pratinjau({ m, namaTujuan }: { m: PratinjauMisi; namaTujuan: string }) 
   );
 }
 
+/** Kisah misi yang dibuka di tempat (bukan pindah halaman): paragraf kisah, lalu kronologinya bila ada. */
+function KisahMisi({ m }: { m: PratinjauMisi }) {
+  return (
+    <div id="kisah-misi" className="flex scroll-mt-36 flex-col gap-6" {...revealMuat(0)}>
+      <section
+        aria-labelledby="judul-kisah"
+        className="flex flex-col gap-4 rounded-card border border-archive-slate-normal bg-bg-secondary-normal px-5 py-7 md:p-10"
+      >
+        <p className="text-eyebrow-15 text-aksen-warisan-normal">{T.eyebrowKisah}</p>
+        <h3 id="judul-kisah" className="text-heading-section text-text-primary-normal">
+          {m.nama}
+        </h3>
+        <div className="flex max-w-[760px] flex-col gap-4">
+          {m.kisah.length > 0 ? (
+            m.kisah.map((p) => (
+              <p key={p} className="text-body-large text-text-secondary-normal">
+                {p}
+              </p>
+            ))
+          ) : (
+            <p className="text-body-large text-text-secondary-normal">TBD</p>
+          )}
+        </div>
+      </section>
+      {m.kronologi.length > 0 && <Linimasa eyebrow={JOURNEY_COPY.kronologi.eyebrow} judul={m.judulKronologi} baris={m.kronologi} />}
+    </div>
+  );
+}
+
 export function DetailDestinasi({ tujuan }: { tujuan: JourneyTujuan }) {
   const [dipilih, setDipilih] = useState(0);
+  const [kisahBuka, setKisahBuka] = useState(false);
   const { kategori, pratinjau } = tujuan;
   const aktif = pratinjau[dipilih];
+  // Buka: gulir halus ke panel kisah (langsung bila gerak dikurangi); tutup: kembali ke pratinjau.
+  const bukaTutupKisah = () => {
+    const buka = !kisahBuka;
+    setKisahBuka(buka);
+    if (!buka) return;
+    requestAnimationFrame(() => {
+      const hemat = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+      document.getElementById("kisah-misi")?.scrollIntoView({ behavior: hemat ? "auto" : "smooth", block: "start" });
+    });
+  };
   if (!aktif) return null;
 
   return (
@@ -120,7 +160,8 @@ export function DetailDestinasi({ tujuan }: { tujuan: JourneyTujuan }) {
         })}
       </ul>
 
-      <Pratinjau key={aktif.nama} m={aktif} namaTujuan={kategori.nama} />
+      <Pratinjau key={`p-${aktif.nama}`} m={aktif} namaTujuan={kategori.nama} kisahBuka={kisahBuka} onKisah={bukaTutupKisah} />
+      {kisahBuka && <KisahMisi key={`k-${aktif.nama}`} m={aktif} />}
     </section>
   );
 }
