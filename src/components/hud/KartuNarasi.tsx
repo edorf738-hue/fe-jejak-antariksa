@@ -16,10 +16,10 @@ type KartuNarasiProps = {
 export function KartuNarasi({ eyebrow, judul, isi, petunjuk, className = "" }: KartuNarasiProps) {
   return (
     <article
-      className={`glass flex w-full flex-col gap-2 break-words rounded-[24px] border border-white/10 p-5 lg:w-[330px] lg:p-5 ${className}`}
+      className={`glass flex w-full flex-col gap-1.5 break-words rounded-[20px] border border-white/10 p-4 lg:w-[330px] lg:gap-2 lg:rounded-[24px] lg:p-5 ${className}`}
     >
       <p className="text-eyebrow-15 text-aksen-warisan-normal">{eyebrow}</p>
-      <h2 className="text-2xl font-bold leading-8 text-text-primary-normal">{judul}</h2>
+      <h2 className="text-xl font-bold leading-7 text-text-primary-normal lg:text-2xl lg:leading-8">{judul}</h2>
       <p className="line-clamp-2 text-sm leading-5 text-text-secondary-normal">{isi}</p>
       {petunjuk && <p className="text-sm text-aksen-informasi-normal max-lg:hidden">{petunjuk}</p>}
     </article>

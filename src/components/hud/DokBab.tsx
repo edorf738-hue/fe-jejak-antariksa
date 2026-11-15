@@ -45,7 +45,7 @@ export function DokBab({
 }: DokBabProps) {
   return (
     <div
-      className={`glass flex w-full flex-col gap-3 rounded-[24px] border border-white/10 p-3 lg:w-[760px] lg:flex-row lg:items-center lg:gap-4 lg:px-4 ${className}`}
+      className={`glass flex w-full flex-col gap-2 rounded-[20px] border border-white/10 p-2.5 lg:w-[760px] lg:gap-3 lg:rounded-[24px] lg:p-3 lg:flex-row lg:items-center lg:gap-4 lg:px-4 ${className}`}
     >
       <nav aria-label={labelNav} className="order-1 min-w-0 lg:order-2 lg:flex-1">
         <ol className="flex items-start gap-3">
@@ -56,7 +56,7 @@ export function DokBab({
             return (
               <li key={bab} className="contents">
                 {i > 0 && (
-                  <span aria-hidden="true" className="flex h-11 min-w-0 flex-1 items-center">
+                  <span aria-hidden="true" className="flex h-9 min-w-0 flex-1 items-center lg:h-11">
                     <span
                       className={`h-0.5 flex-1 ${i < aktif ? "bg-aksen-informasi-dark" : "bg-archive-slate-normal"}`}
                     />
@@ -69,7 +69,7 @@ export function DokBab({
                   className="flex shrink-0 flex-col items-center gap-2.5"
                 >
                   <span
-                    className={`text-button-label flex size-11 items-center justify-center rounded-full ${
+                    className={`text-button-label flex size-9 items-center justify-center rounded-full lg:size-11 ${
                       sekarang
                         ? "bg-aksen-informasi-normal text-bg-primary-normal"
                         : selesai
@@ -103,12 +103,12 @@ export function DokBab({
             variant="secondary"
             kaca
             iconLeft="panah-kiri"
-            className="flex-1 py-2! lg:order-1 lg:w-[140px] whitespace-nowrap lg:flex-none"
+            className="min-w-0 flex-1 py-2! max-lg:px-3! max-lg:text-base! lg:order-1 lg:w-[140px] whitespace-nowrap lg:flex-none"
           >
             {labelSebelumnya}
           </Button>
         )}
-        <Button href={hrefBerikutnya} kaca iconRight="panah-kanan" className="flex-1 py-2! lg:order-3 lg:w-[140px] whitespace-nowrap lg:flex-none">
+        <Button href={hrefBerikutnya} kaca iconRight="panah-kanan" className="min-w-0 flex-1 py-2! max-lg:px-3! max-lg:text-base! lg:order-3 lg:w-[140px] whitespace-nowrap lg:flex-none">
           {labelBerikutnya}
         </Button>
       </div>

@@ -42,14 +42,14 @@ const defaultRig: RigConfig = {
   parallaxDeg: 5,
   guidedStartDeg: 6,
   guidedSeconds: 2.2,
-  pitchDeg: { desktop: 0, tablet: 0, mobile: 0 },
+  pitchDeg: { desktop: 0, tablet: 0, mobile: -12 }, // portrait: look down a little so the ground and its objects sit above the bottom HUD
 };
 export const rig: Record<Environment, RigConfig> = {
   moon: defaultRig,
   mars: defaultRig, // Mars v3 GLB cameras already carry the render's pitch (about 8 degrees)
   // Deep Space is a sky only (dome + stars + planet), so it can be explored in every direction.
   // Its atmosphere is baked for a camera at the origin: turning in place is fine.
-  "deep-space": { ...defaultRig, yawLimitDeg: Infinity, worldHalfDeg: Infinity, pitchUpDeg: 85, pitchDownDeg: 85, zoomIn: 0.3, zoomOut: 1.3, guidedStartDeg: 4 },
+  "deep-space": { ...defaultRig, pitchDeg: { desktop: 0, tablet: 0, mobile: 0 }, yawLimitDeg: Infinity, worldHalfDeg: Infinity, pitchUpDeg: 85, pitchDownDeg: 85, zoomIn: 0.3, zoomOut: 1.3, guidedStartDeg: 4 },
 };
 
 // Look of each environment. The GLB sun is exported raw, so exposure and fill light are set here.

@@ -388,7 +388,7 @@ export function HalamanImersif({
           />
 
           {/* Tumpukan bawah (tablet/mobile): kartu narasi atau data benda, lalu dok. */}
-          <div className="absolute inset-x-0 bottom-3 flex flex-col gap-3 lg:hidden">
+          <div className="absolute inset-x-0 bottom-2 flex flex-col gap-2 lg:hidden">
             {kartuBawah}
             <div className="hud-masuk [--hud-delay:0.6s] [--hud-dy:40px]">{dok}</div>
           </div>
