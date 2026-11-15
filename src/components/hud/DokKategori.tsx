@@ -16,7 +16,7 @@ export function DokKategori({ items, aktifHref, className = "" }: DokKategoriPro
   return (
     <nav
       aria-label="Kategori"
-      className={`glass flex w-full flex-wrap items-center justify-center gap-3 rounded-[28px] border border-archive-slate-normal p-4 md:px-6 lg:w-[700px] ${className}`}
+      className={`flex w-full flex-wrap items-center justify-center gap-3 lg:w-auto ${className}`}
     >
       {items.map((item) => {
         const aktif = item.href === aktifHref;
@@ -25,6 +25,7 @@ export function DokKategori({ items, aktifHref, className = "" }: DokKategoriPro
             key={item.href}
             href={item.href}
             variant={aktif ? "primary" : "secondary"}
+            glass={!aktif}
             aria-current={aktif ? "page" : undefined}
           >
             {item.label}

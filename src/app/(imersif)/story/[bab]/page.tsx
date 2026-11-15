@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { DokBab, HalamanImersif, PanelMisi, PanelSumber } from "@/components/hud";
-import { getBabImersif, getDaftarBab } from "@/data";
+import { DokBab, HalamanImersif, PanelGaleri, PanelMisi, PanelSumber } from "@/components/hud";
+import { GALERI_FOTO, getBabImersif, getDaftarBab } from "@/data";
 import type { Environment } from "@/components/three/scene/config";
+import { HotspotLayer } from "@/components/three/scene/HotspotLayer";
 import { ImersifScene } from "@/components/three/scene/ImersifScene";
 import { SceneProvider } from "@/components/three/scene/scene-context";
 
@@ -50,9 +51,11 @@ export default async function StoryBabPage(props: PageProps<"/story/[bab]">) {
         posisiTitik={data.posisiTitik}
         fokusGambar={data.fokusGambar}
         scene={lingkungan ? <ImersifScene environment={lingkungan} /> : undefined}
-        jenisPanel={["misi", "sumber"]}
+        hotspots={lingkungan ? <HotspotLayer environment={lingkungan} /> : undefined}
+        jenisPanel={lingkungan ? ["misi", "galeri", "sumber"] : ["misi", "sumber"]}
         panelKonten={{
           misi: <PanelMisi misi={data.panel.misi} />,
+          galeri: lingkungan ? <PanelGaleri galeri={data.panel.galeri} foto={GALERI_FOTO[lingkungan]} /> : undefined,
           sumber: <PanelSumber sumber={data.panel.sumber} />,
         }}
         dok={

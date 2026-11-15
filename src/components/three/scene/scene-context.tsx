@@ -5,6 +5,8 @@ import type { Camera } from "three";
 
 export type SceneStatus = "memuat" | "siap" | "fallback";
 export type ScreenPoint = { x: number; y: number; terlihat: boolean };
+/** A hotspot position tied to a placed 3D object: index into the page's `benda`, and its 3D world position. */
+export type SceneAnchor = { id: string; bendaIdx: number; pos: [number, number, number] };
 
 // What <SceneCanvas> registers once its 3D scene is ready.
 export type SceneImpl = {
@@ -14,6 +16,7 @@ export type SceneImpl = {
   rotateYaw: (deltaDeg: number) => void;
   rotatePitch: (deltaDeg: number) => void;
   zoomBy: (factor: number) => void;
+  focusOn: (pos: [number, number, number], zoom?: number) => void;
 };
 
 export type SceneApi = {
@@ -32,6 +35,10 @@ export type SceneApi = {
   rotatePitch: (deltaDeg: number) => void;
   /** Multiply the field of view: below 1 zooms in, above 1 zooms out. Clamped to the environment's zoom range. */
   zoomBy: (factor: number) => void;
+  /** Hotspots of the objects placed in the scene (empty while loading, and on Mars). */
+  anchors: SceneAnchor[];
+  /** Ease the camera toward a 3D point and zoom in a little (`zoom` = fraction of the full field of view). */
+  focusOn: (pos: [number, number, number], zoom?: number) => void;
 };
 
 // Internal: used by <SceneCanvas> only, not part of the public contract.
@@ -39,6 +46,7 @@ export type SceneInternals = {
   status: SceneStatus;
   setStatus: (status: SceneStatus) => void;
   register: (impl: SceneImpl | null) => void;
+  setAnchors: (anchors: SceneAnchor[]) => void;
   paused: boolean;
 };
 
@@ -52,6 +60,7 @@ export function SceneProvider({ children }: { children: ReactNode }) {
   const [paused, setPaused] = useState(
     () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches,
   );
+  const [anchors, setAnchors] = useState<SceneAnchor[]>([]);
   const impl = useRef<SceneImpl | null>(null);
 
   const register = useCallback((next: SceneImpl | null) => {
@@ -69,10 +78,12 @@ export function SceneProvider({ children }: { children: ReactNode }) {
       rotateYaw: (d) => impl.current?.rotateYaw(d),
       rotatePitch: (d) => impl.current?.rotatePitch(d),
       zoomBy: (f) => impl.current?.zoomBy(f),
+      anchors,
+      focusOn: (p, z) => impl.current?.focusOn(p, z),
     }),
-    [status, paused],
+    [status, paused, anchors],
   );
-  const internals = useMemo<SceneInternals>(() => ({ status, setStatus, register, paused }), [status, register, paused]);
+  const internals = useMemo<SceneInternals>(() => ({ status, setStatus, register, setAnchors, paused }), [status, register, paused]);
 
   return (
     <ApiContext.Provider value={api}>

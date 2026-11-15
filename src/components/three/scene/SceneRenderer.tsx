@@ -1,13 +1,14 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import { Component, Suspense, useCallback, useEffect, useLayoutEffect, useMemo, useRef, type ReactNode } from "react";
 import { Canvas, useFrame, useThree, type RootState } from "@react-three/fiber";
-import { useGLTF } from "@react-three/drei";
+import { useGLTF, useTexture } from "@react-three/drei";
 import {
   ACESFilmicToneMapping,
   AdditiveBlending,
   AgXToneMapping,
   BackSide,
+  Box3,
   BufferGeometry,
   Color,
   DirectionalLight,
@@ -15,6 +16,10 @@ import {
   MathUtils,
   Mesh,
   Quaternion,
+  Raycaster,
+  SRGBColorSpace,
+  DoubleSide,
+  CanvasTexture,
   Vector3,
   type Material,
   type Object3D,
@@ -22,8 +27,11 @@ import {
   type Texture,
   type WebGLRenderer,
 } from "three";
+import gsap from "gsap";
+import { clone } from "three/examples/jsm/utils/SkeletonUtils.js";
 import { assets, DRACO_PATH, look, rig, type Device, type Environment, type RigConfig } from "./config";
-import type { SceneImpl } from "./scene-context";
+import { objek, type ObjekDef } from "./objects";
+import type { SceneAnchor, SceneImpl } from "./scene-context";
 
 useGLTF.setDecoderPath(DRACO_PATH);
 
@@ -95,6 +103,7 @@ type RigControls = {
   rotate: (deltaDeg: number) => void;
   rotatePitch: (deltaDeg: number) => void;
   zoom: (factor: number) => void;
+  focus: (pos: [number, number, number], zoom?: number) => void;
 };
 
 // Earth: position, radius and the direction to the sun, read from the GLB nodes.
@@ -210,6 +219,250 @@ function prepareSky(root: Object3D) {
   });
 }
 
+/** An object that fails to load must not take the whole scene down: it is optional, the environment still works. */
+class Senyap extends Component<{ children: ReactNode }, { gagal: boolean }> {
+  state = { gagal: false };
+  static getDerivedStateFromError() {
+    return { gagal: true };
+  }
+  componentDidCatch(e: unknown) {
+    console.warn("[SceneObjek] object skipped:", e);
+  }
+  render() {
+    return this.state.gagal ? null : this.props.children;
+  }
+}
+
+const NOT_GROUND = /Dome|Stars|Atmosphere|Earth/;
+function refreshShadows(gl: WebGLRenderer) {
+  gl.shadowMap.needsUpdate = true;
+}
+
+/** Ground height under (x, z): a ray straight down through the environment (sky shells and the like are skipped). */
+function groundAt(scene: Object3D, x: number, z: number, fallback: number) {
+  scene.updateMatrixWorld(true);
+  const ray = new Raycaster(new Vector3(x, 200, z), new Vector3(0, -1, 0));
+  const hit = ray.intersectObjects(scene.children, true).find((h) => h.object.visible && !NOT_GROUND.test(h.object.name));
+  return hit ? hit.point.y : fallback;
+}
+
+/** Soft golden halo (radial gradient), drawn once and shared. */
+let halo: CanvasTexture | null = null;
+function getHalo() {
+  if (halo) return halo;
+  const c = document.createElement("canvas");
+  c.width = c.height = 128;
+  const g = c.getContext("2d");
+  if (g) {
+    const grad = g.createRadialGradient(64, 64, 20, 64, 64, 64);
+    grad.addColorStop(0, "rgba(217,168,91,0.38)");
+    grad.addColorStop(1, "rgba(217,168,91,0)");
+    g.fillStyle = grad;
+    g.fillRect(0, 0, 128, 128);
+  }
+  halo = new CanvasTexture(c);
+  halo.colorSpace = SRGBColorSpace;
+  return halo;
+}
+
+/** Small four-point glint, like light catching polished metal. */
+let kilau: CanvasTexture | null = null;
+function getKilau() {
+  if (kilau) return kilau;
+  const c = document.createElement("canvas");
+  c.width = c.height = 128;
+  const g = c.getContext("2d");
+  if (g) {
+    g.translate(64, 64);
+    for (const [w, h] of [
+      [60, 2.2],
+      [2.2, 60],
+    ]) {
+      const grad = g.createLinearGradient(-w, 0, w, 0);
+      grad.addColorStop(0, "rgba(255,240,200,0)");
+      grad.addColorStop(0.5, "rgba(255,246,220,0.95)");
+      grad.addColorStop(1, "rgba(255,240,200,0)");
+      g.fillStyle = grad;
+      g.fillRect(-w, -h, w * 2, h * 2);
+    }
+    const core = g.createRadialGradient(0, 0, 0, 0, 0, 14);
+    core.addColorStop(0, "rgba(255,250,235,0.95)");
+    core.addColorStop(1, "rgba(255,240,200,0)");
+    g.fillStyle = core;
+    g.fillRect(-14, -14, 28, 28);
+  }
+  kilau = new CanvasTexture(c);
+  kilau.colorSpace = SRGBColorSpace;
+  return kilau;
+}
+
+function markSrgb(t: Texture) {
+  t.colorSpace = SRGBColorSpace;
+  t.anisotropy = 4;
+}
+
+/**
+ * Stand-in for an item NASA has no 3D model of: the real NASA photo as a small framed plate on a post, turned toward the
+ * camera, like an exhibit label. Unlit and untoned, so the photo keeps its true colours. Honest about what it is: the card says so.
+ */
+function Pelat3D({ def, onPlace }: { def: ObjekDef & { foto: string }; onPlace: (id: string, a: SceneAnchor[]) => void }) {
+  const tex = useTexture(def.foto, markSrgb);
+  const { scene } = useThree();
+  const g = useRef<Object3D>(null);
+  const w = def.fotoLebarM ?? 1.6;
+  const img = tex.image as { width: number; height: number };
+  const h = def.bentuk === "bulat" ? w : w * (img.height / img.width);
+  useLayoutEffect(() => {
+    const o = g.current;
+    if (!o) return;
+    o.visible = false;
+    // on a surface: stand on the ground under `at`; in open space (no ground): float at `y`
+    const y = def.ground ? groundAt(scene, def.at[0], def.at[1], 0) : (def.y ?? 0);
+    const lift = def.ground ? 0.45 + h / 2 : 0;
+    o.visible = true;
+    o.position.set(def.at[0], y + lift, def.at[1]);
+    o.rotation.y = Math.atan2(-def.at[0], -def.at[1]) + MathUtils.degToRad(def.yawDeg); // front faces the camera at the origin, turned a little for depth
+    onPlace(
+      def.id,
+      def.titik.map((t, i) => {
+        // the dot sits on the plate, shifted by `offset` (fractions of its width, in the plate's own axes)
+        o.updateMatrixWorld(true);
+        const w3 = o.localToWorld(new Vector3(t.offset[0] * w, t.offset[1] * w, 0.05));
+        return { id: `${def.id}-${i}`, bendaIdx: t.bendaIdx, pos: [w3.x, w3.y, w3.z] as [number, number, number] };
+      }),
+    );
+    return () => onPlace(def.id, []);
+  }, [def, scene, onPlace, h, w]);
+  if (def.bentuk === "bulat") {
+    const r = w / 2;
+    return (
+      <group ref={g}>
+        <mesh position={[0, 0, -0.02]}>
+          <planeGeometry args={[w * 2.1, w * 2.1]} />
+          <meshBasicMaterial map={getHalo()} transparent depthWrite={false} blending={AdditiveBlending} toneMapped={false} />
+        </mesh>
+        <mesh position={[0, 0, 0.01]}>
+          <circleGeometry args={[r, 72]} />
+          <meshBasicMaterial map={tex} transparent toneMapped={false} side={DoubleSide} />
+        </mesh>
+        <mesh position={[0, 0, -0.05]}>
+          <circleGeometry args={[r * 1.005, 72]} />
+          <meshBasicMaterial color="#6f5320" toneMapped={false} />
+        </mesh>
+        <mesh position={[0, 0, 0.005]}>
+          <ringGeometry args={[r * 0.992, r * 1.012, 96]} />
+          <meshBasicMaterial color="#f0d9a2" toneMapped={false} side={DoubleSide} />
+        </mesh>
+        <mesh position={[-r * 0.62, r * 0.66, 0.03]}>
+          <planeGeometry args={[r * 0.55, r * 0.55]} />
+          <meshBasicMaterial map={getKilau()} transparent depthWrite={false} blending={AdditiveBlending} toneMapped={false} />
+        </mesh>
+      </group>
+    );
+  }
+  return (
+    <group ref={g}>
+      <mesh position={[0, 0, 0.01]}>
+        <planeGeometry args={[w, h]} />
+        <meshBasicMaterial map={tex} toneMapped={false} side={DoubleSide} />
+      </mesh>
+      <mesh>
+        <planeGeometry args={[w + 0.1, h + 0.1]} />
+        <meshBasicMaterial color="#d9a85b" toneMapped={false} side={DoubleSide} />
+      </mesh>
+      <mesh position={[0, -h / 2 - 0.22, 0]} visible={def.ground}>
+        <cylinderGeometry args={[0.025, 0.025, 0.44, 8]} />
+        <meshBasicMaterial color="#202a3a" toneMapped={false} />
+      </mesh>
+    </group>
+  );
+}
+
+/** A hotspot with no 3D model behind it: just a point on the ground, so the HUD can pin the dot there. */
+function Penanda3D({ def, onPlace }: { def: ObjekDef; onPlace: (id: string, a: SceneAnchor[]) => void }) {
+  const { scene } = useThree();
+  useLayoutEffect(() => {
+    const y = groundAt(scene, def.at[0], def.at[1], 0) + 0.5;
+    onPlace(
+      def.id,
+      def.titik.map((t, i) => ({ id: `${def.id}-${i}`, bendaIdx: t.bendaIdx, pos: [def.at[0], y, def.at[1]] as [number, number, number] })),
+    );
+    return () => onPlace(def.id, []);
+  }, [def, scene, onPlace]);
+  return null;
+}
+
+/**
+ * A NASA model placed in the scene: scaled to `sizeM`, set on the ground under `at` (found with a ray) or floating at `y`.
+ * Reports where its hotspots are in the world, so the HUD can pin them to the real object.
+ */
+function Objek3D({ def, shadows, onPlace }: { def: ObjekDef & { model: string; sizeM: number }; shadows: boolean; onPlace: (id: string, a: SceneAnchor[]) => void }) {
+  const gltf = useGLTF(def.model);
+  const { scene, gl, get, invalidate, advance } = useThree();
+  const model = useMemo(() => clone(gltf.scene), [gltf.scene]);
+  const group = useRef<Object3D>(null);
+
+  useLayoutEffect(() => {
+    const g = group.current;
+    if (!g) return;
+    // size and pivot: largest side = sizeM; origin at the bottom centre (ground) or at the centre (floating)
+    // measure the model alone: this effect can run again, and the group's earlier place would otherwise leak into the box
+    g.position.set(0, 0, 0);
+    g.rotation.set(0, 0, 0);
+    model.scale.setScalar(1);
+    model.position.set(0, 0, 0);
+    g.updateMatrixWorld(true);
+    const box = new Box3().setFromObject(model, true); // precise: real vertex positions (animated or skinned models have loose bounds)
+    const size = box.getSize(new Vector3());
+    const k = def.sizeM / Math.max(size.x, size.y, size.z, 1e-6);
+    model.scale.setScalar(k);
+    const c = box.getCenter(new Vector3()).multiplyScalar(k);
+    model.position.set(-c.x, def.ground ? -box.min.y * k : -c.y, -c.z);
+    const height = size.y * k;
+
+    let y = def.y ?? 0;
+    if (def.ground) {
+      g.visible = false; // do not hit ourselves
+      scene.updateMatrixWorld(true);
+      const ray = new Raycaster(new Vector3(def.at[0], 200, def.at[1]), new Vector3(0, -1, 0));
+      const hit = ray.intersectObjects(scene.children, true).find((h) => h.object.visible && !NOT_GROUND.test(h.object.name));
+      if (hit) y = hit.point.y;
+      g.visible = true;
+    }
+    g.position.set(def.at[0], y, def.at[1]);
+    g.rotation.y = MathUtils.degToRad(def.yawDeg);
+    g.updateMatrixWorld(true);
+
+    const mid = def.ground ? height / 2 : 0;
+    onPlace(
+      def.id,
+      def.titik.map((t, i) => {
+        const local = new Vector3(t.offset[0] * def.sizeM, mid + t.offset[1] * def.sizeM, t.offset[2] * def.sizeM);
+        const w = g.localToWorld(local);
+        return { id: `${def.id}-${i}`, bendaIdx: t.bendaIdx, pos: [w.x, w.y, w.z] as [number, number, number] };
+      }),
+    );
+
+    model.traverse((o) => {
+      if (o instanceof Mesh) {
+        o.castShadow = shadows;
+        o.receiveShadow = shadows;
+        o.frustumCulled = false;
+      }
+    });
+    if (shadows) refreshShadows(gl); // the shadow map is static: draw it again now the object is there
+    if (get().frameloop === "never") advance(performance.now());
+    else invalidate();
+    return () => onPlace(def.id, []);
+  }, [def, model, scene, gl, get, invalidate, advance, shadows, onPlace]);
+
+  return (
+    <group ref={group}>
+      <primitive object={model} />
+    </group>
+  );
+}
+
 function Environment3D({
   url,
   onReady,
@@ -254,6 +507,7 @@ function Environment3D({
       rotateYaw: (d) => getRig()?.rotate(d),
       rotatePitch: (d) => getRig()?.rotatePitch(d),
       zoomBy: (f) => getRig()?.zoom(f),
+      focusOn: (p, z) => getRig()?.focus(p, z),
     });
     onReady();
     return () => register(null);
@@ -324,10 +578,21 @@ function newRigState() {
     guidedT: -1,
     parallax: 0,
     parallaxTarget: 0,
+    parallaxP: 0, // the same follow-the-mouse drift, up and down (radians)
+    parallaxPTarget: 0,
     dragging: false,
     lastX: 0,
     lastY: 0,
     pinch: 0, // distance between two fingers, 0 = not pinching
+    // What the camera actually shows. Input writes the TARGETS (user, pitch, zoom); these ease toward them every frame, so every
+    // move (drag, two-finger swipe, wheel, keys, focus, reset) is smooth instead of jumping to the new value.
+    sInit: false,
+    su: 0,
+    sp: 0,
+    sz: 1,
+    vYaw: 0, // drag velocity (rad/s), for a short glide after the finger lets go
+    vPitch: 0,
+    lastMove: 0,
   };
 }
 
@@ -369,6 +634,7 @@ function CameraRig({
       s.current.guided = 0;
       s.current.guidedT = -1;
       s.current.parallax = 0;
+      s.current.parallaxP = 0;
     }
     request();
   }, [paused, request]);
@@ -395,6 +661,7 @@ function CameraRig({
   // a view that is mid-intro becomes the visitor's own view as soon as they take over
   const takeOver = () => {
     const r = s.current;
+    gsap.killTweensOf(r);
     r.user += r.guided;
     r.guided = 0;
     r.guidedT = -1;
@@ -404,6 +671,8 @@ function CameraRig({
     const r = s.current;
     onControls({
       reset: () => {
+        r.vYaw = 0;
+        r.vPitch = 0;
         r.user = 0;
         r.pitch = 0;
         r.zoom = 1;
@@ -426,9 +695,29 @@ function CameraRig({
         r.user = limitYaw(r.user);
         request();
       },
+      // Turn (and zoom a little) so a 3D point sits in the middle of the view. Rotation only: the camera never moves.
+      focus: (p, zoomTo = 0.55) => {
+        takeOver();
+        const cam = get().camera as PerspectiveCamera;
+        const dir = new Vector3(p[0], p[1], p[2]).sub(cam.position);
+        if (dir.lengthSq() < 1e-6) return;
+        const fwd = new Vector3(0, 0, -1).applyQuaternion(r.home);
+        const az = (v: Vector3) => Math.atan2(-v.x, -v.z); // + = turn left, like r.user
+        const el = (v: Vector3) => Math.asin(MathUtils.clamp(v.y / v.length(), -1, 1));
+        let dYaw = az(dir) - az(fwd);
+        dYaw = Math.atan2(Math.sin(dYaw), Math.cos(dYaw));
+        const toYaw = limitYaw(dYaw);
+        const toZoom = MathUtils.clamp(zoomTo, zoomIn, zoomOut);
+        // look a bit below the object, so it sits above the middle: the HUD cards and the dock are at the bottom
+        const lift = rad(cam.fov * toZoom) * (cam.aspect < 1 ? 0.2 : 0.1);
+        const toPitch = MathUtils.clamp(el(dir) - el(fwd) - lift, -down, up);
+        if (![toYaw, toPitch, toZoom].every(Number.isFinite)) return;
+        gsap.killTweensOf(r);
+        gsap.to(r, { user: toYaw, pitch: toPitch, zoom: toZoom, duration: 1.1, ease: "power2.inOut", onUpdate: request });
+      },
     });
     return () => onControls(null);
-  }, [onControls, request, limitYaw, up, down, zoomIn, zoomOut]);
+  }, [onControls, request, limitYaw, get, up, down, zoomIn, zoomOut]);
 
   // mouse parallax (touch has no hover, so nothing to follow there)
   useEffect(() => {
@@ -437,6 +726,7 @@ function CameraRig({
       if (e.pointerType !== "mouse" || s.current.dragging || pausedRef.current) return;
       if (!(window.innerWidth > 0)) return;
       s.current.parallaxTarget = -((e.clientX / window.innerWidth) * 2 - 1) * rad(cfg.parallaxDeg);
+      if (window.innerHeight > 0) s.current.parallaxPTarget = -((e.clientY / window.innerHeight) * 2 - 1) * rad(cfg.parallaxDeg * 0.8);
       request();
     };
     window.addEventListener("pointermove", onMove);
@@ -461,6 +751,9 @@ function CameraRig({
       r.lastX = e.clientX;
       r.lastY = e.clientY;
       r.pinch = fingers.size === 2 ? spread() : 0;
+      r.vYaw = 0;
+      r.vPitch = 0;
+      r.lastMove = e.timeStamp;
       el.setPointerCapture(e.pointerId);
       styleCanvas(el, "none", "grabbing");
     };
@@ -479,8 +772,16 @@ function CameraRig({
       const vfov = rad(cam.fov);
       const hfov = 2 * Math.atan(Math.tan(vfov / 2) * (Number.isFinite(cam.aspect) && cam.aspect > 0 ? cam.aspect : 16 / 9));
       // dragging right drags the scene right = turn the camera left (+yaw); dragging down = look up
-      r.user = limitYaw(r.user + (e.clientX - r.lastX) * (hfov / el.clientWidth));
-      r.pitch = MathUtils.clamp(r.pitch + (e.clientY - r.lastY) * (vfov / el.clientHeight), -down, up);
+      const dYaw = (e.clientX - r.lastX) * (hfov / el.clientWidth);
+      const dPitch = (e.clientY - r.lastY) * (vfov / el.clientHeight);
+      const dt = (e.timeStamp - r.lastMove) / 1000;
+      if (dt > 0 && dt < 0.1) {
+        r.vYaw = r.vYaw * 0.5 + (dYaw / dt) * 0.5;
+        r.vPitch = r.vPitch * 0.5 + (dPitch / dt) * 0.5;
+      }
+      r.lastMove = e.timeStamp;
+      r.user = limitYaw(r.user + dYaw);
+      r.pitch = MathUtils.clamp(r.pitch + dPitch, -down, up);
       r.lastX = e.clientX;
       r.lastY = e.clientY;
       request();
@@ -496,6 +797,11 @@ function CameraRig({
       }
       if (fingers.size === 0) {
         r.dragging = false;
+        if (e.timeStamp - r.lastMove > 80) {
+          r.vYaw = 0;
+          r.vPitch = 0;
+        }
+        request();
         styleCanvas(el, "none", "grab");
       }
     };
@@ -560,7 +866,7 @@ function CameraRig({
     // a bad or huge time step (first frame, a tab that was in the background) must not poison the state
     const dt = Number.isFinite(delta) && delta > 0 ? Math.min(delta, 0.1) : 0;
     const bad: string[] = [];
-    const repair = (name: "user" | "pitch" | "guided" | "parallax" | "parallaxTarget", fallback = 0) => {
+    const repair = (name: "user" | "pitch" | "guided" | "parallax" | "parallaxTarget" | "parallaxP" | "parallaxPTarget" | "su" | "sp" | "vYaw" | "vPitch", fallback = 0) => {
       if (Number.isFinite(r[name])) return;
       bad.push(name);
       r[name] = fallback;
@@ -570,6 +876,13 @@ function CameraRig({
     repair("guided");
     repair("parallax");
     repair("parallaxTarget");
+    repair("parallaxP");
+    repair("parallaxPTarget");
+    repair("su");
+    repair("sp");
+    repair("vYaw");
+    repair("vPitch");
+    if (!Number.isFinite(r.sz)) r.sz = r.zoom;
     if (!Number.isFinite(r.zoom)) {
       bad.push("zoom");
       r.zoom = 1;
@@ -597,13 +910,46 @@ function CameraRig({
       r.parallax += (r.parallaxTarget - r.parallax) * (1 - Math.exp(-dt * 6));
       if (Math.abs(r.parallaxTarget - r.parallax) > 1e-4) moving = true;
       else r.parallax = r.parallaxTarget;
+      r.parallaxP += (r.parallaxPTarget - r.parallaxP) * (1 - Math.exp(-dt * 6));
+      if (Math.abs(r.parallaxPTarget - r.parallaxP) > 1e-4) moving = true;
+      else r.parallaxP = r.parallaxPTarget;
     }
 
+    if (!r.sInit) {
+      r.su = r.user;
+      r.sp = r.pitch;
+      r.sz = r.zoom;
+      r.sInit = true;
+    }
+    // glide after a drag: keep going with the release speed, slowing down
+    if (!r.dragging && !pausedRef.current && (Math.abs(r.vYaw) > 1e-3 || Math.abs(r.vPitch) > 1e-3)) {
+      r.user = limitYaw(r.user + r.vYaw * dt);
+      r.pitch = MathUtils.clamp(r.pitch + r.vPitch * dt, -down, up);
+      const slow = Math.exp(-dt * 4.5);
+      r.vYaw *= slow;
+      r.vPitch *= slow;
+      moving = true;
+    } else if (!r.dragging) {
+      r.vYaw = 0;
+      r.vPitch = 0;
+    }
     r.user = limitYaw(r.user); // the allowed turn changes with zoom and screen shape
-    const yaw = r.user + r.guided + r.parallax;
+    // ease what is shown toward the target (about 80 ms to cover most of the way)
+    // (paused = reduced motion: frames are drawn one by one on demand, so show the target at once)
+    const ease = pausedRef.current ? 1 : 1 - Math.exp(-dt * 14);
+    r.su += (r.user - r.su) * ease;
+    r.sp += (r.pitch - r.sp) * ease;
+    r.sz += (r.zoom - r.sz) * ease;
+    if (Math.abs(r.user - r.su) > 5e-5 || Math.abs(r.pitch - r.sp) > 5e-5 || Math.abs(r.zoom - r.sz) > 5e-5) moving = true;
+    else {
+      r.su = r.user;
+      r.sp = r.pitch;
+      r.sz = r.zoom;
+    }
+    const yaw = r.su + r.guided + r.parallax;
     // yaw about the world's up axis, then the GLB camera's own angle, then the visitor's pitch about the camera's own X axis
-    cam.quaternion.setFromAxisAngle(Y_AXIS, yaw).multiply(r.home).multiply(PITCH.setFromAxisAngle(X_AXIS, r.pitch));
-    const fov = r.baseFov * r.zoom;
+    cam.quaternion.setFromAxisAngle(Y_AXIS, yaw).multiply(r.home).multiply(PITCH.setFromAxisAngle(X_AXIS, r.sp + r.parallaxP));
+    const fov = r.baseFov * r.sz;
     if (Math.abs(cam.fov - fov) > 1e-4) {
       cam.fov = fov;
       cam.updateProjectionMatrix();
@@ -688,6 +1034,7 @@ export default function SceneRenderer({
   paused,
   interactive,
   register,
+  onAnchors,
   onReady,
   onError,
 }: {
@@ -696,9 +1043,19 @@ export default function SceneRenderer({
   paused: boolean;
   interactive: boolean;
   register: (impl: SceneImpl | null) => void;
+  onAnchors: (anchors: SceneAnchor[]) => void;
   onReady: () => void;
   onError: () => void;
 }) {
+  const placed = useRef(new Map<string, SceneAnchor[]>());
+  const onPlace = useCallback(
+    (id: string, list: SceneAnchor[]) => {
+      if (list.length) placed.current.set(id, list);
+      else placed.current.delete(id);
+      onAnchors([...placed.current.values()].flat());
+    },
+    [onAnchors],
+  );
   const controls = useRef<RigControls | null>(null);
   const onControls = useCallback((c: RigControls | null) => {
     controls.current = c;
@@ -733,6 +1090,19 @@ export default function SceneRenderer({
         shadows={shadows}
         shadowExtent={env.shadowExtent}
       />
+      {objek[environment].map((def) => (
+        <Senyap key={def.id}>
+          <Suspense fallback={null}>
+            {def.model && def.sizeM ? (
+              <Objek3D def={{ ...def, model: def.model, sizeM: def.sizeM }} shadows={shadows} onPlace={onPlace} />
+            ) : def.foto ? (
+              <Pelat3D def={{ ...def, foto: def.foto }} onPlace={onPlace} />
+            ) : (
+              <Penanda3D def={def} onPlace={onPlace} />
+            )}
+          </Suspense>
+        </Senyap>
+      ))}
       <CameraRig cfg={rig[environment]} pitchDeg={rig[environment].pitchDeg[device]} paused={paused} interactive={interactive} onControls={onControls} />
       <RenderOnce paused={paused} />
       <ContextLossGuard onError={onError} />

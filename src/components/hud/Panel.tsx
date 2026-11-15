@@ -14,11 +14,13 @@ type PanelProps = {
   onTutup: () => void;
   /** Label tombol Tutup. */
   labelTutup?: string;
+  /** Pilihan isi (tab) di bawah judul. */
+  tab?: ReactNode;
   children: ReactNode;
   className?: string;
 };
 
-export function Panel({ judul, onTutup, labelTutup = "Tutup", children, className = "" }: PanelProps) {
+export function Panel({ judul, onTutup, labelTutup = "Tutup", tab, children, className = "" }: PanelProps) {
   const headingId = `panel-${judul.toLowerCase().replace(/\s+/g, "-")}`;
   return (
     <aside
@@ -26,7 +28,7 @@ export function Panel({ judul, onTutup, labelTutup = "Tutup", children, classNam
       aria-modal="true"
       aria-labelledby={headingId}
       tabIndex={-1}
-      className={`flex w-full flex-col gap-4 overflow-hidden rounded-[28px] border-[1.5px] border-aksen-informasi-normal bg-bg-secondary-normal/80 outline-none p-7 backdrop-blur-[14px] ${className}`}
+      className={`flex w-full flex-col gap-4 overflow-hidden rounded-[28px] border-[1.5px] border-aksen-informasi-normal bg-[rgba(15,23,42,0.7)] shadow-[0_16px_48px_rgba(0,0,0,0.4)] outline-none p-7 backdrop-blur-[14px] ${className}`}
     >
       <header className="flex shrink-0 items-center justify-between gap-4">
         <h2 id={headingId} className="text-heading-card text-text-primary-normal">
@@ -36,6 +38,7 @@ export function Panel({ judul, onTutup, labelTutup = "Tutup", children, classNam
           {labelTutup}
         </Button>
       </header>
+      {tab}
       <div className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto">{children}</div>
     </aside>
   );

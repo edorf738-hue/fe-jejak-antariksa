@@ -16,12 +16,12 @@ type KartuNarasiProps = {
 export function KartuNarasi({ eyebrow, judul, isi, petunjuk, className = "" }: KartuNarasiProps) {
   return (
     <article
-      className={`glass flex w-full flex-col gap-3.5 break-words rounded-[28px] border border-archive-slate-normal p-8 lg:w-[440px] ${className}`}
+      className={`glass flex w-full flex-col gap-2 break-words rounded-[24px] border border-white/10 p-5 lg:w-[330px] lg:p-5 ${className}`}
     >
       <p className="text-eyebrow-15 text-aksen-warisan-normal">{eyebrow}</p>
-      <h2 className="text-heading-card text-text-primary-normal">{judul}</h2>
-      <p className="text-body-large text-text-secondary-normal">{isi}</p>
-      {petunjuk && <p className="text-body-large text-aksen-informasi-normal max-lg:hidden">{petunjuk}</p>}
+      <h2 className="text-2xl font-bold leading-8 text-text-primary-normal">{judul}</h2>
+      <p className="line-clamp-2 text-sm leading-5 text-text-secondary-normal">{isi}</p>
+      {petunjuk && <p className="text-sm text-aksen-informasi-normal max-lg:hidden">{petunjuk}</p>}
     </article>
   );
 }

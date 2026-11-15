@@ -39,7 +39,7 @@ const defaultRig: RigConfig = {
   pitchDownDeg: 35,
   zoomIn: 0.35,
   zoomOut: 1.15,
-  parallaxDeg: 3,
+  parallaxDeg: 5,
   guidedStartDeg: 6,
   guidedSeconds: 2.2,
   pitchDeg: { desktop: 0, tablet: 0, mobile: 0 },

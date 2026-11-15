@@ -54,7 +54,7 @@ export function ItemGaleri({ keterangan, src }: { keterangan: string | null; src
     <figure className="flex flex-col gap-2">
       {src ? (
         // eslint-disable-next-line @next/next/no-img-element
-        <img src={src} alt={keterangan ?? ""} className="aspect-video w-full rounded-card object-cover" />
+        <img src={src} alt={keterangan ?? ""} loading="lazy" className="aspect-video w-full rounded-card object-cover" />
       ) : (
         <div
           role="img"
@@ -69,7 +69,16 @@ export function ItemGaleri({ keterangan, src }: { keterangan: string | null; src
   );
 }
 
-export function PanelGaleri({ galeri }: { galeri: (string | null)[] }) {
+export function PanelGaleri({ galeri, foto }: { galeri: (string | null)[]; foto?: { src: string; keterangan: string; kredit?: string }[] }) {
+  if (foto && foto.length > 0) {
+    return (
+      <>
+        {foto.map((f) => (
+          <ItemGaleri key={f.src} keterangan={`${f.keterangan} Kredit: ${f.kredit ?? "NASA"}.`} src={f.src} />
+        ))}
+      </>
+    );
+  }
   if (galeri.length === 0) return <Kosong />;
   return (
     <>

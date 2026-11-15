@@ -65,7 +65,7 @@ export function SceneCanvas({
   /** Called whenever the status or the load progress (0 to 1) changes. Read straight from here, not from useScene(), which can still hold the previous scene's status right after a remount. */
   onStatusChange?: (status: SceneStatus, progress: number) => void;
 }) {
-  const { setStatus, register, paused } = useSceneInternals();
+  const { setStatus, register, setAnchors, paused } = useSceneInternals();
   const { rotateYaw, rotatePitch, zoomBy } = useScene();
   const device = useSyncExternalStore(subscribeDevice, getDevice, () => null);
   const webgl = useSyncExternalStore(noop, getWebgl, () => null);
@@ -138,6 +138,7 @@ export function SceneCanvas({
               paused={paused}
               interactive={interactive}
               register={register}
+              onAnchors={setAnchors}
               onReady={onReady}
               onError={onError}
             />

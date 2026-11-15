@@ -126,7 +126,7 @@ export function TitikInfoPlaceholder({ label, aktif = false, onClick, urutan = 0
         />
       </span>
       <span
-        className={`glass text-button-label rounded-pill border border-archive-slate-normal px-4 py-2 max-md:hidden ${aktif ? "text-aksen-informasi-normal" : "text-text-primary-normal"}`}
+        className={`glass text-button-label pointer-events-none rounded-pill border border-white/10 px-4 py-2 whitespace-nowrap transition-[opacity,translate] duration-300 group-hover:translate-x-0 group-hover:opacity-100 group-focus-visible:translate-x-0 group-focus-visible:opacity-100 ${aktif ? "translate-x-0 text-aksen-informasi-normal opacity-100" : "-translate-x-1 text-text-primary-normal opacity-0"}`}
       >
         {label}
       </span>
