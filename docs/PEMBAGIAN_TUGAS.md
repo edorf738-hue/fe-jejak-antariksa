@@ -143,6 +143,7 @@ Periksa juga secara manual: dua tombol, dua loader model, dua pemuat data, dua d
 | *(contoh)* Tombol Ikon | Pace | `feat/ui-tombol-ikon` | Todo |
 | *(contoh)* SceneCanvas | Edo | `feat/scene-canvas` | Todo |
 | *(contoh)* HotspotLayer | Zhafran | `feat/hotspot-layer` | Todo |
+| SceneCanvas + environment Moon + `useScene()` | Edo | `feat/scene-canvas` | Review |
 
 ## 8. Keputusan terbuka dan pemiliknya
 | # | Keputusan | Pemilik |
