@@ -1,7 +1,11 @@
 import type { Metadata } from "next";
+import { GALERI_FOTO } from "@/data";
 import { notFound } from "next/navigation";
 import { DokKategori, HalamanImersif, PanelFakta, PanelGaleri, PanelMisi, PanelSumber } from "@/components/hud";
 import { getResourcesImersif, isKategoriSlug, KATEGORI_SLUGS } from "@/data";
+import { HotspotLayer } from "@/components/three/scene/HotspotLayer";
+import { ImersifScene } from "@/components/three/scene/ImersifScene";
+import { SceneProvider } from "@/components/three/scene/scene-context";
 
 /**
  * Resources (Mars, Moon, Deep Space) sebagai tampilan imersif satu layar, diakses dari kartu
@@ -25,6 +29,7 @@ export default async function ResourcesPage(props: PageProps<"/resources/[katego
   return (
     <main>
       <h1 className="sr-only">Resources: {data.nama}</h1>
+      <SceneProvider>
       <HalamanImersif
         gambar={data.gambar}
         varian="resources"
@@ -33,15 +38,18 @@ export default async function ResourcesPage(props: PageProps<"/resources/[katego
         benda={data.benda}
         posisiTitik={data.posisiTitik}
         fokusGambar={data.fokusGambar}
+        scene={<ImersifScene environment={kategori} />}
+        hotspots={<HotspotLayer environment={kategori} />}
         jenisPanel={["fakta", "misi", "galeri", "sumber"]}
         panelKonten={{
           fakta: <PanelFakta fakta={data.panel.fakta} />,
           misi: <PanelMisi misi={data.panel.misi} />,
-          galeri: <PanelGaleri galeri={data.panel.galeri} />,
+          galeri: <PanelGaleri galeri={data.panel.galeri} foto={GALERI_FOTO[kategori]} />,
           sumber: <PanelSumber sumber={data.panel.sumber} />,
         }}
         dok={<DokKategori items={data.dok} aktifHref={`/resources/${kategori}`} />}
       />
+      </SceneProvider>
     </main>
   );
 }

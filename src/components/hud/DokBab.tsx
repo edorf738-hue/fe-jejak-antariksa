@@ -38,7 +38,7 @@ export function DokBab({
 }: DokBabProps) {
   return (
     <div
-      className={`glass flex w-full flex-col gap-3 rounded-[28px] border border-archive-slate-normal p-4 lg:flex-row lg:items-center lg:gap-6 lg:px-6 ${className}`}
+      className={`glass flex w-full flex-col gap-3 rounded-[24px] border border-white/10 p-3 lg:w-[760px] lg:flex-row lg:items-center lg:gap-4 lg:px-4 ${className}`}
     >
       <nav aria-label="Navigasi bab" className="order-1 min-w-0 lg:order-2 lg:flex-1">
         <ol className="flex items-start gap-3">
@@ -95,12 +95,12 @@ export function DokBab({
             href={hrefSebelumnya}
             variant="secondary"
             iconLeft="panah-kiri"
-            className="flex-1 lg:order-1 lg:w-[150px] lg:flex-none"
+            className="flex-1 py-2! lg:order-1 lg:w-[140px] whitespace-nowrap lg:flex-none"
           >
             {labelSebelumnya}
           </Button>
         )}
-        <Button href={hrefBerikutnya} iconRight="panah-kanan" className="flex-1 lg:order-3 lg:w-[150px] lg:flex-none">
+        <Button href={hrefBerikutnya} iconRight="panah-kanan" className="flex-1 py-2! lg:order-3 lg:w-[140px] whitespace-nowrap lg:flex-none">
           {labelBerikutnya}
         </Button>
       </div>
