@@ -1,5 +1,5 @@
-import { getKategori, getSumber } from "./content";
-import raw from "../../docs/content-data.json";
+import { JOURNEYS_API } from "./api";
+import { getKategori } from "./content";
 import rawEn from "../../docs/content-data.en.json";
 import { DEFAULT_LANG, type Lang, type Widen } from "../lib/i18n";
 import type { Kategori, KategoriSlug, Misi, Sumber } from "./types";
@@ -81,7 +81,8 @@ type RawJourney = {
   detailMisiTambahan: Record<"Bulan" | "Mars" | "Deep Space", DetailTambahan>;
   kronologi: Record<"Bulan" | "Mars" | "Deep Space", [string, string][]>;
 };
-const DATA: Record<Lang, RawJourney> = { id: raw as unknown as RawJourney, en: rawEn as unknown as RawJourney };
+/** Data English (terjemahan). Bahasa Indonesia berasal dari snapshot API backend (`JOURNEYS_API`). */
+const DATA_EN = rawEn as unknown as RawJourney;
 
 const KEY: Record<KategoriSlug, "Bulan" | "Mars" | "Deep Space"> = {
   moon: "Bulan",
@@ -249,10 +250,11 @@ function detailMisi(
 }
 
 export function getJourneyTujuan(slug: KategoriSlug, lang: Lang = DEFAULT_LANG): JourneyTujuan {
-  const data = DATA[lang];
+  if (lang === "id") return JOURNEYS_API.find((j) => j.slug === slug) as JourneyTujuan;
+  const data = DATA_EN;
   const kategori = getKategori(slug, lang);
   const key = KEY[slug];
-  const semuaSumber = getSumber(lang);
+  const semuaSumber = (rawEn as unknown as { sumber: Sumber[] }).sumber;
   const sumber = INDEKS_SUMBER[slug].flatMap((i) => (semuaSumber[i] ? [semuaSumber[i]] : []));
   const misi = kategori.misi;
   return {

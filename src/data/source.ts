@@ -1,6 +1,5 @@
 import { DEFAULT_LANG, type Lang, type Widen } from "../lib/i18n";
-import { getSumber } from "./content";
-import { CERITA_SLUGS, getCerita } from "./cerita";
+import { KATALOG_API } from "./api";
 
 /**
  * Katalog halaman Sumber: tiga kategori (Referensi, Kredit Media, Model 3D). Setiap item punya status verifikasi:
@@ -115,8 +114,6 @@ export const URL_PANDUAN_NASA = "https://www.nasa.gov/nasa-brand-center/images-a
 
 const DICEK = "15 November 2026";
 
-const bersih = (t: string) => t.replace(/�/g, "—").replace(/\s+/g, " ").trim();
-const norm = (u: string) => u.replace(/\/$/, "");
 
 function buatKatalog(lang: Lang): Record<KategoriSumber, SumberItem[]> {
   const L = (id: string, en: string) => (lang === "en" ? en : id);
@@ -138,28 +135,13 @@ function buatKatalog(lang: Lang): Record<KategoriSumber, SumberItem[]> {
     return L("Artikel NASA", "NASA article");
   };
 
-  const referensi = (): SumberItem[] => {
-    const peta = new Map<string, { judul: string; penerbit: string }>();
-    for (const s of getSumber(lang)) peta.set(norm(s.url), { judul: bersih(s.judul), penerbit: s.penerbit });
-    // sumber yang dipakai di halaman cerita ikut tercatat di sini (tanpa duplikat)
-    for (const slug of CERITA_SLUGS) {
-      for (const s of getCerita(slug, lang).sumber) {
-        if (!peta.has(norm(s.url))) peta.set(norm(s.url), { judul: bersih(s.judul), penerbit: "NASA" });
-      }
-    }
-    return [...peta.entries()].map(([url, v], i) => ({
-      id: `referensi-${i}`,
-      kategori: "referensi" as const,
-      jenis: jenisReferensi(url),
-      nama: v.judul,
-      penerbit: v.penerbit,
-      kredit: v.penerbit,
-      url,
-      lisensi: LISENSI_NASA,
-      diakses: DICEK,
-      status: "terverifikasi" as const,
-    }));
-  };
+  /** Referensi dibaca dari API (nama, penerbit, URL, status); English hanya menerjemahkan jenis dan lisensi standar. */
+  const referensi = (): SumberItem[] =>
+    KATALOG_API.filter((i) => i.kategori === "referensi").map((a) =>
+      lang === "id"
+        ? a
+        : { ...a, jenis: jenisReferensi(a.url ?? ""), lisensi: a.lisensi.startsWith("Menurut panduan NASA") ? LISENSI_NASA : a.lisensi },
+    );
 
   const KREDIT_JSC = L("NASA (JSC); fotografer tidak tercatat di metadata", "NASA (JSC); photographer not recorded in the metadata");
   const apollo = (id: string, nama: string): RincianSumber => ({
@@ -611,6 +593,58 @@ function buatKatalog(lang: Lang): Record<KategoriSumber, SumberItem[]> {
   return { referensi: referensi(), media: MEDIA, model3d: MODEL3D };
 }
 
+const FIELD_TEKS = ["jenis", "nama", "penerbit", "kredit", "lisensi", "catatan"] as const;
+
+/**
+ * Menerjemahkan satu item API ke English memakai terjemahan tulisan tangan (dicocokkan lewat id). Sebuah field hanya
+ * diterjemahkan bila teks Indonesia di API masih sama dengan teks yang diterjemahkan; kalau backend mengubahnya,
+ * field itu tampil apa adanya (Indonesia) sampai terjemahannya diperbarui. URL, status, dan tanggal selalu dari API.
+ */
+function terjemah(a: SumberItem, daftarId: SumberItem[], daftarEn: SumberItem[]): SumberItem {
+  const m = daftarId.find((x) => x.id === a.id);
+  const e = daftarEn.find((x) => x.id === a.id);
+  if (!m || !e) return a;
+  const out: SumberItem = { ...a };
+  for (const k of FIELD_TEKS) if (m[k] === a[k] && e[k] !== undefined) (out as Record<string, unknown>)[k] = e[k];
+  if (a.rincian) {
+    out.rincian = a.rincian.map((r) => {
+      const i = m.rincian?.findIndex((x) => x.nama === r.nama) ?? -1;
+      const te = i >= 0 ? e.rincian?.[i] : undefined;
+      if (!te) return r;
+      return { ...r, nama: te.nama, kredit: m.rincian?.[i].kredit === r.kredit ? te.kredit : r.kredit };
+    });
+  }
+  return out;
+}
+
+/** Teks yang diubah atau ditambah backend setelah terjemahan dibuat: persis Indonesia -> English. */
+const TEKS_BARU_EN: Record<string, string> = {
+  "Menurut panduan NASA, konten NASA umumnya tidak berhak cipta di Amerika Serikat, tetapi logo dan materi pihak ketiga dikecualikan; NASA harus dicantumkan sebagai sumber dan tidak boleh tampak mendukung produk. Halaman sumber ini tidak mencantumkan pembatasan khusus. Jangan dianggap bebas hak cipta tanpa memeriksa panduan.":
+    "According to NASA's guidelines, NASA content is generally not copyrighted in the United States, but logos and third-party material are excluded; NASA must be credited as the source and must not appear to endorse products. This source page lists no special restrictions. Do not assume it is free of copyright without checking the guidelines.",
+  "NASA — Apollo 11 (halaman misi)": "NASA — Apollo 11 (mission page)",
+  "NASA: Tahun 1960-an, dari mimpi ke realitas dalam 10 tahun": "NASA: The 1960s, From Dream to Reality in 10 Years",
+  "Belum ada pernyataan lisensi untuk sumber ini. Jangan dianggap bebas hak cipta sebelum diperiksa.":
+    "There is no license statement for this source yet. Do not assume it is free of copyright before checking.",
+  "Dipindahkan dari daftar sumber lama; halaman belum dibuka ulang, jadi belum diverifikasi.":
+    "Moved over from the old source list; the page has not been reopened, so it is not verified.",
+  "Dua dari delapan foto sudah dicocokkan dengan halaman NASA (Pale Blue Dot Revisited dan Saturn's Rings, berkas identik); enam lainnya belum dicatat halaman asal dan kredit rincinya.":
+    "Two of the eight photos have been matched to NASA pages (Pale Blue Dot Revisited and Saturn's Rings, identical files); the source page and detailed credit of the other six have not been recorded yet.",
+};
+const dalamEn = (i: SumberItem): SumberItem => ({
+  ...i,
+  nama: TEKS_BARU_EN[i.nama] ?? i.nama,
+  lisensi: TEKS_BARU_EN[i.lisensi] ?? i.lisensi,
+  ...(i.catatan ? { catatan: TEKS_BARU_EN[i.catatan] ?? i.catatan } : {}),
+});
+
 export function getKatalogSumber(lang: Lang = DEFAULT_LANG): Record<KategoriSumber, SumberItem[]> {
-  return buatKatalog(lang);
+  const api = (k: KategoriSumber) => KATALOG_API.filter((i) => i.kategori === k);
+  if (lang === "id") return { referensi: api("referensi"), media: api("media"), model3d: api("model3d") };
+  const id = buatKatalog("id");
+  const en = buatKatalog("en");
+  return {
+    referensi: en.referensi.map(dalamEn),
+    media: api("media").map((a) => dalamEn(terjemah(a, id.media, en.media))),
+    model3d: api("model3d").map((a) => dalamEn(terjemah(a, id.model3d, en.model3d))),
+  };
 }

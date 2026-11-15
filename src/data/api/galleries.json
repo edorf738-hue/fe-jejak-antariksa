@@ -1,0 +1,207 @@
+[
+  {
+    "slug": "mars",
+    "photos": [
+      {
+        "src": "/images/galeri/mars-opportunity-foto-diri.webp",
+        "keterangan": "Foto diri Opportunity, Januari 2014.",
+        "kredit": "NASA/JPL-Caltech/Cornell Univ./Arizona State Univ."
+      },
+      {
+        "src": "/images/galeri/mars-spirit-gusev.webp",
+        "keterangan": "Rover Spirit di Gusev Crater.",
+        "kredit": "NASA/JPL-Caltech"
+      },
+      {
+        "src": "/images/galeri/mars-spirit-home-plate.webp",
+        "keterangan": "Spirit setelah berkendara di sebelah barat Home Plate.",
+        "kredit": "NASA/JPL-Caltech"
+      },
+      {
+        "src": "/images/galeri/mars-spirit-tanah-lunak.webp",
+        "keterangan": "Spirit tergelincir di tanah lunak (sol 1889).",
+        "kredit": "NASA/JPL-Caltech"
+      },
+      {
+        "src": "/images/galeri/mars-heat-shield-rock.webp",
+        "keterangan": "Serpihan pelindung panas Opportunity; Heat Shield Rock di bagian kiri foto.",
+        "kredit": "NASA/JPL/Cornell"
+      },
+      {
+        "src": "/images/galeri/mars-opportunity-sol-354.webp",
+        "keterangan": "Panorama Opportunity sol 354; Heat Shield Rock di kanan.",
+        "kredit": "NASA/JPL"
+      },
+      {
+        "src": "/images/galeri/mars-kawah-endeavour.webp",
+        "keterangan": "Bayangan Opportunity dan pemandangan Kawah Endeavour.",
+        "kredit": "NASA/JPL-Caltech"
+      },
+      {
+        "src": "/images/galeri/mars-perseverance-valley.webp",
+        "keterangan": "Pemandangan dari dalam Perseverance Valley.",
+        "kredit": "NASA/JPL-Caltech/Cornell Univ./Arizona State Univ."
+      },
+      {
+        "src": "/images/galeri/mars-meridiani-planum.webp",
+        "keterangan": "Meridiani Planum, lokasi pendaratan Opportunity (citra HiRISE).",
+        "kredit": "NASA/JPL/Univ. of Arizona"
+      }
+    ]
+  },
+  {
+    "slug": "moon",
+    "photos": [
+      {
+        "src": "/images/galeri/moon-aldrin-bendera.webp",
+        "keterangan": "Buzz Aldrin memberi hormat di dekat bendera AS.",
+        "kredit": "NASA"
+      },
+      {
+        "src": "/images/galeri/moon-lm-jauh.webp",
+        "keterangan": "Lunar Module dilihat dari kejauhan.",
+        "kredit": "NASA"
+      },
+      {
+        "src": "/images/galeri/moon-armstrong-sampel.webp",
+        "keterangan": "Neil Armstrong mengumpulkan sampel Bulan.",
+        "kredit": "NASA"
+      },
+      {
+        "src": "/images/galeri/moon-aldrin-tangga.webp",
+        "keterangan": "Buzz Aldrin di dekat tangga Lunar Module.",
+        "kredit": "NASA"
+      },
+      {
+        "src": "/images/galeri/moon-aldrin-lm.webp",
+        "keterangan": "Buzz Aldrin di samping Lunar Module.",
+        "kredit": "NASA"
+      },
+      {
+        "src": "/images/galeri/moon-bootprint.webp",
+        "keterangan": "Jejak sepatu astronaut Apollo di debu Bulan.",
+        "kredit": "NASA"
+      },
+      {
+        "src": "/images/galeri/moon-easep-bendera.webp",
+        "keterangan": "Aldrin setelah memasang EASEP; bendera AS di latar.",
+        "kredit": "NASA"
+      },
+      {
+        "src": "/images/galeri/moon-aldrin-membawa-easep.webp",
+        "keterangan": "Aldrin membawa seismometer dan retroreflektor laser.",
+        "kredit": "NASA"
+      },
+      {
+        "src": "/images/galeri/moon-komponen-easep.webp",
+        "keterangan": "Komponen paket eksperimen EASEP.",
+        "kredit": "NASA"
+      },
+      {
+        "src": "/images/galeri/moon-bendera-terpasang.webp",
+        "keterangan": "Bendera AS terpasang di permukaan Bulan.",
+        "kredit": "NASA"
+      },
+      {
+        "src": "/images/galeri/moon-aldrin-angin-matahari.webp",
+        "keterangan": "Buzz Aldrin di samping eksperimen angin Matahari.",
+        "kredit": "NASA"
+      },
+      {
+        "src": "/images/galeri/moon-plakat.webp",
+        "keterangan": "Plakat peringatan Apollo 11.",
+        "kredit": "NASA"
+      },
+      {
+        "src": "/images/galeri/moon-angin-matahari.webp",
+        "keterangan": "Eksperimen angin Matahari Apollo 11.",
+        "kredit": "NASA"
+      },
+      {
+        "src": "/images/galeri/moon-view-moon.webp",
+        "keterangan": "Apollo 11: pemandangan Bulan.",
+        "kredit": "NASA"
+      }
+    ]
+  },
+  {
+    "slug": "deep-space",
+    "photos": [
+      {
+        "src": "/images/galeri/deep-space-golden-record-sampul.webp",
+        "keterangan": "Piring sampul Golden Record: diagram cara memutar dan lokasi Bumi.",
+        "kredit": "NASA (kredit rinci belum dicatat)"
+      },
+      {
+        "src": "/images/galeri/deep-space-golden-record-diagram.webp",
+        "keterangan": "Penjelasan diagram pada sampul Golden Record.",
+        "kredit": "NASA (kredit rinci belum dicatat)"
+      },
+      {
+        "src": "/images/galeri/deep-space-golden-record.webp",
+        "keterangan": "Voyager Golden Record.",
+        "kredit": "NASA (kredit rinci belum dicatat)"
+      },
+      {
+        "src": "/images/galeri/deep-space-golden-record-persiapan.webp",
+        "keterangan": "Persiapan Golden Record untuk Voyager.",
+        "kredit": "NASA/JPL-Caltech"
+      },
+      {
+        "src": "/images/galeri/deep-space-voyager-2-antarbintang.webp",
+        "keterangan": "Voyager 2, penjelajah antarbintang.",
+        "kredit": "NASA (kredit rinci belum dicatat)"
+      },
+      {
+        "src": "/images/galeri/deep-space-jupiter-bintik.webp",
+        "keterangan": "Jupiter dan Bintik Merah Besar, dari Voyager.",
+        "kredit": "NASA (kredit rinci belum dicatat)"
+      },
+      {
+        "src": "/images/galeri/deep-space-io.webp",
+        "keterangan": "Mosaik bulan Io milik Jupiter, dari Voyager.",
+        "kredit": "NASA (kredit rinci belum dicatat)"
+      },
+      {
+        "src": "/images/galeri/deep-space-saturnus-cincin.webp",
+        "keterangan": "Detail cincin Saturnus.",
+        "kredit": "NASA (kredit rinci belum dicatat)"
+      },
+      {
+        "src": "/images/galeri/deep-space-saturnus-atmosfer.webp",
+        "keterangan": "Perubahan atmosfer Saturnus.",
+        "kredit": "NASA (kredit rinci belum dicatat)"
+      },
+      {
+        "src": "/images/galeri/deep-space-uranus.webp",
+        "keterangan": "Uranus dilihat Voyager 2.",
+        "kredit": "NASA/JPL-Caltech"
+      },
+      {
+        "src": "/images/galeri/deep-space-neptunus.webp",
+        "keterangan": "Neptunus dilihat Voyager 2.",
+        "kredit": "NASA/JPL"
+      },
+      {
+        "src": "/images/galeri/deep-space-neptunus-bintik-gelap.webp",
+        "keterangan": "Neptunus: Bintik Gelap Besar.",
+        "kredit": "NASA/JPL"
+      },
+      {
+        "src": "/images/galeri/deep-space-pale-blue-dot.webp",
+        "keterangan": "Pale Blue Dot, ditinjau ulang.",
+        "kredit": "NASA (kredit rinci belum dicatat)"
+      },
+      {
+        "src": "/images/galeri/deep-space-saturnus-lanjut.webp",
+        "keterangan": "Saturnus dalam perjalanan Voyager.",
+        "kredit": "NASA (kredit rinci belum dicatat)"
+      },
+      {
+        "src": "/images/galeri/deep-space-voyager-konsep.webp",
+        "keterangan": "Ilustrasi Voyager di ruang antarbintang (konsep seniman).",
+        "kredit": "NASA/JPL-Caltech"
+      }
+    ]
+  }
+]

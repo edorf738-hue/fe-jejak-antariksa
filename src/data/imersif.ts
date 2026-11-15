@@ -1,4 +1,5 @@
-import { BENDA_TAMBAHAN } from "./benda-tambahan";
+import { bendaBab } from "./api";
+import { BENDA_TAMBAHAN_EN } from "./benda-tambahan";
 import { getBab } from "./content";
 import { getJourneyTujuan } from "./journey";
 import { getKategori, KATEGORI_SLUGS } from "./content";
@@ -97,6 +98,10 @@ export type HalamanImersifData = {
   panel: PanelData;
 };
 
+/** Indonesia: API sudah memuat semua benda satu bab. English: benda terjemahan bab + benda tambahan terjemahan. */
+const semuaBenda = (babId: number, lang: Lang, benda: DataBenda[]): DataBenda[] =>
+  lang === "id" ? bendaBab(babId) : [...benda, ...(BENDA_TAMBAHAN_EN[babId as BabId] ?? [])];
+
 export function getBabImersif(id: number, lang: Lang = DEFAULT_LANG): (HalamanImersifData & { bab: Bab; labelBab: readonly string[] }) | undefined {
   const bab = getBab(id, lang);
   if (!bab) return undefined;
@@ -108,7 +113,7 @@ export function getBabImersif(id: number, lang: Lang = DEFAULT_LANG): (HalamanIm
     gambar: bab.id === 1 ? "/images/imersif/bab-1-bumi.webp" : GAMBAR_KATEGORI[slug],
     scenePlaceholder: bab.id === 1,
     narasi: { eyebrow: `${lang === "en" ? "CHAPTER" : "BAB"} ${bab.id}`, judul: bab.judul, isi: bab.narasi },
-    benda: [...bab.benda, ...(BENDA_TAMBAHAN[lang][bab.id] ?? [])],
+    benda: semuaBenda(bab.id, lang, bab.benda),
     posisiTitik: TITIK_STORY[bab.id],
     fokusGambar: bab.id === 1 ? FOKUS_BAB_1 : FOKUS[slug],
     panel: { fakta: tujuan.kategori.fakta, misi: tujuan.misi, galeri: tujuan.kategori.galeri, sumber: tujuan.sumber },
@@ -126,7 +131,7 @@ export function getResourcesImersif(slug: KategoriSlug, lang: Lang = DEFAULT_LAN
     gambar: GAMBAR_KATEGORI[slug],
     scenePlaceholder: false,
     narasi: { eyebrow: "RESOURCES", judul: k.nama, isi: k.ringkasan },
-    benda: [...k.bab.benda, ...(BENDA_TAMBAHAN[lang][k.bab.id] ?? [])],
+    benda: semuaBenda(k.bab.id, lang, k.bab.benda),
     posisiTitik: TITIK_RESOURCES[slug],
     fokusGambar: FOKUS[slug],
     panel: { fakta: k.fakta, misi: tujuan.misi, galeri: k.galeri, sumber: tujuan.sumber },

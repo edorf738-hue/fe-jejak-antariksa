@@ -1,4 +1,5 @@
 import { DEFAULT_LANG, type Lang } from "../lib/i18n";
+import { GALERI_API, MEDIA_API } from "./api";
 import { getCerita } from "./cerita";
 
 /**
@@ -189,7 +190,7 @@ function buat(t: Teks): Record<string, MediaBenda> {
   };
 }
 
-export const MEDIA_BENDA: Record<Lang, Record<string, MediaBenda>> = { id: buat(TEKS.id), en: buat(TEKS.en) };
+export const MEDIA_BENDA: Record<Lang, Record<string, MediaBenda>> = { id: MEDIA_API, en: buat(TEKS.en) };
 
 /**
  * Foto galeri per lingkungan di panel Galeri halaman 3D. Sumbernya sama dengan galeri halaman cerita (src/data/cerita.ts),
@@ -197,6 +198,7 @@ export const MEDIA_BENDA: Record<Lang, Record<string, MediaBenda>> = { id: buat(
  */
 export type FotoGaleri = { src: string; keterangan: string; kredit: string };
 export function getGaleriFoto(lang: Lang = DEFAULT_LANG): Record<"moon" | "mars" | "deep-space", FotoGaleri[]> {
+  if (lang === "id") return GALERI_API;
   return {
     moon: getCerita("eksplorasi-bulan", lang).galeri,
     mars: getCerita("eksplorasi-mars", lang).galeri,

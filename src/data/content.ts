@@ -1,6 +1,6 @@
-import raw from "../../docs/content-data.json";
 import rawEn from "../../docs/content-data.en.json";
 import { DEFAULT_LANG, type Lang } from "../lib/i18n";
+import { BAB_API, JOURNEYS_API } from "./api";
 import type {
   Bab,
   BabId,
@@ -14,8 +14,9 @@ import type {
 } from "./types";
 
 /**
- * Pemuat data dari docs/content-data.json. Komponen tidak boleh menulis fakta
- * sendiri: ambil lewat fungsi di sini. Nilai "TBD" dan null dipertahankan.
+ * Pemuat konten bab dan kategori. Bahasa Indonesia berasal dari backend lewat snapshot di ./api (lihat api.ts);
+ * English dari docs/content-data.en.json (terjemahan, struktur sama dengan content-data.json). Komponen tidak boleh
+ * menulis fakta sendiri: ambil lewat fungsi di sini. Nilai "TBD" dan null dipertahankan.
  */
 type RawBenda = {
   hotspot?: string;
@@ -56,12 +57,11 @@ type RawContent = {
   };
   misi: Record<"Bulan" | "Mars" | "Deep Space", (Misi | null)[]>;
   sumber: Sumber[];
-  kredit: { gambar: KreditEntri[]; model3d: KreditEntri[] };
   ringkasanBab: Record<string, string>;
 };
 
-/** Konten per bahasa: Indonesia (content-data.json, sumber utama) dan English (content-data.en.json, terjemahan dengan struktur sama). */
-const CONTENT: Record<Lang, RawContent> = { id: raw as unknown as RawContent, en: rawEn as unknown as RawContent };
+/** Konten English (terjemahan dengan struktur yang sama seperti content-data.json lama). */
+const CONTENT_EN = rawEn as unknown as RawContent;
 
 function toBenda(babId: number, hotspot: string, index: number, b: RawBenda): DataBenda {
   return {
@@ -94,10 +94,8 @@ function toBab(b: RawBab, content: RawContent): Bab {
   };
 }
 
-const BAB: Record<Lang, Bab[]> = {
-  id: CONTENT.id.bab.map((b) => toBab(b, CONTENT.id)),
-  en: CONTENT.en.bab.map((b) => toBab(b, CONTENT.en)),
-};
+const BAB_EN: Bab[] = CONTENT_EN.bab.map((b) => toBab(b, CONTENT_EN));
+const BAB: Record<Lang, Bab[]> = { id: BAB_API, en: BAB_EN };
 
 export function getDaftarBab(lang: Lang = DEFAULT_LANG): Bab[] {
   return BAB[lang];
@@ -123,7 +121,8 @@ export function isKategoriSlug(value: string): value is KategoriSlug {
 }
 
 export function getKategori(slug: KategoriSlug, lang: Lang = DEFAULT_LANG): Kategori {
-  const content = CONTENT[lang];
+  if (lang === "id") return (JOURNEYS_API.find((j) => j.slug === slug) as { kategori: Kategori }).kategori;
+  const content = CONTENT_EN;
   const { nama, misiKey } = KATEGORI_META[slug];
   const res = content.resources[nama];
   const bab = getBab(res.pakaiBab, lang) as Bab;
@@ -141,19 +140,3 @@ export function getKategori(slug: KategoriSlug, lang: Lang = DEFAULT_LANG): Kate
   };
 }
 
-export function getSumber(lang: Lang = DEFAULT_LANG): Sumber[] {
-  return CONTENT[lang].sumber;
-}
-
-export type KreditEntri = {
-  id: string;
-  judul: string;
-  meta: string;
-  url: string;
-  atribusi: string;
-};
-
-/** Kredit gambar dan model 3D (`kredit` di content-data.json). */
-export function getKredit(): { gambar: KreditEntri[]; model3d: KreditEntri[] } {
-  return CONTENT.id.kredit;
-}

@@ -1,0 +1,513 @@
+[
+  {
+    "id": "1-0",
+    "slug": "obj-1-0",
+    "chapter_number": 1,
+    "category": null,
+    "hotspot": "Berdirinya NASA",
+    "name": "Berdirinya NASA",
+    "label": "Sejarah",
+    "description": "Undang-undang pendirian NASA ditandatangani 29 Juli 1958.",
+    "fact": "NASA mulai beroperasi 1 Oktober 1958",
+    "source": "NASA — Asal-usul NASA",
+    "model3d": null,
+    "media": [],
+    "model_note": null
+  },
+  {
+    "id": "1-1",
+    "slug": "obj-1-1",
+    "chapter_number": 1,
+    "category": null,
+    "hotspot": "Apollo 8 dan 10",
+    "name": "Apollo 8 dan 10",
+    "label": "Misi sebelum Apollo 11",
+    "description": "Membantu membuktikan perjalanan ke Bulan bisa dilakukan.",
+    "fact": "Disebut dalam artikel NASA",
+    "source": "NASA",
+    "model3d": null,
+    "media": [],
+    "model_note": null
+  },
+  {
+    "id": "1-2",
+    "slug": "obj-1-2",
+    "chapter_number": 1,
+    "category": null,
+    "hotspot": "Target Kennedy",
+    "name": "Target Kennedy",
+    "label": "Sejarah",
+    "description": "Kennedy menetapkan target mendaratkan manusia di Bulan.",
+    "fact": "Ditetapkan 25 Mei 1961",
+    "source": "NASA",
+    "model3d": null,
+    "media": [],
+    "model_note": null
+  },
+  {
+    "id": "2-0",
+    "slug": "obj-2-0",
+    "chapter_number": 2,
+    "category": "moon",
+    "hotspot": "Tahap turun Eagle",
+    "name": "Tahap turun Eagle",
+    "label": "Ditinggalkan di Bulan",
+    "description": "Bagian bawah pendarat Eagle, lebar 4,2 m.",
+    "fact": "Massa kering 2.034 kg",
+    "source": "NSSDCA",
+    "model3d": {
+      "file": "Apollo Lunar Module.glb",
+      "jenis": "model umum",
+      "catatan": "Bukan model khusus Eagle. Tulis 'model umum' di web."
+    },
+    "media": [
+      {
+        "jenis": "model3d",
+        "src": "/models/objek/apollo-lunar-module.glb",
+        "keterangan": "Model umum Apollo Lunar Module (bukan model khusus Eagle).",
+        "kredit": "NASA/Michael D. Carbajal (menurut halaman NASA Science)"
+      },
+      {
+        "jenis": "image",
+        "src": "/images/objek/eagle.webp",
+        "keterangan": "Apollo 11 Lunar Module dilihat dari kejauhan.",
+        "kredit": "NASA"
+      }
+    ],
+    "model_note": "Model 3D: model umum Apollo Lunar Module dari NASA."
+  },
+  {
+    "id": "2-1",
+    "slug": "obj-2-1",
+    "chapter_number": 2,
+    "category": "moon",
+    "hotspot": "Plakat peringatan",
+    "name": "Plakat peringatan",
+    "label": "Ditinggalkan di Bulan",
+    "description": "Dipasang pada kaki pendarat Eagle.",
+    "fact": "\"We came in peace for all mankind\"",
+    "source": "NSSDCA",
+    "model3d": null,
+    "media": [
+      {
+        "jenis": "video",
+        "src": "/videos/apollo-11/plakat-peringatan.mp4",
+        "poster": "/videos/apollo-11/plakat-peringatan.webp",
+        "keterangan": "Plakat yang dipasang pada kaki pendarat.",
+        "kredit": "NASA"
+      },
+      {
+        "jenis": "image",
+        "src": "/images/objek/plakat.webp",
+        "keterangan": "Plakat peringatan Apollo 11.",
+        "kredit": "NASA"
+      }
+    ],
+    "model_note": "Belum ada model 3D NASA: ditampilkan sebagai pelat foto NASA di posisi perkiraan."
+  },
+  {
+    "id": "2-2",
+    "slug": "obj-2-2",
+    "chapter_number": 2,
+    "category": "moon",
+    "hotspot": "Bendera Amerika",
+    "name": "Bendera Amerika",
+    "label": "Ditinggalkan di Bulan",
+    "description": "Didirikan para astronaut.",
+    "fact": "Aldrin memberi hormat di dekatnya",
+    "source": "NASA",
+    "model3d": null,
+    "media": [
+      {
+        "jenis": "video",
+        "src": "/videos/apollo-11/mengibarkan-bendera.mp4",
+        "poster": "/videos/apollo-11/mengibarkan-bendera.webp",
+        "keterangan": "Bendera AS didirikan di permukaan Bulan.",
+        "kredit": "NASA"
+      },
+      {
+        "jenis": "image",
+        "src": "/images/objek/bendera.webp",
+        "keterangan": "Buzz Aldrin memberi hormat di dekat bendera AS.",
+        "kredit": "NASA"
+      }
+    ],
+    "model_note": "Belum ada model 3D NASA: ditampilkan sebagai pelat foto NASA di posisi perkiraan."
+  },
+  {
+    "id": "2-3",
+    "slug": "obj-2-3",
+    "chapter_number": 2,
+    "category": "moon",
+    "hotspot": "Seismometer",
+    "name": "Seismometer (PSE)",
+    "label": "Ditinggalkan, tidak aktif",
+    "description": "Pencatat gempa Bulan, dipasang sekitar 17 m di selatan pendarat.",
+    "fact": "Bekerja 21 Juli sampai 27 Agustus 1969",
+    "source": "NSSDCA",
+    "model3d": null,
+    "media": [
+      {
+        "jenis": "image",
+        "src": "/images/galeri/moon-komponen-easep.webp",
+        "keterangan": "Komponen paket eksperimen EASEP, termasuk seismometer.",
+        "kredit": "NASA"
+      }
+    ],
+    "model_note": "Belum ada model 3D NASA: ditampilkan sebagai pelat foto NASA di posisi perkiraan."
+  },
+  {
+    "id": "2-4",
+    "slug": "obj-2-4",
+    "chapter_number": 2,
+    "category": "moon",
+    "hotspot": "Retroreflektor laser",
+    "name": "Retroreflektor laser (LRRR)",
+    "label": "Ditinggalkan di Bulan",
+    "description": "Panel 46 cm berisi 100 cermin sudut, memantulkan laser dari Bumi.",
+    "fact": "Tidak butuh listrik; dipasang sekitar 5 m dari EASEP",
+    "source": "NSSDCA",
+    "model3d": null,
+    "media": [
+      {
+        "jenis": "image",
+        "src": "/images/galeri/moon-aldrin-membawa-easep.webp",
+        "keterangan": "Aldrin membawa seismometer dan retroreflektor laser.",
+        "kredit": "NASA"
+      }
+    ],
+    "model_note": "Belum ada model 3D NASA: ditampilkan sebagai pelat foto NASA di posisi perkiraan."
+  },
+  {
+    "id": "2-5",
+    "slug": "obj-2-5",
+    "chapter_number": 2,
+    "category": "moon",
+    "hotspot": "Tahap naik Eagle",
+    "name": "Tahap naik Eagle",
+    "label": "Nasib tidak diketahui",
+    "description": "Mengantar Armstrong dan Aldrin kembali ke Columbia.",
+    "fact": "Dilepas ke orbit Bulan 22 Juli 1969; diduga jatuh ke Bulan",
+    "source": "NSSDCA",
+    "model3d": {
+      "file": "Apollo Lunar Module.glb",
+      "jenis": "model umum",
+      "catatan": "Bagian atas model pendarat."
+    },
+    "media": [
+      {
+        "jenis": "model3d",
+        "src": "/models/objek/apollo-lunar-module.glb",
+        "keterangan": "Tahap naik adalah bagian atas model umum Apollo Lunar Module.",
+        "kredit": "NASA/Michael D. Carbajal (menurut halaman NASA Science)"
+      },
+      {
+        "jenis": "image",
+        "src": "/images/galeri/moon-lm-jauh.webp",
+        "keterangan": "Lunar Module dilihat dari kejauhan.",
+        "kredit": "NASA"
+      }
+    ],
+    "model_note": "Model 3D: bagian atas model umum Apollo Lunar Module dari NASA."
+  },
+  {
+    "id": "2-6",
+    "slug": "obj-2-6",
+    "chapter_number": 2,
+    "category": "moon",
+    "hotspot": "Astronaut Bootprint",
+    "name": "Astronaut Bootprint",
+    "label": "Foto dari misi Apollo",
+    "description": "Jejak sepatu astronaut Apollo di debu Bulan.",
+    "fact": "Misi dan tanggal foto belum dicatat",
+    "source": "NASA",
+    "model3d": null,
+    "media": [
+      {
+        "jenis": "image",
+        "src": "/images/objek/bootprint.webp",
+        "keterangan": "Jejak sepatu astronaut Apollo di debu Bulan.",
+        "kredit": "NASA (kredit rinci belum dicatat)"
+      }
+    ],
+    "model_note": "Ini foto, bukan model 3D. Penandanya di scene hanya representasi visual, bukan lokasi sebenarnya."
+  },
+  {
+    "id": "2-7",
+    "slug": "obj-2-7",
+    "chapter_number": 2,
+    "category": "moon",
+    "hotspot": "Paket barang peringatan",
+    "name": "Paket barang peringatan",
+    "label": "Ditinggalkan di Bulan",
+    "description": "Medali untuk astronaut Apollo 1 dan dua kosmonaut, serta cakram silikon.",
+    "fact": "Cakram 1,5 inci berisi pesan dari 73 negara",
+    "source": "NASA: Apollo 11 Mission Overview",
+    "model3d": null,
+    "media": [],
+    "model_note": "Belum ada model atau foto NASA untuk benda ini: hanya informasi teks. Posisi penanda hanya representasi visual."
+  },
+  {
+    "id": "2-8",
+    "slug": "obj-2-8",
+    "chapter_number": 2,
+    "category": "moon",
+    "hotspot": "Peralatan lain",
+    "name": "Peralatan lain",
+    "label": "Ditinggalkan di Bulan",
+    "description": "Kamera TV, dua kamera foto, alat pengambil sampel, PLSS, sepatu Bulan, gnomon.",
+    "fact": "Berat pendarat turun dari 15.897 ke 10.821 pon",
+    "source": "NASA: log Apollo 11 (1969)",
+    "model3d": null,
+    "media": [],
+    "model_note": "Belum ada model atau foto NASA untuk benda ini: hanya informasi teks. Posisi penanda hanya representasi visual."
+  },
+  {
+    "id": "2-9",
+    "slug": "obj-2-9",
+    "chapter_number": 2,
+    "category": "moon",
+    "hotspot": "Eksperimen angin Matahari",
+    "name": "Eksperimen angin Matahari",
+    "label": "Eksperimen Apollo 11",
+    "description": "Eksperimen yang dipasang astronaut di permukaan Bulan.",
+    "fact": "Buzz Aldrin terlihat di sampingnya dalam foto NASA",
+    "source": "NASA",
+    "model3d": null,
+    "media": [
+      {
+        "jenis": "image",
+        "src": "/images/galeri/moon-angin-matahari.webp",
+        "keterangan": "Eksperimen angin Matahari Apollo 11.",
+        "kredit": "NASA"
+      },
+      {
+        "jenis": "image",
+        "src": "/images/galeri/moon-aldrin-angin-matahari.webp",
+        "keterangan": "Buzz Aldrin di samping eksperimen angin Matahari.",
+        "kredit": "NASA"
+      }
+    ],
+    "model_note": "Belum ada model 3D NASA: ditampilkan sebagai pelat foto NASA di posisi perkiraan."
+  },
+  {
+    "id": "2-10",
+    "slug": "obj-2-10",
+    "chapter_number": 2,
+    "category": "moon",
+    "hotspot": "Sampel Bulan",
+    "name": "Sampel batuan dan tanah",
+    "label": "Dibawa pulang ke Bumi",
+    "description": "Armstrong mengumpulkan sampel batuan dan tanah Bulan.",
+    "fact": "21,55 kg dibawa pulang",
+    "source": "NASA (verifikasi: TBD)",
+    "model3d": null,
+    "media": [
+      {
+        "jenis": "image",
+        "src": "/images/galeri/moon-armstrong-sampel.webp",
+        "keterangan": "Neil Armstrong mengumpulkan sampel Bulan.",
+        "kredit": "NASA"
+      }
+    ],
+    "model_note": "Belum ada model 3D NASA: ditampilkan sebagai pelat foto NASA di posisi perkiraan."
+  },
+  {
+    "id": "3-0",
+    "slug": "obj-3-0",
+    "chapter_number": 3,
+    "category": "mars",
+    "hotspot": "Rover Spirit",
+    "name": "Rover Spirit",
+    "label": "Ditinggalkan di Mars, nonaktif",
+    "description": "Mendarat di Gusev Crater pada 3 Januari 2004.",
+    "fact": "Menempuh 7,73 km",
+    "source": "NASA Science",
+    "model3d": null,
+    "media": [
+      {
+        "jenis": "model3d",
+        "src": "/models/objek/mer-rover.glb",
+        "keterangan": "Model umum rover MER; Spirit dan Opportunity adalah kembar.",
+        "kredit": "NASA/JPL-Caltech"
+      },
+      {
+        "jenis": "image",
+        "src": "/images/galeri/mars-spirit-gusev.webp",
+        "keterangan": "Rover Spirit di Gusev Crater.",
+        "kredit": "NASA/JPL-Caltech"
+      }
+    ],
+    "model_note": "Model 3D: model umum rover MER (Spirit dan Opportunity kembar)."
+  },
+  {
+    "id": "3-1",
+    "slug": "obj-3-1",
+    "chapter_number": 3,
+    "category": "mars",
+    "hotspot": "Rover Opportunity",
+    "name": "Rover Opportunity",
+    "label": "Ditinggalkan di Mars, nonaktif",
+    "description": "Mendarat di Meridiani Planum, 24 Januari 2004.",
+    "fact": "Menempuh 45,16 km",
+    "source": "NASA Science",
+    "model3d": null,
+    "media": [
+      {
+        "jenis": "model3d",
+        "src": "/models/objek/mer-b-opportunity.glb",
+        "keterangan": "Model Mars Exploration Rover Opportunity (MER-B), bentuk sederhana tanpa tekstur.",
+        "kredit": "NASA/Ames Research Center"
+      },
+      {
+        "jenis": "image",
+        "src": "/images/galeri/mars-opportunity-foto-diri.webp",
+        "keterangan": "Foto diri Opportunity, Januari 2014.",
+        "kredit": "NASA/JPL-Caltech/Cornell Univ./Arizona State Univ."
+      }
+    ],
+    "model_note": "Model 3D: model rover Opportunity (MER-B) dari NASA."
+  },
+  {
+    "id": "3-2",
+    "slug": "obj-3-2",
+    "chapter_number": 3,
+    "category": "mars",
+    "hotspot": "Heat Shield Rock",
+    "name": "Heat Shield Rock",
+    "label": "Temuan, bukan artefak",
+    "description": "Meteorit besi-nikel yang ditemukan Opportunity.",
+    "fact": "TBD",
+    "source": "TBD",
+    "model3d": null,
+    "media": [
+      {
+        "jenis": "image",
+        "src": "/images/galeri/mars-heat-shield-rock.webp",
+        "keterangan": "Serpihan pelindung panas Opportunity; Heat Shield Rock di bagian kiri foto.",
+        "kredit": "NASA/JPL/Cornell"
+      }
+    ],
+    "model_note": "Belum ada model 3D NASA: ditampilkan sebagai pelat foto NASA di posisi perkiraan."
+  },
+  {
+    "id": "4-0",
+    "slug": "obj-4-0",
+    "chapter_number": 4,
+    "category": "deep-space",
+    "hotspot": "Voyager 1",
+    "name": "Voyager 1",
+    "label": "Masih beroperasi",
+    "description": "Diluncurkan 5 September 1977.",
+    "fact": "Antarbintang sejak 2012",
+    "source": "NASA Science",
+    "model3d": {
+      "file": "Voyager Probe (B).glb",
+      "jenis": "model umum",
+      "catatan": "Voyager 1 dan 2 memakai model yang sama. Versi (antenna) tanpa tekstur dan lebih ringan."
+    },
+    "media": [
+      {
+        "jenis": "model3d",
+        "src": "/models/objek/voyager-probe.glb",
+        "keterangan": "Model umum Voyager Probe (B).",
+        "kredit": "NASA/Michael D. Carbajal (menurut halaman NASA Science)"
+      },
+      {
+        "jenis": "image",
+        "src": "/images/objek/voyager-2.webp",
+        "keterangan": "Ilustrasi NASA: posisi Voyager 1 dan 2 di ruang antarbintang.",
+        "kredit": "NASA (kredit rinci belum dicatat)"
+      }
+    ],
+    "model_note": "Model 3D: model umum Voyager Probe (B) dari NASA."
+  },
+  {
+    "id": "4-1",
+    "slug": "obj-4-1",
+    "chapter_number": 4,
+    "category": "deep-space",
+    "hotspot": "Voyager 2",
+    "name": "Voyager 2",
+    "label": "Masih beroperasi",
+    "description": "Diluncurkan 20 Agustus 1977.",
+    "fact": "Antarbintang sejak 2018",
+    "source": "NASA Science",
+    "model3d": null,
+    "media": [
+      {
+        "jenis": "model3d",
+        "src": "/models/objek/voyager-probe-a.glb",
+        "keterangan": "Model umum Voyager Probe (A).",
+        "kredit": "NASA/Christopher R. Meaney"
+      },
+      {
+        "jenis": "image",
+        "src": "/images/objek/voyager-2.webp",
+        "keterangan": "Ilustrasi NASA: posisi Voyager 1 dan 2 di ruang antarbintang.",
+        "kredit": "NASA (kredit rinci belum dicatat)"
+      }
+    ],
+    "model_note": "Model 3D: model umum Voyager Probe (A) dari NASA."
+  },
+  {
+    "id": "4-2",
+    "slug": "obj-4-2",
+    "chapter_number": 4,
+    "category": "deep-space",
+    "hotspot": "Golden Record",
+    "name": "Golden Record",
+    "label": "Dibawa terbang",
+    "description": "Piringan tembaga berlapis emas, 30 cm.",
+    "fact": "Berisi salam 55 bahasa dan 115 gambar",
+    "source": "NASA",
+    "model3d": null,
+    "media": [
+      {
+        "jenis": "image",
+        "src": "/images/objek/golden-record.webp",
+        "keterangan": "Voyager Golden Record: piringan dan sampulnya.",
+        "kredit": "NASA (kredit rinci belum dicatat)",
+        "label": "Foto"
+      },
+      {
+        "jenis": "image",
+        "src": "/images/galeri/deep-space-golden-record-persiapan.webp",
+        "keterangan": "Persiapan Golden Record untuk Voyager.",
+        "kredit": "NASA/JPL-Caltech",
+        "label": "Persiapan"
+      }
+    ],
+    "model_note": "NASA hanya menyediakan foto Golden Record, tanpa model 3D: tampil sebagai potongan foto asli."
+  },
+  {
+    "id": "4-3",
+    "slug": "obj-4-3",
+    "chapter_number": 4,
+    "category": "deep-space",
+    "hotspot": "Golden Record Cover",
+    "name": "Golden Record Cover",
+    "label": "Dibawa terbang ke ruang antarbintang",
+    "description": "Sampul piringan: diagram cara memutar dan lokasi Bumi.",
+    "fact": "Memuat simbol posisi Bumi relatif terhadap beberapa pulsar",
+    "source": "NASA Science",
+    "model3d": null,
+    "media": [
+      {
+        "jenis": "image",
+        "src": "/images/galeri/deep-space-golden-record-sampul.webp",
+        "keterangan": "Sampul Golden Record: diagram cara memutar piringan dan lokasi Bumi.",
+        "kredit": "NASA (kredit rinci belum dicatat)",
+        "label": "Sampul"
+      },
+      {
+        "jenis": "image",
+        "src": "/images/galeri/deep-space-golden-record-diagram.webp",
+        "keterangan": "Penjelasan diagram pada sampul Golden Record.",
+        "kredit": "NASA (kredit rinci belum dicatat)",
+        "label": "Penjelasan"
+      }
+    ],
+    "model_note": "NASA hanya menyediakan foto sampul, tanpa model 3D: tampil sebagai potongan foto asli."
+  }
+]
