@@ -1,4 +1,5 @@
 import type { EntriSumber as EntriSumberData } from "@/data";
+import { reveal } from "./reveal";
 
 /**
  * Entri Sumber (FIGMA_HANDOFF bagian 3): `Kategori`, `Judul`, `Meta`, `URL`,
@@ -8,7 +9,11 @@ import type { EntriSumber as EntriSumberData } from "@/data";
 type EntriSumberProps = Pick<
   EntriSumberData,
   "labelKategori" | "judul" | "meta" | "url" | "atribusi"
-> & { className?: string };
+> & {
+  /** Bila diisi (ms), entri muncul saat masuk layar dengan jeda ini (lihat reveal.ts). */
+  delay?: number;
+  className?: string;
+};
 
 export function EntriSumber({
   labelKategori,
@@ -16,11 +21,13 @@ export function EntriSumber({
   meta,
   url,
   atribusi,
+  delay,
   className = "",
 }: EntriSumberProps) {
   const adaTautan = /^https?:\/\//.test(url);
   return (
     <article
+      {...(delay === undefined ? {} : reveal(delay))}
       className={`flex flex-col gap-2.5 break-words rounded-card border border-archive-slate-normal bg-bg-secondary-normal px-5 py-6 md:px-8 md:py-7 ${className}`}
     >
       <p className="text-eyebrow-15 text-aksen-warisan-normal">{labelKategori}</p>

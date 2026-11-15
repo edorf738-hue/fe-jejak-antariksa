@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Rajdhani, Space_Grotesk } from "next/font/google";
+import { RevealObserver } from "@/components/ui/RevealObserver";
 import "./globals.css";
 
 // Font sesuai text style di Figma (docs/FIGMA_HANDOFF.md bagian 2).
@@ -29,11 +30,20 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
+    // suppressHydrationWarning: skrip di <head> menambah kelas `js` ke <html> sebelum hidrasi.
     <html
       lang="id"
+      suppressHydrationWarning
       className={`${spaceGrotesk.variable} ${rajdhani.variable} ${inter.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <head>
+        {/* Gerak reveal (globals.css "Gerak halaman") hanya aktif bila JavaScript berjalan; tanpa kelas ini semua konten terlihat. */}
+        <script dangerouslySetInnerHTML={{ __html: "document.documentElement.classList.add('js')" }} />
+      </head>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <RevealObserver />
+      </body>
     </html>
   );
 }

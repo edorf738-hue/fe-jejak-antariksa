@@ -1,13 +1,14 @@
 import type { Sumber } from "@/data";
+import { reveal } from "./reveal";
 
 /**
  * Item Sumber (FIGMA_HANDOFF bagian 3): `Judul`, `Meta`, `URL`, baris dengan garis bawah.
  * Dipakai di Peta Perjalanan dan panel Sumber. (Entri Sumber lengkap untuk halaman
  * Sumber adalah komponen lain: `EntriSumber`.)
  */
-export function ItemSumber({ judul, penerbit, url, diakses }: Sumber) {
+export function ItemSumber({ judul, penerbit, url, diakses, delay }: Sumber & { delay?: number }) {
   return (
-    <article className="flex flex-col gap-1.5 break-words border-b border-archive-slate-normal py-5">
+    <article {...(delay === undefined ? {} : reveal(delay))} className="flex flex-col gap-1.5 break-words border-b border-archive-slate-normal py-5">
       <h3 className="text-button-label text-text-primary-normal">{judul}</h3>
       <p className="text-body-large text-text-secondary-normal">
         Penerbit: {penerbit} · Diakses: {diakses ?? "TBD"}

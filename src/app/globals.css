@@ -415,3 +415,161 @@ body {
     scroll-behavior: auto !important;
   }
 }
+/*
+ * Gerak halaman (reveal saat masuk layar), mengikuti bahasa gerak nakala.digital: konten naik 24 px
+ * sambil memudar dengan jeda bertahap, judul muncul per kata dari bawah, semuanya sekali saja (durasi dan kurva ada di variabel `--durasi-masuk`, `--durasi-kata`, `--jeda-kata`, `--ease-masuk`).
+ * Dua cara (lihat ui/reveal.ts), keduanya dengan <SplitText> untuk judul per kata:
+ *  - `data-reveal`: muncul saat masuk layar. <RevealObserver> menambah atribut `data-visible`
+ *    (IntersectionObserver; atribut, bukan kelas, karena React menimpa seluruh `class` saat
+ *    className berubah). Untuk konten di bawah lipatan.
+ *  - `data-reveal-muat`: animasi CSS murni saat pertama tampil, tanpa menunggu JavaScript
+ *    (hidrasi bisa lambat dan menyembunyikan hero). Untuk konten di atas lipatan (hero, header).
+ * Hanya aktif bila `html.js` (skrip kecil di <head> layout), jadi tanpa JavaScript semua konten
+ * tetap terlihat. Memakai animasi (bukan transisi) supaya tidak bentrok dengan transisi hover milik
+ * elemen itu sendiri.
+ */
+:root {
+  --motion-fast: 0.2s;
+  --motion-base: 0.36s;
+  --motion-slow: 1.1s;
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Animasi masuk (reveal): pelan dan lembut di awal maupun akhir (slow in, slow out). Setel di sini. */
+  --durasi-masuk: 1.1s;
+  --durasi-kata: 1s;
+  --jeda-kata: 70ms;
+  --ease-masuk: cubic-bezier(0.45, 0, 0.15, 1);
+}
+@keyframes reveal-naik {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+@keyframes reveal-kata {
+  from {
+    transform: translateY(110%);
+  }
+  to {
+    transform: none;
+  }
+}
+.js [data-reveal]:not([data-reveal="split"]):not([data-visible]) {
+  opacity: 0;
+}
+.js [data-reveal]:not([data-reveal="split"])[data-visible] {
+  animation: reveal-naik var(--durasi-masuk) var(--ease-masuk) var(--reveal-delay, 0s) backwards;
+}
+/* Saat muat (atas lipatan): animasi jalan sendiri; `backwards` menahan keadaan awal selama jeda. */
+.js [data-reveal-muat]:not([data-reveal-muat="split"]) {
+  animation: reveal-naik var(--durasi-masuk) var(--ease-masuk) var(--reveal-delay, 0s) backwards;
+}
+/* Judul per kata: tiap kata dipotong (clip-path) dan naik dari bawah, jeda 45 ms per kata. */
+.js :is([data-reveal="split"], [data-reveal-muat="split"]) .split-word {
+  display: inline-block;
+  clip-path: inset(-0.1em -0.05em -0.25em);
+}
+.js [data-reveal-muat="split"] .split-word-inner {
+  display: inline-block;
+  animation: reveal-kata var(--durasi-kata) var(--ease-masuk)
+    calc(var(--reveal-delay, 0s) + var(--word-index, 0) * var(--jeda-kata)) backwards;
+}
+.js [data-reveal="split"] .split-word-inner {
+  display: inline-block;
+  transform: translateY(110%);
+}
+.js [data-reveal="split"][data-visible] .split-word-inner {
+  transform: none;
+  animation: reveal-kata var(--durasi-kata) var(--ease-masuk)
+    calc(var(--reveal-delay, 0s) + var(--word-index, 0) * var(--jeda-kata)) backwards;
+}
+/* Gerak dikurangi: semua langsung terlihat, animasi benar-benar mati (bukan sekadar dipercepat). */
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal],
+  .js [data-reveal-muat] {
+    opacity: 1 !important;
+    animation: none !important;
+  }
+  .js [data-reveal="split"] .split-word-inner,
+  .js [data-reveal-muat="split"] .split-word-inner {
+    transform: none !important;
+    animation: none !important;
+  }
+}
+
+/*
+ * Tombol sinyal (prop `sinyal` pada Button, dipakai di "Mulai Jelajah"). Tiga lapis, semuanya CSS:
+ *  - Denyut: cincin tipis membesar dan memudar di sekeliling tombol, 3 kali setelah hero selesai masuk
+ *    lalu berhenti (bahasa gerak yang sama dengan Titik Info di scene 3D).
+ *  - Kilau: pita cahaya menyapu isi tombol sekali setelah hero masuk, dan tiap kali di-hover.
+ *  - Hover/tekan: tombol naik 2 px dengan pendar biru; ditekan mengecil 0,95 lalu memantul kembali.
+ * Warna dasar dan ukuran tombol tidak berubah. Hover hanya pada perangkat dengan kursor.
+ */
+@keyframes tombol-denyut {
+  0% {
+    opacity: 0;
+    scale: 1;
+  }
+  18% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 0;
+    scale: 1.22;
+  }
+}
+@keyframes tombol-sapu {
+  from {
+    translate: -110% 0;
+  }
+  to {
+    translate: 290% 0;
+  }
+}
+.tombol-sinyal {
+  /* Urutan: warna, geser (hover), pendar, skala (tekan; kurva memantul saat dilepas, puncak sekitar +1,6%). */
+  transition:
+    background-color var(--motion-base) ease,
+    translate var(--motion-base) var(--ease-out-soft),
+    box-shadow var(--motion-base) ease,
+    scale 0.55s cubic-bezier(0.3, 2.2, 0.5, 1);
+}
+.tombol-sinyal:active {
+  scale: 0.95;
+  transition-duration: 0.2s, 0.2s, 0.2s, 0.1s;
+}
+.tombol-denyut {
+  opacity: 0;
+  border: 1.5px solid var(--color-aksen-informasi-normal);
+  box-shadow: 0 0 18px rgba(114, 184, 213, 0.45);
+  animation: tombol-denyut 2.4s cubic-bezier(0, 0, 0.58, 1) 2.4s 3 backwards;
+}
+.tombol-kilau {
+  translate: -110% 0;
+  background: linear-gradient(105deg, transparent 0%, rgba(255, 255, 255, 0.55) 50%, transparent 100%);
+  animation: tombol-sapu 1s var(--ease-masuk) 2.2s 1 backwards;
+}
+@media (hover: hover) {
+  .tombol-sinyal:hover {
+    translate: 0 -2px;
+    box-shadow: 0 6px 28px rgba(114, 184, 213, 0.45);
+  }
+  .tombol-sinyal:hover .tombol-kilau {
+    animation: tombol-sapu 0.9s var(--ease-out-soft) both;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tombol-denyut,
+  .tombol-kilau {
+    display: none;
+  }
+  .tombol-sinyal:hover,
+  .tombol-sinyal:active {
+    translate: none;
+    scale: none;
+  }
+}
+

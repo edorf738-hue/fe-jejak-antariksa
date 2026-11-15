@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Button, Container, KartuBab, PageHeader } from "@/components/ui";
+import { Button, Container, KartuBab, PageHeader, reveal, revealKata, SplitText } from "@/components/ui";
 import { getDaftarBabRingkas, STORY_COPY } from "@/data";
 
 export const metadata: Metadata = { title: "Cerita — Wayang Antariksa" };
@@ -17,17 +17,21 @@ export default function StoryPage() {
     <>
       <PageHeader {...header} gambar="/images/story/header-cerita.webp" className="lg:min-h-[520px]" />
       <Container className="flex flex-col gap-10 pb-16 pt-10 md:gap-12 md:pb-[72px] md:pt-14 lg:gap-8 lg:pb-24 lg:pt-[72px]">
-        <h2 className="text-heading-card text-text-primary-normal md:text-heading-section">{daftar.judul}</h2>
+        <h2 className="text-heading-card text-text-primary-normal md:text-heading-section" {...revealKata(0)}>
+          <SplitText>{daftar.judul}</SplitText>
+        </h2>
         <ol className="flex flex-col gap-5">
-          {bab.map((b) => (
+          {bab.map((b, i) => (
             <li key={b.href}>
-              <KartuBab {...b} />
+              <KartuBab {...b} delay={Math.min(i, 5) * 90} />
             </li>
           ))}
         </ol>
-        <Button href="/story/1" className="w-full md:w-fit">
-          {daftar.ctaMulai}
-        </Button>
+        <div className="w-full md:w-fit" {...reveal(120)}>
+          <Button href="/story/1" className="w-full">
+            {daftar.ctaMulai}
+          </Button>
+        </div>
       </Container>
     </>
   );

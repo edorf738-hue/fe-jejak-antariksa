@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { revealKataMuat, revealMuat } from "./reveal";
+import { SplitText } from "./SplitText";
 
 /**
  * Header halaman (Cerita, Peta Perjalanan, Sumber): panorama 3:1 sebagai latar,
@@ -29,11 +31,19 @@ export function PageHeader({ eyebrow, judul, deskripsi, gambar, className = "lg:
         className="absolute inset-0 bg-[linear-gradient(to_top,#10131b_0%,rgba(16,19,27,0.6)_50%,rgba(11,14,21,0.85)_100%)] opacity-30"
       />
       <div className="relative mx-auto flex w-full max-w-page flex-1 flex-col items-center gap-3 px-page pt-[140px] text-center lg:justify-end lg:pb-20 lg:pt-0">
-        <p className="text-eyebrow-15 uppercase text-text-primary-normal lg:text-eyebrow-20">{eyebrow}</p>
-        <h1 className="text-hero-36 uppercase text-text-primary-normal md:text-heading-section lg:text-hero-70">
-          {judul}
+        {/* Urutan masuk: eyebrow, judul per kata, deskripsi (gerak ala nakala.digital, lihat reveal.ts). */}
+        <p className="text-eyebrow-15 uppercase text-text-primary-normal lg:text-eyebrow-20" {...revealMuat(0)}>
+          {eyebrow}
+        </p>
+        <h1
+          className="text-hero-36 uppercase text-text-primary-normal md:text-heading-section lg:text-hero-70"
+          {...revealKataMuat(100)}
+        >
+          <SplitText>{judul}</SplitText>
         </h1>
-        <p className="text-body-large max-w-[900px] text-text-primary-normal lg:mt-3">{deskripsi}</p>
+        <p className="text-body-large max-w-[900px] text-text-primary-normal lg:mt-3" {...revealMuat(480)}>
+          {deskripsi}
+        </p>
       </div>
     </header>
   );

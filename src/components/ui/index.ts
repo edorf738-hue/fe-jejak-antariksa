@@ -14,3 +14,6 @@ export { PageHeader } from "./PageHeader";
 export { PanelBaris } from "./PanelBaris";
 export { PanelStatus } from "./PanelStatus";
 export { PenandaDestinasi } from "./PenandaDestinasi";
+export { reveal, revealKata, revealKataMuat, revealMuat, revealUrut } from "./reveal";
+export { RevealObserver } from "./RevealObserver";
+export { hitungKata, SplitText } from "./SplitText";

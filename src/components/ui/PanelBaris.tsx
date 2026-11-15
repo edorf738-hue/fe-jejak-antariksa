@@ -1,3 +1,5 @@
+import { reveal } from "./reveal";
+
 /**
  * Panel dengan daftar baris label-nilai (Panel Detail Misi dan Panel Kronologi di
  * Peta Perjalanan): eyebrow, judul, lalu baris dengan garis bawah. Label selebar 220
@@ -7,12 +9,15 @@ type PanelBarisProps = {
   eyebrow: string;
   judul: string;
   baris: { label: string; nilai: string }[];
+  /** Bila diisi (ms), panel muncul saat masuk layar dengan jeda ini (lihat reveal.ts). */
+  delay?: number;
   className?: string;
 };
 
-export function PanelBaris({ eyebrow, judul, baris, className = "" }: PanelBarisProps) {
+export function PanelBaris({ eyebrow, judul, baris, delay, className = "" }: PanelBarisProps) {
   return (
     <section
+      {...(delay === undefined ? {} : reveal(delay))}
       className={`flex min-w-0 flex-col gap-5 break-words rounded-card border border-archive-slate-normal bg-bg-secondary-normal px-5 py-7 md:p-10 ${className}`}
     >
       <p className="text-eyebrow-15 text-aksen-warisan-normal">{eyebrow}</p>
