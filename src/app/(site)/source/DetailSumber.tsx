@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-import { Button } from "@/components/ui";
+import { Button, useLang } from "@/components/ui";
 import { SOURCE_COPY, URL_PANDUAN_NASA, type SumberItem } from "@/data";
 import { LencanaStatus } from "./LencanaStatus";
 
@@ -10,6 +10,8 @@ import { LencanaStatus } from "./LencanaStatus";
  * status verifikasi. Esc, klik latar, atau tombol Tutup menutupnya; fokus dikurung di dalam dan dikembalikan ke tombol pemicu.
  */
 export function DetailSumber({ item, onTutup }: { item: SumberItem; onTutup: () => void }) {
+  const c = SOURCE_COPY[useLang()];
+  const u = c.ui;
   const kotak = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -44,31 +46,31 @@ export function DetailSumber({ item, onTutup }: { item: SumberItem; onTutup: () 
   }, [onTutup]);
 
   const baris: { label: string; isi: React.ReactNode }[] = [
-    { label: "Kredit", isi: item.kredit },
-    { label: "Penerbit", isi: item.penerbit },
+    { label: u.kredit, isi: item.kredit },
+    { label: u.penerbit, isi: item.penerbit },
     {
-      label: "URL halaman asal",
+      label: u.urlAsal,
       isi: item.url ? (
         <a href={item.url} target="_blank" rel="noopener noreferrer" className="break-all text-aksen-informasi-normal hover:text-aksen-informasi-normal-hover">
           {item.url}
-          <span className="sr-only"> (buka di tab baru)</span>
+          <span className="sr-only">{u.tabBaru}</span>
         </a>
       ) : (
-        "Belum tersedia"
+        u.belumTersedia
       ),
     },
     {
-      label: "Lisensi atau ketentuan penggunaan",
+      label: u.lisensi,
       isi: (
         <>
           {item.lisensi}{" "}
           <a href={URL_PANDUAN_NASA} target="_blank" rel="noopener noreferrer" className="text-aksen-informasi-normal hover:text-aksen-informasi-normal-hover">
-            Panduan NASA<span className="sr-only"> (buka di tab baru)</span>
+            {u.panduanNasa}<span className="sr-only">{u.tabBaru}</span>
           </a>
         </>
       ),
     },
-    { label: "Tanggal akses", isi: item.diakses ?? "Belum dicatat" },
+    { label: u.tanggalAkses, isi: item.diakses ?? u.belumDicatat },
   ];
 
   return (
@@ -93,8 +95,8 @@ export function DetailSumber({ item, onTutup }: { item: SumberItem; onTutup: () 
             </h2>
             <LencanaStatus status={item.status} />
           </div>
-          <Button kecil kaca variant="secondary" onClick={onTutup} aria-label="Tutup detail sumber" className="shrink-0">
-            Tutup
+          <Button kecil kaca variant="secondary" onClick={onTutup} aria-label={u.tutupAria} className="shrink-0">
+            {u.tutup}
           </Button>
         </header>
 
@@ -113,7 +115,7 @@ export function DetailSumber({ item, onTutup }: { item: SumberItem; onTutup: () 
 
         {item.rincian && (
           <div className="flex flex-col gap-3 border-t border-white/10 pt-4">
-            <p className="text-sm text-text-secondary-normal">Isi kelompok ini ({item.rincian.length} berkas)</p>
+            <p className="text-sm text-text-secondary-normal">{u.isiKelompok} ({item.rincian.length} {u.berkas})</p>
             <ul className="flex flex-col gap-3">
               {item.rincian.map((r) => (
                 <li key={r.nama} className="flex flex-col gap-0.5">
@@ -121,20 +123,20 @@ export function DetailSumber({ item, onTutup }: { item: SumberItem; onTutup: () 
                     {r.url ? (
                       <a href={r.url} target="_blank" rel="noopener noreferrer" className="text-aksen-informasi-normal hover:text-aksen-informasi-normal-hover">
                         {r.nama}
-                        <span className="sr-only"> (buka di tab baru)</span>
+                        <span className="sr-only">{u.tabBaru}</span>
                       </a>
                     ) : (
                       r.nama
                     )}
                   </span>
-                  <span className="text-xs text-text-secondary-normal">Kredit: {r.kredit}</span>
+                  <span className="text-xs text-text-secondary-normal">{u.kredit}: {r.kredit}</span>
                 </li>
               ))}
             </ul>
           </div>
         )}
 
-        <p className="text-xs text-text-secondary-normal">{SOURCE_COPY.status[item.status].arti}</p>
+        <p className="text-xs text-text-secondary-normal">{c.status[item.status].arti}</p>
       </div>
     </div>
   );

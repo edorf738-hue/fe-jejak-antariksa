@@ -34,7 +34,7 @@ export function Panel({ judul, onTutup, labelTutup = "Tutup", tab, children, cla
         <h2 id={headingId} className="text-heading-card text-text-primary-normal">
           {judul}
         </h2>
-        <Button variant="secondary" onClick={onTutup} aria-label={`${labelTutup} panel ${judul}`}>
+        <Button variant="secondary" onClick={onTutup} aria-label={`${labelTutup}: ${judul}`}>
           {labelTutup}
         </Button>
       </header>

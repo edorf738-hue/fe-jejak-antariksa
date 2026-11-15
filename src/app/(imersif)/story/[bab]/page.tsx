@@ -1,7 +1,9 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { DokBab, HalamanImersif, PanelGaleri, PanelMisi, PanelSumber } from "@/components/hud";
-import { GALERI_FOTO, getBabImersif, getDaftarBab, SLUG_BAB } from "@/data";
+import { getBabImersif, getDaftarBab, getGaleriFoto, SLUG_BAB } from "@/data";
+import { getLang } from "@/lib/lang-server";
+import { HUD, UI } from "@/lib/ui-copy";
 import type { Environment } from "@/components/three/scene/config";
 import { HotspotLayer } from "@/components/three/scene/HotspotLayer";
 import { ImersifScene } from "@/components/three/scene/ImersifScene";
@@ -21,13 +23,17 @@ export function generateStaticParams() {
 
 export async function generateMetadata(props: PageProps<"/story/[bab]">): Promise<Metadata> {
   const { bab } = await props.params;
-  const data = getBabImersif(Number(bab));
-  return { title: data ? `Bab ${data.bab.id}: ${data.bab.judul} — Wayang Antariksa` : "Cerita — Wayang Antariksa" };
+  const lang = await getLang();
+  const data = getBabImersif(Number(bab), lang);
+  const kata = HUD[lang].bab;
+  return { title: data ? `${kata} ${data.bab.id}: ${data.bab.judul} — Wayang Antariksa` : `${UI[lang].nav.story} — Wayang Antariksa` };
 }
 
 export default async function StoryBabPage(props: PageProps<"/story/[bab]">) {
   const { bab: param } = await props.params;
-  const data = getBabImersif(Number(param));
+  const lang = await getLang();
+  const data = getBabImersif(Number(param), lang);
+  const h = HUD[lang];
   if (!data) notFound();
 
   const id = data.bab.id;
@@ -38,14 +44,14 @@ export default async function StoryBabPage(props: PageProps<"/story/[bab]">) {
   return (
     <main>
       <h1 className="sr-only">
-        Bab {id}: {data.bab.judul}
+        {h.bab} {id}: {data.bab.judul}
       </h1>
       <SceneProvider>
       <HalamanImersif
         gambar={data.gambar}
         scenePlaceholder={data.scenePlaceholder}
         varian="story"
-        kembali={{ href: `/cerita/${SLUG_BAB[id]}`, label: `Kembali ke cerita Bab ${id}` }}
+        kembali={{ href: `/cerita/${SLUG_BAB[id]}`, label: lang === "en" ? `Back to the story of Chapter ${id}` : `Kembali ke cerita Bab ${id}` }}
         narasi={data.narasi}
         benda={data.benda}
         posisiTitik={data.posisiTitik}
@@ -55,7 +61,7 @@ export default async function StoryBabPage(props: PageProps<"/story/[bab]">) {
         jenisPanel={lingkungan ? ["misi", "galeri", "sumber"] : ["misi", "sumber"]}
         panelKonten={{
           misi: <PanelMisi misi={data.panel.misi} />,
-          galeri: lingkungan ? <PanelGaleri galeri={data.panel.galeri} foto={GALERI_FOTO[lingkungan]} /> : undefined,
+          galeri: lingkungan ? <PanelGaleri galeri={data.panel.galeri} foto={getGaleriFoto(lang)[lingkungan]} /> : undefined,
           sumber: <PanelSumber sumber={data.panel.sumber} />,
         }}
         dok={
@@ -64,9 +70,12 @@ export default async function StoryBabPage(props: PageProps<"/story/[bab]">) {
             label={data.labelBab}
             hrefBab={(n) => `/story/${n}`}
             hrefSebelumnya={id > 1 ? `/story/${id - 1}` : undefined}
-            labelSebelumnya={`Bab ${id - 1}`}
+            labelSebelumnya={`${h.bab} ${id - 1}`}
+            labelNav={lang === "en" ? "Chapter navigation" : "Navigasi bab"}
+            kataBab={h.bab}
+            kataSelesai={h.selesai}
             hrefBerikutnya={terakhir ? "/story" : `/story/${id + 1}`}
-            labelBerikutnya={terakhir ? "Daftar Bab" : `Bab ${id + 1}`}
+            labelBerikutnya={terakhir ? (lang === "en" ? "Chapter List" : "Daftar Bab") : `${h.bab} ${id + 1}`}
           />
         }
       />

@@ -1,5 +1,9 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { UI } from "@/lib/ui-copy";
+import { useLang } from "./LangProvider";
 
 /**
  * Logo NASA Space Apps Challenge (FIGMA_HANDOFF bagian 7): panitia tidak
@@ -11,10 +15,11 @@ import Link from "next/link";
  * PEMBAGIAN_TUGAS.md) dan ganti `src` di sini.
  */
 export function Logo({ className = "" }: { className?: string }) {
+  const t = UI[useLang()];
   return (
     <Link
       href="/"
-      aria-label="NASA Space Apps Challenge, ke Beranda"
+      aria-label={t.logoLabel}
       className={`inline-flex min-h-11 min-w-11 shrink-0 items-center justify-center ${className}`}
     >
       <Image

@@ -1,6 +1,7 @@
 "use client";
 
-import { IconButton } from "@/components/ui";
+import { IconButton, useLang } from "@/components/ui";
+import { HUD } from "@/lib/ui-copy";
 
 /**
  * Kontrol Scene (tampilan): hanya Layar Penuh. Setel Ulang Kamera dan Jeda Gerak dihapus atas permintaan (Jeda Gerak tetap
@@ -12,9 +13,10 @@ type KontrolSceneProps = {
 };
 
 export function KontrolScene({ onToggleFullscreen, className = "" }: KontrolSceneProps) {
+  const h = HUD[useLang()];
   return (
-    <div role="group" aria-label="Kontrol scene" className={`flex flex-col gap-3 ${className}`}>
-      <IconButton icon="layar-penuh" label="Layar penuh" onClick={onToggleFullscreen} />
+    <div role="group" aria-label={h.kontrolScene} className={`flex flex-col gap-3 ${className}`}>
+      <IconButton icon="layar-penuh" label={h.layarPenuh} onClick={onToggleFullscreen} />
     </div>
   );
 }

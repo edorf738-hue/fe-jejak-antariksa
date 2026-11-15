@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
-import { GALERI_FOTO } from "@/data";
+import { getGaleriFoto } from "@/data";
+import { getLang } from "@/lib/lang-server";
 import { notFound } from "next/navigation";
 import { DokKategori, HalamanImersif, PanelFakta, PanelGaleri, PanelMisi, PanelSumber } from "@/components/hud";
 import { getResourcesImersif, isKategoriSlug, KATEGORI_SLUGS } from "@/data";
@@ -18,13 +19,15 @@ export function generateStaticParams() {
 
 export async function generateMetadata(props: PageProps<"/resources/[kategori]">): Promise<Metadata> {
   const { kategori } = await props.params;
-  return { title: `Resources: ${isKategoriSlug(kategori) ? getResourcesImersif(kategori).nama : ""} — Wayang Antariksa` };
+  const lang = await getLang();
+  return { title: `Resources: ${isKategoriSlug(kategori) ? getResourcesImersif(kategori, lang).nama : ""} — Wayang Antariksa` };
 }
 
 export default async function ResourcesPage(props: PageProps<"/resources/[kategori]">) {
   const { kategori } = await props.params;
   if (!isKategoriSlug(kategori)) notFound();
-  const data = getResourcesImersif(kategori);
+  const lang = await getLang();
+  const data = getResourcesImersif(kategori, lang);
 
   return (
     <main>
@@ -33,7 +36,7 @@ export default async function ResourcesPage(props: PageProps<"/resources/[katego
       <HalamanImersif
         gambar={data.gambar}
         varian="resources"
-        kembali={{ href: "/", label: "Kembali ke Beranda" }}
+        kembali={{ href: "/", label: lang === "en" ? "Back to Home" : "Kembali ke Beranda" }}
         narasi={data.narasi}
         benda={data.benda}
         posisiTitik={data.posisiTitik}
@@ -44,7 +47,7 @@ export default async function ResourcesPage(props: PageProps<"/resources/[katego
         panelKonten={{
           fakta: <PanelFakta fakta={data.panel.fakta} />,
           misi: <PanelMisi misi={data.panel.misi} />,
-          galeri: <PanelGaleri galeri={data.panel.galeri} foto={GALERI_FOTO[kategori]} />,
+          galeri: <PanelGaleri galeri={data.panel.galeri} foto={getGaleriFoto(lang)[kategori]} />,
           sumber: <PanelSumber sumber={data.panel.sumber} />,
         }}
         dok={<DokKategori items={data.dok} aktifHref={`/resources/${kategori}`} />}

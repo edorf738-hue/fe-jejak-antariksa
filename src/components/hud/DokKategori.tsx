@@ -1,4 +1,7 @@
-import { Button } from "@/components/ui";
+"use client";
+
+import { Button, useLang } from "@/components/ui";
+import { HUD } from "@/lib/ui-copy";
 
 /**
  * Dok Kategori halaman Resources (Mars, Moon, Deep Space): glass radius 28, padding 16/24,
@@ -13,9 +16,10 @@ type DokKategoriProps = {
 };
 
 export function DokKategori({ items, aktifHref, className = "" }: DokKategoriProps) {
+  const h = HUD[useLang()];
   return (
     <nav
-      aria-label="Kategori"
+      aria-label={h.kategori}
       className={`flex w-full flex-wrap items-center justify-center gap-3 lg:w-auto ${className}`}
     >
       {items.map((item) => {

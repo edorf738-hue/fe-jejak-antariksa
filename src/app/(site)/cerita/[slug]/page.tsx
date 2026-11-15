@@ -4,6 +4,8 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Button, Container, Icon, SplitText, reveal, revealKataMuat, revealMuat } from "@/components/ui";
 import { CERITA_SLUGS, getCerita, isCeritaSlug, type CeritaBab, type Foto } from "@/data";
+import type { Lang } from "@/lib/i18n";
+import { getLang } from "@/lib/lang-server";
 
 /**
  * Detail Cerita per bab (/cerita/[slug]): hero, cerita kronologis, dokumentasi (video dan galeri), fakta dan artefak, tombol
@@ -16,30 +18,55 @@ export function generateStaticParams() {
 
 export async function generateMetadata(props: PageProps<"/cerita/[slug]">): Promise<Metadata> {
   const { slug } = await props.params;
-  if (!isCeritaSlug(slug)) return { title: "Cerita — Wayang Antariksa" };
-  const c = getCerita(slug);
-  return { title: `Bab ${c.nomor}: ${c.judul} — Wayang Antariksa`, description: c.pengantar };
+  const lang = await getLang();
+  if (!isCeritaSlug(slug)) return { title: `${TX[lang].cerita} — Wayang Antariksa` };
+  const c = getCerita(slug, lang);
+  return { title: `${TX[lang].bab} ${c.nomor}: ${c.judul} — Wayang Antariksa`, description: c.pengantar };
 }
+
+type Tx = {
+  bab: string; kredit: string; mulai: string; lihat3d: string; foto: string; ceritanya: string; dokumentasi: string; fotoVideo: string;
+  videoTidak: string; videoBelum: string; faktaArtefak: string; yangTertinggal: string; sumber: string; eksplorasi3d: string; datangi: string;
+  belum3d: string; belum3dIsi: string; lanjutKe: string; tabBaru: string; navBab: string; kembali: string; semuaBab: string; selesai: string; cerita: string;
+};
+const TX: Record<Lang, Tx> = {
+  id: {
+    bab: "Bab", kredit: "Kredit", mulai: "Mulai Membaca", lihat3d: "Lihat di 3D", foto: "Foto", ceritanya: "Ceritanya", dokumentasi: "Dokumentasi",
+    fotoVideo: "Foto dan video", videoTidak: "Peramban Anda tidak mendukung pemutaran video.", videoBelum: "Video dokumentasi untuk bab ini belum tersedia.",
+    faktaArtefak: "Fakta dan artefak", yangTertinggal: "Yang tertinggal dan yang perlu diketahui", sumber: "Sumber", eksplorasi3d: "Eksplorasi 3D",
+    datangi: "Datangi tempatnya", belum3d: "Bab ini belum punya lingkungan 3D",
+    belum3dIsi: "Bab Awal Eksplorasi berisi sejarah. Lingkungan 3D pertama ada di Bab 02, saat manusia menjejak Bulan.",
+    lanjutKe: "Lanjut ke Bab", tabBaru: " (buka di tab baru)", navBab: "Navigasi bab", kembali: "Kembali", semuaBab: "Semua bab", selesai: "Selesai", cerita: "Cerita",
+  },
+  en: {
+    bab: "Chapter", kredit: "Credit", mulai: "Start Reading", lihat3d: "View in 3D", foto: "Photo", ceritanya: "The Story", dokumentasi: "Documentation",
+    fotoVideo: "Photos and videos", videoTidak: "Your browser does not support video playback.", videoBelum: "Documentary videos for this chapter are not available yet.",
+    faktaArtefak: "Facts and artifacts", yangTertinggal: "What was left behind and what to know", sumber: "Sources", eksplorasi3d: "3D Exploration",
+    datangi: "Visit the place", belum3d: "This chapter has no 3D environment yet",
+    belum3dIsi: "The Beginning of Exploration chapter is about history. The first 3D environment is in Chapter 02, when humans set foot on the Moon.",
+    lanjutKe: "Continue to Chapter", tabBaru: " (opens in a new tab)", navBab: "Chapter navigation", kembali: "Back", semuaBab: "All chapters", selesai: "Done", cerita: "Story",
+  },
+};
 
 const JUDUL_SEKSI = "text-heading-card text-text-primary-normal md:text-heading-section";
 const EYEBROW = "text-eyebrow-15 uppercase text-aksen-warisan-normal";
 const KOTAK_NAV =
   "group flex flex-col gap-1 rounded-[20px] border border-white/10 p-5 transition-colors duration-300 hover:border-aksen-informasi-normal";
 
-function Gambar({ foto }: { foto: Foto }) {
+function Gambar({ foto, t }: { foto: Foto; t: Tx }) {
   return (
     <figure className="flex flex-col gap-2">
       <div className="relative aspect-[4/3] overflow-hidden rounded-[20px] bg-bg-secondary-normal ring-1 ring-inset ring-white/10">
         <Image src={foto.src} alt={foto.keterangan} fill sizes="(min-width: 1024px) 560px, 100vw" className="object-cover" />
       </div>
       <figcaption className="text-xs text-text-secondary-normal">
-        {foto.keterangan} Kredit: {foto.kredit}.
+        {foto.keterangan} {t.kredit}: {foto.kredit}.
       </figcaption>
     </figure>
   );
 }
 
-function Hero({ c }: { c: CeritaBab }) {
+function Hero({ c, t }: { c: CeritaBab; t: Tx }) {
   return (
     <header className="relative -mt-(--navbar-offset) flex min-h-[520px] flex-col overflow-hidden bg-bg-primary-normal md:min-h-[480px] lg:min-h-[560px]">
       <Image src={c.hero.src} alt="" fill priority sizes="100vw" className="object-cover object-center" />
@@ -48,30 +75,30 @@ function Hero({ c }: { c: CeritaBab }) {
         className="absolute inset-0 bg-[linear-gradient(to_top,#080b12_0%,rgba(8,11,18,0.55)_45%,rgba(8,11,18,0.35)_100%),linear-gradient(to_right,rgba(8,11,18,0.8)_0%,rgba(8,11,18,0)_70%)]"
       />
       <div className="relative mx-auto flex w-full max-w-page flex-1 flex-col justify-end gap-4 px-page pb-12 pt-[150px] lg:pb-16">
-        <p {...revealMuat(0)} className={`${EYEBROW} lg:text-eyebrow-20`}>Bab {c.nomor}</p>
+        <p {...revealMuat(0)} className={`${EYEBROW} lg:text-eyebrow-20`}>{t.bab} {c.nomor}</p>
         <h1 {...revealKataMuat(100)} className="text-hero-36 max-w-[900px] uppercase text-text-primary-normal md:text-heading-section lg:text-hero-70"><SplitText>{c.judul}</SplitText></h1>
         <p {...revealMuat(260)} className="text-body-large max-w-[680px] text-text-primary-normal">{c.pengantar}</p>
         <div {...revealMuat(380)} className="flex flex-col gap-3 pt-2 md:flex-row">
-          <Button href="#cerita">Mulai Membaca</Button>
+          <Button href="#cerita">{t.mulai}</Button>
           {c.tiga3d && (
             <Button href={c.tiga3d.href} variant="secondary" glass iconRight="panah-kanan">
-              Lihat di 3D
+              {t.lihat3d}
             </Button>
           )}
         </div>
         <p className="text-xs text-text-secondary-normal">
-          Foto: {c.hero.keterangan} Kredit: {c.hero.kredit}.
+          {t.foto}: {c.hero.keterangan} {t.kredit}: {c.hero.kredit}.
         </p>
       </div>
     </header>
   );
 }
 
-function Cerita({ c }: { c: CeritaBab }) {
+function Cerita({ c, t }: { c: CeritaBab; t: Tx }) {
   return (
     <section id="cerita" aria-labelledby="judul-cerita" className="scroll-mt-24">
       <h2 id="judul-cerita" className={JUDUL_SEKSI}>
-        Ceritanya
+        {t.ceritanya}
       </h2>
       <ol className="mt-10 flex flex-col md:mt-14">
         {c.bagian.map((b, i) => (
@@ -87,7 +114,7 @@ function Cerita({ c }: { c: CeritaBab }) {
             </div>
             {b.foto && (
               <div {...reveal(120)} className={`lg:col-span-6 ${i % 2 === 1 ? "lg:order-1" : ""}`}>
-                <Gambar foto={b.foto} />
+                <Gambar foto={b.foto} t={t} />
               </div>
             )}
           </li>
@@ -97,13 +124,13 @@ function Cerita({ c }: { c: CeritaBab }) {
   );
 }
 
-function Dokumentasi({ c }: { c: CeritaBab }) {
+function Dokumentasi({ c, t }: { c: CeritaBab; t: Tx }) {
   return (
     <section aria-labelledby="judul-dokumentasi" className="flex flex-col gap-10">
       <div className="flex flex-col gap-3">
-        <p className={EYEBROW}>Dokumentasi</p>
+        <p className={EYEBROW}>{t.dokumentasi}</p>
         <h2 id="judul-dokumentasi" className={JUDUL_SEKSI}>
-          Foto dan video
+          {t.fotoVideo}
         </h2>
       </div>
 
@@ -118,17 +145,17 @@ function Dokumentasi({ c }: { c: CeritaBab }) {
                 className="aspect-video w-full rounded-[20px] bg-bg-secondary-normal object-cover ring-1 ring-inset ring-white/10"
               >
                 <source src={vd.src} type="video/mp4" />
-                Peramban Anda tidak mendukung pemutaran video.
+                {t.videoTidak}
               </video>
               <figcaption className="text-sm text-text-secondary-normal">
-                <span className="font-bold text-text-primary-normal">{vd.judul}.</span> {vd.keterangan} Kredit: NASA.
+                <span className="font-bold text-text-primary-normal">{vd.judul}.</span> {vd.keterangan} {t.kredit}: NASA.
               </figcaption>
             </figure>
           ))}
         </div>
       ) : (
         <p className="text-body-large rounded-[20px] border border-white/10 px-6 py-5 text-text-secondary-normal">
-          Video dokumentasi untuk bab ini belum tersedia.
+          {t.videoBelum}
         </p>
       )}
 
@@ -146,7 +173,7 @@ function Dokumentasi({ c }: { c: CeritaBab }) {
                 />
               </div>
               <figcaption className="text-xs text-text-secondary-normal">
-                {g.keterangan} Kredit: {g.kredit}.
+                {g.keterangan} {t.kredit}: {g.kredit}.
               </figcaption>
             </figure>
           </li>
@@ -156,13 +183,13 @@ function Dokumentasi({ c }: { c: CeritaBab }) {
   );
 }
 
-function FaktaArtefak({ c }: { c: CeritaBab }) {
+function FaktaArtefak({ c, t }: { c: CeritaBab; t: Tx }) {
   return (
     <section aria-labelledby="judul-artefak" className="flex flex-col gap-10">
       <div className="flex flex-col gap-3">
-        <p className={EYEBROW}>Fakta dan artefak</p>
+        <p className={EYEBROW}>{t.faktaArtefak}</p>
         <h2 id="judul-artefak" className={JUDUL_SEKSI}>
-          Yang tertinggal dan yang perlu diketahui
+          {t.yangTertinggal}
         </h2>
       </div>
 
@@ -190,7 +217,7 @@ function FaktaArtefak({ c }: { c: CeritaBab }) {
         {c.fakta.map((f) => (
           <li key={f.isi} className="flex flex-col gap-1 border-b border-white/10 pb-4">
             <p className="text-body-large text-text-primary-normal">{f.isi}</p>
-            <p className="text-sm text-text-secondary-normal">Sumber: {f.sumber}</p>
+            <p className="text-sm text-text-secondary-normal">{t.sumber}: {f.sumber}</p>
           </li>
         ))}
       </ul>
@@ -198,13 +225,13 @@ function FaktaArtefak({ c }: { c: CeritaBab }) {
   );
 }
 
-function Eksplorasi3D({ c }: { c: CeritaBab }) {
-  const berikut = c.babId < 4 ? getCerita(CERITA_SLUGS[c.babId]) : null;
+function Eksplorasi3D({ c, t, lang }: { c: CeritaBab; t: Tx; lang: Lang }) {
+  const berikut = c.babId < 4 ? getCerita(CERITA_SLUGS[c.babId], lang) : null;
   return (
     <section aria-labelledby="judul-3d" className="glass flex flex-col items-start gap-5 rounded-[28px] border border-white/10 p-8 md:p-12">
-      <p className={EYEBROW}>Eksplorasi 3D</p>
+      <p className={EYEBROW}>{t.eksplorasi3d}</p>
       <h2 id="judul-3d" className={JUDUL_SEKSI}>
-        {c.tiga3d ? "Datangi tempatnya" : "Bab ini belum punya lingkungan 3D"}
+        {c.tiga3d ? t.datangi : t.belum3d}
       </h2>
       {c.tiga3d ? (
         <>
@@ -216,11 +243,11 @@ function Eksplorasi3D({ c }: { c: CeritaBab }) {
       ) : (
         <>
           <p className="text-body-large max-w-[620px] text-text-secondary-normal">
-            Bab Awal Eksplorasi berisi sejarah. Lingkungan 3D pertama ada di Bab 02, saat manusia menjejak Bulan.
+            {t.belum3dIsi}
           </p>
           {berikut && (
             <Button href={`/cerita/${berikut.slug}`} iconRight="panah-kanan">
-              {`Lanjut ke Bab ${berikut.nomor}`}
+              {`${t.lanjutKe} ${berikut.nomor}`}
             </Button>
           )}
         </>
@@ -229,11 +256,11 @@ function Eksplorasi3D({ c }: { c: CeritaBab }) {
   );
 }
 
-function Sumber({ c }: { c: CeritaBab }) {
+function Sumber({ c, t }: { c: CeritaBab; t: Tx }) {
   return (
     <section aria-labelledby="judul-sumber-cerita" className="flex flex-col gap-4">
       <h2 id="judul-sumber-cerita" className="text-heading-card text-text-primary-normal">
-        Sumber
+        {t.sumber}
       </h2>
       <ul>
         {c.sumber.map((s) => (
@@ -245,7 +272,7 @@ function Sumber({ c }: { c: CeritaBab }) {
               className="text-body-large text-aksen-informasi-normal hover:text-aksen-informasi-normal-hover"
             >
               {s.judul}
-              <span className="sr-only"> (buka di tab baru)</span>
+              <span className="sr-only">{t.tabBaru}</span>
             </a>
           </li>
         ))}
@@ -254,24 +281,24 @@ function Sumber({ c }: { c: CeritaBab }) {
   );
 }
 
-function NavigasiBab({ c }: { c: CeritaBab }) {
-  const sebelum = c.babId > 1 ? getCerita(CERITA_SLUGS[c.babId - 2]) : null;
-  const sesudah = c.babId < 4 ? getCerita(CERITA_SLUGS[c.babId]) : null;
+function NavigasiBab({ c, t, lang }: { c: CeritaBab; t: Tx; lang: Lang }) {
+  const sebelum = c.babId > 1 ? getCerita(CERITA_SLUGS[c.babId - 2], lang) : null;
+  const sesudah = c.babId < 4 ? getCerita(CERITA_SLUGS[c.babId], lang) : null;
   return (
-    <nav aria-label="Navigasi bab" className="grid gap-4 border-t border-white/10 pt-10 sm:grid-cols-2">
+    <nav aria-label={t.navBab} className="grid gap-4 border-t border-white/10 pt-10 sm:grid-cols-2">
       <Link href={sebelum ? `/cerita/${sebelum.slug}` : "/story"} className={KOTAK_NAV}>
         <span className="flex items-center gap-2 text-sm text-text-secondary-normal">
           <Icon name="panah-kiri" size={20} />
-          {sebelum ? `Bab ${sebelum.nomor}` : "Kembali"}
+          {sebelum ? `${t.bab} ${sebelum.nomor}` : t.kembali}
         </span>
-        <span className="text-heading-card text-text-primary-normal max-lg:text-2xl">{sebelum ? sebelum.judul : "Semua bab"}</span>
+        <span className="text-heading-card text-text-primary-normal max-lg:text-2xl">{sebelum ? sebelum.judul : t.semuaBab}</span>
       </Link>
       <Link href={sesudah ? `/cerita/${sesudah.slug}` : "/story"} className={`${KOTAK_NAV} sm:items-end sm:text-right`}>
         <span className="flex items-center gap-2 text-sm text-text-secondary-normal">
-          {sesudah ? `Bab ${sesudah.nomor}` : "Selesai"}
+          {sesudah ? `${t.bab} ${sesudah.nomor}` : t.selesai}
           <Icon name="panah-kanan" size={20} />
         </span>
-        <span className="text-heading-card text-text-primary-normal max-lg:text-2xl">{sesudah ? sesudah.judul : "Semua bab"}</span>
+        <span className="text-heading-card text-text-primary-normal max-lg:text-2xl">{sesudah ? sesudah.judul : t.semuaBab}</span>
       </Link>
     </nav>
   );
@@ -280,18 +307,20 @@ function NavigasiBab({ c }: { c: CeritaBab }) {
 export default async function CeritaDetailPage(props: PageProps<"/cerita/[slug]">) {
   const { slug } = await props.params;
   if (!isCeritaSlug(slug)) notFound();
-  const c = getCerita(slug);
+  const lang = await getLang();
+  const t = TX[lang];
+  const c = getCerita(slug, lang);
 
   return (
     <>
-      <Hero c={c} />
+      <Hero c={c} t={t} />
       <Container className="flex flex-col gap-20 pb-20 pt-14 md:gap-24 md:pt-20 lg:gap-28 lg:pb-28 lg:pt-24">
-        <Cerita c={c} />
-        <Dokumentasi c={c} />
-        <FaktaArtefak c={c} />
-        <Eksplorasi3D c={c} />
-        <Sumber c={c} />
-        <NavigasiBab c={c} />
+        <Cerita c={c} t={t} />
+        <Dokumentasi c={c} t={t} />
+        <FaktaArtefak c={c} t={t} />
+        <Eksplorasi3D c={c} t={t} lang={lang} />
+        <Sumber c={c} t={t} />
+        <NavigasiBab c={c} t={t} lang={lang} />
       </Container>
     </>
   );

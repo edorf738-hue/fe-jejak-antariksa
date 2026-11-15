@@ -1,5 +1,7 @@
 import { Button } from "@/components/ui";
 import type { IconName } from "@/components/ui";
+import { useLang } from "@/components/ui";
+import { HUD } from "@/lib/ui-copy";
 
 /**
  * Tombol Panel di scene: Button Secondary kaca dengan `Ikon Kiri`.
@@ -8,11 +10,11 @@ import type { IconName } from "@/components/ui";
  */
 export type PanelJenis = "fakta" | "misi" | "galeri" | "sumber";
 
-export const PANEL_META: Record<PanelJenis, { label: string; icon: IconName }> = {
-  fakta: { label: "Fakta", icon: "info" },
-  misi: { label: "Misi Terkait", icon: "misi" },
-  galeri: { label: "Galeri", icon: "galeri" },
-  sumber: { label: "Sumber", icon: "sumber" },
+export const PANEL_META: Record<PanelJenis, { icon: IconName }> = {
+  fakta: { icon: "info" },
+  misi: { icon: "misi" },
+  galeri: { icon: "galeri" },
+  sumber: { icon: "sumber" },
 };
 
 type TombolPanelProps = {
@@ -24,7 +26,8 @@ type TombolPanelProps = {
 };
 
 export function TombolPanel({ jenis, aktif = false, onClick, className }: TombolPanelProps) {
-  const { label, icon } = PANEL_META[jenis];
+  const { icon } = PANEL_META[jenis];
+  const label = HUD[useLang()].panel[jenis];
   return (
     <Button
       variant="secondary"

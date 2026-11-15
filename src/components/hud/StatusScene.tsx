@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { STATUS_COPY } from "@/data";
-import { Button, PanelStatus } from "@/components/ui";
+import { Button, PanelStatus, useLang } from "@/components/ui";
 
 /**
  * State scene 3D di atas scene (FIGMA State 3D): "1 Loading" dan "6 Fallback".
@@ -11,7 +11,7 @@ import { Button, PanelStatus } from "@/components/ui";
  */
 export function OverlayMemuat3D({ progres = null, className = "" }: { progres?: number | null; className?: string }) {
   const nilai = progres === null ? null : Math.min(1, Math.max(0, progres));
-  const { judul, isi } = STATUS_COPY.scene3dMemuat;
+  const { judul, isi } = STATUS_COPY[useLang()].scene3dMemuat;
   return (
     <div
       role="status"
@@ -49,7 +49,7 @@ export function PesanFallback3D({
   onLanjut: () => void;
   className?: string;
 }) {
-  const { judul, isi, cobaLagi, lanjut } = STATUS_COPY.scene3dFallback;
+  const { judul, isi, cobaLagi, lanjut } = STATUS_COPY[useLang()].scene3dFallback;
   const aksi = useRef<HTMLDivElement>(null);
   // Pesan galat muncul tiba-tiba: pindahkan fokus ke aksi utama (Coba Lagi) agar terjangkau keyboard.
   useEffect(() => {

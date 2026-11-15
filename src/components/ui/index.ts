@@ -8,6 +8,8 @@ export { Linimasa } from "./Linimasa";
 export { KartuLingkungan } from "./KartuLingkungan";
 export { KartuPlanet } from "./KartuPlanet";
 export { KartuMisi } from "./KartuMisi";
+export { LangProvider, useLang } from "./LangProvider";
+export { LangSwitch } from "./LangSwitch";
 export { LatarBerulang } from "./LatarBerulang";
 export { Logo } from "./Logo";
 export { Navbar, NAV_ITEMS } from "./Navbar";

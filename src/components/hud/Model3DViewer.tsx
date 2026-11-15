@@ -6,6 +6,8 @@ import { OrbitControls, useGLTF } from "@react-three/drei";
 import { Box3, Vector3 } from "three";
 import { clone } from "three/examples/jsm/utils/SkeletonUtils.js";
 import { DRACO_PATH } from "@/components/three/scene/config";
+import { useLang } from "@/components/ui";
+import { HUD } from "@/lib/ui-copy";
 
 useGLTF.setDecoderPath(DRACO_PATH);
 
@@ -56,6 +58,7 @@ class BatasGalat extends Component<{ children: ReactNode; saatGagal: () => void 
 }
 
 export default function Model3DViewer({ src, keterangan, className = "" }: { src: string; keterangan: string; className?: string }) {
+  const h = HUD[useLang()];
   const [status, setStatus] = useState<"memuat" | "siap" | "gagal">("memuat");
   const kontrol = useRef<Kontrol>(null);
   const gerakKurang =
@@ -65,7 +68,7 @@ export default function Model3DViewer({ src, keterangan, className = "" }: { src
   return (
     <div
       role="img"
-      aria-label={`Model 3D interaktif. ${keterangan}`}
+      aria-label={`${h.modelAria} ${keterangan}`}
       className={`relative overflow-hidden bg-[radial-gradient(ellipse_at_center,#1b2638_0%,#080b12_80%)] ${className}`}
     >
       {status !== "gagal" && (
@@ -103,17 +106,17 @@ export default function Model3DViewer({ src, keterangan, className = "" }: { src
 
       {status === "memuat" && (
         <p className="absolute inset-0 flex items-center justify-center text-sm text-text-secondary-normal" role="status">
-          Memuat model 3D…
+          {h.modelMemuat}
         </p>
       )}
       {status === "gagal" && (
         <p className="absolute inset-0 flex items-center justify-center px-6 text-center text-sm text-text-secondary-normal" role="status">
-          Model 3D tidak dapat dimuat. Informasi objek tetap tersedia di bawah.
+          {h.modelGagal}
         </p>
       )}
       {status === "siap" && (
         <>
-          <p className="pointer-events-none absolute bottom-2 left-3 text-xs text-text-secondary-normal">Seret untuk memutar, gulir atau cubit untuk zoom</p>
+          <p className="pointer-events-none absolute bottom-2 left-3 text-xs text-text-secondary-normal">{h.modelPetunjuk}</p>
           <button
             type="button"
             onClick={() => {
@@ -122,7 +125,7 @@ export default function Model3DViewer({ src, keterangan, className = "" }: { src
             }}
             className="absolute right-2 top-2 cursor-pointer rounded-pill border border-white/20 bg-black/50 px-3 py-1 text-xs text-text-primary-normal transition-colors hover:border-aksen-informasi-normal"
           >
-            Setel ulang tampilan
+            {h.modelReset}
           </button>
         </>
       )}

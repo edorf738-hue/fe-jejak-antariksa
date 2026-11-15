@@ -1,8 +1,10 @@
 import { bendaBab } from "./api";
+import { BENDA_TAMBAHAN_EN } from "./benda-tambahan";
 import { getBab } from "./content";
 import { getJourneyTujuan } from "./journey";
 import { getKategori, KATEGORI_SLUGS } from "./content";
 import { STORY_COPY } from "./story";
+import { DEFAULT_LANG, type Lang, type Widen } from "../lib/i18n";
 import type { Bab, BabId, DataBenda, Fakta, KategoriSlug, Misi, Sumber } from "./types";
 
 /**
@@ -10,13 +12,23 @@ import type { Bab, BabId, DataBenda, Fakta, KategoriSlug, Misi, Sumber } from ".
  * HUD di atasnya. Scene 3D dipasang tim 3D (Edo, Zhafran); sementara latar berupa
  * gambar statis dari Figma. Teks HUD di bawah ini adalah copy dari Figma (draf).
  */
-export const IMERSIF_COPY = {
+const COPY_ID = {
   petunjuk: "Seret atau geser dua jari untuk melihat ke segala arah, pilih titik untuk melihat datanya.",
   placeholderScene: "Placeholder · Scene 3D final: TBD",
   placeholderModel: { judul: "Pratinjau model 3D", status: "Model 3D: TBD" },
   dataBenda: "Data benda",
   tutup: "Tutup",
 } as const;
+
+const COPY_EN: Widen<typeof COPY_ID> = {
+  petunjuk: "Drag or swipe with two fingers to look in every direction, and choose a point to see its data.",
+  placeholderScene: "Placeholder · Final 3D scene: TBD",
+  placeholderModel: { judul: "3D model preview", status: "3D model: TBD" },
+  dataBenda: "Object data",
+  tutup: "Close",
+};
+
+export const IMERSIF_COPY: Record<Lang, Widen<typeof COPY_ID>> = { id: COPY_ID, en: COPY_EN };
 
 /** Bab -> tujuan (kategori) yang scene dan datanya dipakai. Bab 1 (Bumi dari orbit saat matahari terbit) belum punya aset 3D dan data panelnya sendiri: narasi, hotspot, dan data benda sudah dari content-data.json (`bab`), sedangkan fakta/misi/sumber/galeri panel sementara memakai Moon. TBD: menunggu tim konten (Dhika). */
 const BAB_KATEGORI: Record<BabId, KategoriSlug> = {
@@ -86,39 +98,43 @@ export type HalamanImersifData = {
   panel: PanelData;
 };
 
-export function getBabImersif(id: number): (HalamanImersifData & { bab: Bab; labelBab: readonly string[] }) | undefined {
-  const bab = getBab(id);
+/** Indonesia: API sudah memuat semua benda satu bab. English: benda terjemahan bab + benda tambahan terjemahan. */
+const semuaBenda = (babId: number, lang: Lang, benda: DataBenda[]): DataBenda[] =>
+  lang === "id" ? bendaBab(babId) : [...benda, ...(BENDA_TAMBAHAN_EN[babId as BabId] ?? [])];
+
+export function getBabImersif(id: number, lang: Lang = DEFAULT_LANG): (HalamanImersifData & { bab: Bab; labelBab: readonly string[] }) | undefined {
+  const bab = getBab(id, lang);
   if (!bab) return undefined;
   const slug = BAB_KATEGORI[bab.id];
-  const tujuan = getJourneyTujuan(slug);
+  const tujuan = getJourneyTujuan(slug, lang);
   return {
     bab,
-    labelBab: STORY_COPY.labelBab,
+    labelBab: STORY_COPY[lang].labelBab,
     gambar: bab.id === 1 ? "/images/imersif/bab-1-bumi.webp" : GAMBAR_KATEGORI[slug],
     scenePlaceholder: bab.id === 1,
-    narasi: { eyebrow: `BAB ${bab.id}`, judul: bab.judul, isi: bab.narasi },
-    benda: bendaBab(bab.id),
+    narasi: { eyebrow: `${lang === "en" ? "CHAPTER" : "BAB"} ${bab.id}`, judul: bab.judul, isi: bab.narasi },
+    benda: semuaBenda(bab.id, lang, bab.benda),
     posisiTitik: TITIK_STORY[bab.id],
     fokusGambar: bab.id === 1 ? FOKUS_BAB_1 : FOKUS[slug],
     panel: { fakta: tujuan.kategori.fakta, misi: tujuan.misi, galeri: tujuan.kategori.galeri, sumber: tujuan.sumber },
   };
 }
 
-export function getResourcesImersif(slug: KategoriSlug): HalamanImersifData & {
+export function getResourcesImersif(slug: KategoriSlug, lang: Lang = DEFAULT_LANG): HalamanImersifData & {
   nama: string;
   dok: { label: string; href: string }[];
 } {
-  const tujuan = getJourneyTujuan(slug);
+  const tujuan = getJourneyTujuan(slug, lang);
   const k = tujuan.kategori;
   return {
     nama: k.nama,
     gambar: GAMBAR_KATEGORI[slug],
     scenePlaceholder: false,
     narasi: { eyebrow: "RESOURCES", judul: k.nama, isi: k.ringkasan },
-    benda: bendaBab(k.bab.id),
+    benda: semuaBenda(k.bab.id, lang, k.bab.benda),
     posisiTitik: TITIK_RESOURCES[slug],
     fokusGambar: FOKUS[slug],
     panel: { fakta: k.fakta, misi: tujuan.misi, galeri: k.galeri, sumber: tujuan.sumber },
-    dok: KATEGORI_SLUGS.map((s) => ({ label: getKategori(s).nama, href: `/resources/${s}` })),
+    dok: KATEGORI_SLUGS.map((s) => ({ label: getKategori(s, lang).nama, href: `/resources/${s}` })),
   };
 }

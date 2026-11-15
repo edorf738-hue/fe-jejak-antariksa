@@ -2,12 +2,15 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useLang } from "@/components/ui";
+import { HUD } from "@/lib/ui-copy";
 
 /**
  * Penampil media untuk popup objek: foto (bisa diperbesar) dan video (pemutar HTML5). Penampil model 3D ada di
  * Model3DViewer.tsx. Tidak ada media yang diputar otomatis.
  */
 export function ImageViewer({ src, alt, className = "" }: { src: string; alt: string; className?: string }) {
+  const h = HUD[useLang()];
   const [besar, setBesar] = useState(false);
 
   useEffect(() => {
@@ -27,13 +30,13 @@ export function ImageViewer({ src, alt, className = "" }: { src: string; alt: st
       <button
         type="button"
         onClick={() => setBesar(true)}
-        aria-label={`Perbesar foto: ${alt}`}
+        aria-label={`${h.perbesarFoto} ${alt}`}
         className={`group relative block w-full cursor-zoom-in overflow-hidden bg-black/50 ${className}`}
       >
         {/* object-contain: foto tidak pernah terpotong */}
         <img src={src} alt={alt} loading="lazy" className="size-full object-contain" />
         <span className="pointer-events-none absolute bottom-2 right-2 rounded-pill bg-black/60 px-3 py-1 text-xs text-text-primary-normal opacity-80 transition-opacity group-hover:opacity-100">
-          Perbesar
+          {h.perbesar}
         </span>
       </button>
       {besar && (
@@ -50,7 +53,7 @@ export function ImageViewer({ src, alt, className = "" }: { src: string; alt: st
             onClick={() => setBesar(false)}
             className="absolute right-4 top-4 cursor-pointer rounded-pill border border-white/30 bg-black/60 px-4 py-2 text-sm text-text-primary-normal hover:border-aksen-informasi-normal"
           >
-            Tutup
+            {h.tutup}
           </button>
         </div>
       )}
@@ -59,11 +62,12 @@ export function ImageViewer({ src, alt, className = "" }: { src: string; alt: st
 }
 
 export function VideoViewer({ src, poster, judul, className = "" }: { src: string; poster: string; judul: string; className?: string }) {
+  const h = HUD[useLang()];
   return (
     // preload="metadata": hanya data awal diunduh; video tidak diputar sampai pengguna menekan play.
     <video controls playsInline preload="metadata" poster={poster} aria-label={judul} className={`w-full bg-black object-contain ${className}`}>
       <source src={src} type="video/mp4" />
-      Peramban Anda tidak mendukung pemutaran video.
+      {h.videoTidakDidukung}
     </video>
   );
 }

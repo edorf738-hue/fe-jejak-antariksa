@@ -5,6 +5,9 @@ import { usePathname } from "next/navigation";
 import { useRef, useState, useSyncExternalStore, type KeyboardEvent } from "react";
 import { Container } from "./Container";
 import { IconButton } from "./IconButton";
+import { UI } from "@/lib/ui-copy";
+import { LangSwitch } from "./LangSwitch";
+import { useLang } from "./LangProvider";
 import { Logo } from "./Logo";
 import { useJellyNav } from "./useJellyNav";
 
@@ -25,14 +28,14 @@ import { useJellyNav } from "./useJellyNav";
  * margin negatif sebesar --navbar-offset.
  */
 export const NAV_ITEMS = [
-  { label: "Beranda", href: "/", alsoActiveOn: ["/resources"] },
-  { label: "Cerita", href: "/story", alsoActiveOn: ["/cerita"] },
-  { label: "Peta Perjalanan", href: "/journey-map" },
-  { label: "Sumber", href: "/source" },
+  { key: "home", href: "/", alsoActiveOn: ["/resources"] },
+  { key: "story", href: "/story", alsoActiveOn: ["/cerita"] },
+  { key: "map", href: "/journey-map" },
+  { key: "source", href: "/source" },
 ] as const;
 
 type NavItem = {
-  label: string;
+  key: "home" | "story" | "map" | "source";
   href: string;
   alsoActiveOn?: readonly string[];
 };
@@ -57,6 +60,7 @@ function isActive(item: NavItem, pathname: string) {
 
 export function Navbar() {
   const pathname = usePathname();
+  const t = UI[useLang()];
   // Menyimpan path saat menu dibuka: menu otomatis tertutup begitu halaman berganti.
   const [openedOn, setOpenedOn] = useState<string | null>(null);
   const open = openedOn === pathname;
@@ -97,7 +101,7 @@ export function Navbar() {
 
             <nav
               id="navigasi-utama"
-              aria-label="Navigasi utama"
+              aria-label={t.navMain}
               className={[
                 open ? "block" : "hidden",
                 // Menu turun (tablet/mobile): kaca yang sama dengan pill. Penyimpangan sementara dari Figma
@@ -135,7 +139,7 @@ export function Navbar() {
                               aria-hidden="true"
                               className="kaca-tepi pointer-events-none absolute inset-0 rounded-pill bg-[#0067b2]/20 opacity-0 shadow-[inset_0_0_10px_rgba(8,11,18,0.45)] transition-opacity duration-200 [--rim:linear-gradient(135deg,rgba(255,255,255,0.5),rgba(140,190,255,0.14)_50%,rgba(255,255,255,0.45))] group-aria-[current=page]:opacity-100"
                             />
-                            <span className="relative">{item.label}</span>
+                            <span className="relative">{t.nav[item.key]}</span>
                           </Link>
                         </div>
                       </div>
@@ -145,10 +149,12 @@ export function Navbar() {
               </ul>
             </nav>
 
+            <LangSwitch className="max-lg:ml-auto max-lg:mr-2 lg:absolute lg:right-6 lg:top-1/2 lg:-translate-y-1/2" />
+
             <IconButton
               ref={toggleRef}
               icon={open ? "tutup" : "menu"}
-              label={open ? "Tutup menu" : "Buka menu"}
+              label={open ? t.menuClose : t.menuOpen}
               aria-expanded={open}
               aria-controls="navigasi-utama"
               onClick={() => setOpenedOn(open ? null : pathname)}

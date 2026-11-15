@@ -1,6 +1,6 @@
 "use client";
 
-import { Button, Container, PanelStatus } from "@/components/ui";
+import { Button, Container, PanelStatus, useLang } from "@/components/ui";
 import { STATUS_COPY } from "@/data";
 import "./globals.css";
 
@@ -10,9 +10,9 @@ import "./globals.css";
  * Copy: draf, lihat status.ts.
  */
 export default function GlobalError({ retry }: { error: unknown; retry: () => void }) {
-  const { judul, isi, coba, kembali } = STATUS_COPY.halamanGalat;
+  const { judul, isi, coba, kembali } = STATUS_COPY[useLang()].halamanGalat;
   return (
-    <html lang="id" className="h-full antialiased">
+    <html lang={useLang()} className="h-full antialiased">
       <body className="flex min-h-full flex-col">
         <title>Wayang Antariksa</title>
         <main className="flex flex-1 items-center py-24">

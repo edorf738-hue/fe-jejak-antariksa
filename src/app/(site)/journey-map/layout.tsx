@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { Container, LatarBerulang, PageHeader, revealKata, SplitText } from "@/components/ui";
 import { getKategori, JOURNEY_COPY, KATEGORI_SLUGS } from "@/data";
+import { getLang } from "@/lib/lang-server";
 import { PanggungPeta, type TujuanPeta } from "./PanggungPeta";
 
 /**
@@ -10,14 +11,16 @@ import { PanggungPeta, type TujuanPeta } from "./PanggungPeta";
  * berpindah dengan transisi. `children` = bagian detail tujuan (halaman) atau panel Kosong.
  * Peta bersifat simbolis: bukan rute, jarak, atau skala sebenarnya. Sumber desain: Figma `Journey Map`.
  */
-export default function JourneyMapLayout({ children }: { children: ReactNode }) {
+export default async function JourneyMapLayout({ children }: { children: ReactNode }) {
+  const lang = await getLang();
+  const copy = JOURNEY_COPY[lang];
   const daftar: TujuanPeta[] = KATEGORI_SLUGS.map((slug) => {
-    const { nama, misi } = getKategori(slug);
+    const { nama, misi } = getKategori(slug, lang);
     return { slug, nama, misi: misi.filter((m): m is NonNullable<typeof m> => !!m).slice(0, 3).map((m) => m.nama) };
   });
   return (
     <>
-      <PageHeader {...JOURNEY_COPY.header} gambar="/images/journey-map/header-peta-nasa.webp" />
+      <PageHeader {...copy.header} gambar="/images/journey-map/header-peta-nasa.webp" />
       {/* Pangkal section: gradien dari warna dasar header (#10131b) agar sambungan header ke latar tidak terlihat. */}
       <div className="relative flex-1 bg-[linear-gradient(to_bottom,#10131b_0,transparent_260px)] bg-no-repeat">
         <LatarBerulang gambar="/images/journey-map/latar-peta-bintang-nasa.webp" />
@@ -28,9 +31,9 @@ export default function JourneyMapLayout({ children }: { children: ReactNode }) 
               className="text-heading-card text-text-primary-normal md:text-heading-section"
               {...revealKata(0)}
             >
-              <SplitText>{JOURNEY_COPY.peta.judul}</SplitText>
+              <SplitText>{copy.peta.judul}</SplitText>
             </h2>
-            <PanggungPeta daftar={daftar} catatan={JOURNEY_COPY.peta.catatan} />
+            <PanggungPeta daftar={daftar} catatan={copy.peta.catatan} />
           </section>
           {children}
         </Container>
