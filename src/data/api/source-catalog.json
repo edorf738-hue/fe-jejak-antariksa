@@ -455,7 +455,8 @@
       },
       {
         "nama": "Pale Blue Dot, ditinjau ulang",
-        "kredit": "NASA"
+        "kredit": "NASA/JPL-Caltech (PIA23645)",
+        "url": "https://science.nasa.gov/image-detail/pia23645-3/"
       },
       {
         "nama": "Perubahan atmosfer Saturnus",
@@ -467,13 +468,15 @@
       },
       {
         "nama": "Detail cincin Saturnus",
-        "kredit": "NASA"
+        "kredit": "NASA/JPL-Caltech (PIA02275)",
+        "url": "https://science.nasa.gov/image-detail/pia02275-3/"
       },
       {
         "nama": "Voyager 2, penjelajah antarbintang (ilustrasi)",
         "kredit": "NASA"
       }
-    ]
+    ],
+    "catatan": "Dua dari delapan foto sudah dicocokkan dengan halaman NASA (Pale Blue Dot Revisited dan Saturn's Rings, berkas identik); enam lainnya belum dicatat halaman asal dan kredit rincinya."
   },
   {
     "id": "media-golden-sampul",
@@ -559,12 +562,12 @@
     "jenis": "Foto",
     "nama": "Header dan latar Sumber: \"Pale Blue Dot\" ditinjau ulang (Voyager 1)",
     "penerbit": "NASA/JPL-Caltech",
-    "kredit": "NASA/JPL-Caltech; nomor PIA belum dicatat",
-    "url": null,
-    "lisensi": "Belum ada pernyataan lisensi untuk aset ini. Jangan dianggap bebas hak cipta sebelum diperiksa.",
-    "diakses": null,
-    "status": "perlu-verifikasi",
-    "catatan": "Berkas Voyager_Pale_Blue_Dot_Revisited.jpg dari paket aset NASA tim; halaman asalnya belum dicatat. Dipotong dan digelapkan: header memakai bagian berkas cahaya dan titik Bumi, latar memakai sisi kiri foto."
+    "kredit": "NASA/JPL-Caltech (PIA23645)",
+    "url": "https://science.nasa.gov/image-detail/pia23645-3/",
+    "lisensi": "Menurut panduan NASA, konten NASA umumnya tidak berhak cipta di Amerika Serikat, tetapi logo dan materi pihak ketiga dikecualikan; NASA harus dicantumkan sebagai sumber dan tidak boleh tampak mendukung produk. Halaman sumber ini tidak mencantumkan pembatasan khusus. Jangan dianggap bebas hak cipta tanpa memeriksa panduan.",
+    "diakses": "15 November 2026",
+    "status": "terverifikasi",
+    "catatan": "\"Pale Blue Dot Revisited\", PIA23645, diterbitkan 12 Februari 2020. Berkas Voyager_Pale_Blue_Dot_Revisited.jpg identik dengan gambar di halaman NASA (5230x5175 px). Dipotong dan digelapkan: header memakai bagian berkas cahaya dan titik Bumi, latar memakai sisi kiri foto."
   },
   {
     "id": "media-tekstur-bulan",
