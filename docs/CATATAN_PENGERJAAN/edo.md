@@ -4,6 +4,72 @@ Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 
 ## Entri
 
+### [2026-11-15] Revisi halaman Sumber (katalog arsip)
+- **Tugas / klaim:** brief "Revisi halaman SUMBER"
+- **Branch / PR:** `feat/refinement-pengalaman-museum` / belum ada PR
+- **Yang dikerjakan:** halaman Sumber jadi tiga tab (Referensi 13, Kredit Media 11, Model 3D 8) dengan kartu ringkas (jenis, nama, penerbit, status, tombol Detail Sumber) dan modal Detail Sumber (kredit, penerbit, URL asal, lisensi dan ketentuan, tanggal akses, rincian berkas untuk kelompok aset). Tiga status: Terverifikasi, Perlu verifikasi, Informasi belum tersedia; teks TBD dihapus. Semua URL sumber dicek 15 November 2026 (200 dan judul cocok); referensi digabung dengan sumber di halaman cerita tanpa duplikat (URL Apollo 11 yang sama digabung). Kredit tiap foto JPL dan Apollo dari metadata NASA Image Library; yang belum diketahui ditulis apa adanya. Lisensi: ringkasan panduan NASA (umumnya tidak berhak cipta di AS; logo dan materi pihak ketiga dikecualikan), tanpa menganggap semua aset bebas hak cipta.
+- **File:** `src/data/source.ts` (ditulis ulang), `app/(site)/source/{page,SumberDaftar,DetailSumber,LencanaStatus}.tsx`; `ui/EntriSumber.tsx` dihapus (tidak dipakai lagi). Catatan: judul di content-data.json memuat karakter rusak (U+FFFD) pada tanda pisah; dibersihkan di tampilan, datanya sendiri belum diperbaiki (milik Dhika).
+- **Perlu ditindaklanjuti tim:** foto Apollo dan Voyager yang dikumpulkan tim belum punya URL asal per berkas; video Apollo belum punya URL asal; foto latar Beranda belum diketahui asalnya; nama pembuat model lingkungan belum dicatat; MER_static: kredit tidak tertulis di halaman unduhan.
+- **Hasil uji:** lint dan tsc lolos; tab, kartu, dan modal (Esc menutup) berjalan di browser desktop. Belum diuji: mobile, build produksi.
+- **Status:** Draft
+
+### [2026-11-15] Popup objek berbasis media (model 3D, foto, video, teks) + Astronaut Bootprint
+- **Tugas / klaim:** brief "Revisi popup interaktif objek"
+- **Branch / PR:** `feat/refinement-pengalaman-museum` / belum ada PR
+- **Yang dikerjakan:** `KartuDataBenda` diganti `ObjectPopup` (`src/components/hud/`) yang memilih tampilan menurut jenis aset (`MediaItem` di `src/data/media.ts`): `Model3DViewer` (R3F Canvas sendiri, OrbitControls: putar, zoom, setel ulang; pencahayaan netral dan `flat` agar warna asli; GLB di-clone dari cache `useGLTF`, tidak diunduh ulang; loading dan fallback galat), `ImageViewer` (foto utuh `object-contain`, perbesar, Esc menutup), `VideoViewer` (HTML5, tanpa putar otomatis), atau teks saja; tab bila ada lebih dari satu media. Model 3D: Eagle dan Tahap naik (LM), Spirit (MER), Opportunity (MER-B), Voyager 1 (Probe B), Voyager 2 (Probe A). Foto saja: plakat dan bendera (juga video), seismometer, retroreflektor, Heat Shield Rock, Golden Record (foto dan sampul), Bootprint. Objek baru **Astronaut Bootprint** (Moon): foto asli `Apollo Astronaut Bootprint.jpg`, pelat foto di scene, kartu menyebut itu foto dan posisinya hanya representasi visual; teksnya hanya dari keterangan aset (misi dan tanggal foto belum dicatat). Popup hanya dipasang satu per breakpoint (desktop atau lembar bawah).
+- **Marker tambahan Moon (dari folder NASA dan catatan 04_Artefak):** Paket barang peringatan dan Peralatan lain (hanya teks, penanda di tanah), Eksperimen angin Matahari dan Sampel batuan dan tanah (pelat foto). Halaman cerita Bab 02 ikut memuat Astronaut Bootprint dan keempatnya. Moon kini 11 titik.
+- **Golden Record (Deep Space):** dipisah menjadi dua objek dengan marker sendiri (Golden Record dan Golden Record Cover), masing-masing potongan bulat dari foto asli NASA (bukan model 3D; popup menyebutnya), lebih kecil dan berjarak dari Voyager, dengan halo emas lembut, tepi logam tipis, dan kilau. Cover punya data baru (`4-3`) dan popup foto sampul dan penjelasan diagram. Model piringan buatan sendiri sengaja tidak dibuat (aturan: bukan model palsu NASA).
+- **Popup:** jarak ke tombol di atasnya diperlebar (top 100 px); klik di area scene (bukan seret, geser kurang dari 6 px) atau tekan Esc menutup popup; klik di dalam popup, titik info, dan tombol HUD tidak menutupnya (`data-popup-objek`).
+- **File:** `ObjectPopup.tsx`, `Model3DViewer.tsx`, `ObjectMedia.tsx` (baru), `HalamanImersif.tsx`, `hud/index.ts`, `src/data/media.ts`, `benda-tambahan.ts`, `scene/objects.ts`; `KartuDataBenda.tsx` dihapus.
+- **Hasil uji (browser):** Eagle: tab Model 3D dan Foto, putar dengan seret, tombol setel ulang; Bootprint: foto saja; Plakat: tab Video dan Foto, video tidak putar otomatis, kontrol bawaan; mobile: lembar bawah berisi model 3D. Lint dan tsc lolos.
+- **Belum diuji:** popup Mars dan Deep Space secara visual, memutar video sampai selesai, build produksi, tablet.
+- **Status:** Draft
+
+### [2026-11-15] Halaman detail Cerita per bab (/cerita/[slug])
+- **Tugas / klaim:** pisahkan storytelling dan eksplorasi 3D
+- **Branch / PR:** `feat/refinement-pengalaman-museum` / belum ada PR
+- **Yang dikerjakan:** kartu bab di /story kini menuju `/cerita/awal-eksplorasi`, `/eksplorasi-bulan`, `/eksplorasi-mars`, `/deep-space` (satu route dinamis `(site)/cerita/[slug]`; `/cerita` dialihkan ke /story). Tiap halaman: hero, cerita kronologis (6/5/7/5 bagian, dengan foto NASA), dokumentasi (video Apollo 11 yang sudah dikompres ke 480p dan galeri berkredit), fakta dan artefak (dengan catatan jenis model: model NASA, model umum, atau pelat foto), tombol ke lingkungan 3D (`/story/2`, `/story/3`, `/story/4`; Bab 1 tanpa 3D, mengarah ke Bab 2), sumber, dan navigasi bab. Konten tiap bab berbeda, disusun dari catatan di NASA/NASA History dan content-data.json (`src/data/cerita.ts`), tanpa fakta baru. Tombol kembali di scene 3D kini menuju halaman cerita bab itu. Navbar menandai Cerita aktif di /cerita.
+- **Tidak diubah:** scene 3D, /story/[bab], Peta Perjalanan, Beranda. `/story/1` (placeholder imersif Bab 1) tetap ada tapi tidak ditautkan.
+- **Aset baru:** `public/videos/apollo-11/*` (6 video + poster, total sekitar 16 MB dari 225 MB asli; asli utuh di NASA Assets/Vidio).
+- **Kekurangan sumber:** alur "awal perlombaan antariksa" untuk Bab 1 belum ada di catatan sumber, jadi Bab 1 hanya memuat sejarah NASA dan jalan menuju Apollo 11; video Mars dan Deep Space belum ada.
+- **Hasil uji:** lint dan tsc lolos; empat halaman 200, slug tidak dikenal 404; mobile tanpa scroll horizontal; tautan bab, 3D, dan navigasi bab benar. Belum diuji: build produksi, tablet, klik tombol di browser sungguhan.
+- **Status:** Draft
+
+### [2026-11-15] Redesain halaman Cerita (editorial sinematik)
+- **Tugas / klaim:** brief redesign halaman Cerita
+- **Branch / PR:** `feat/refinement-pengalaman-museum` / belum ada PR
+- **Yang dikerjakan:** hero lebih pendek (520 jadi 460 px) dengan latar panorama yang sama, gradasi untuk keterbacaan, deskripsi baru, tombol "Mulai Perjalanan" ke daftar bab; bagian pembuka singkat (judul, satu paragraf, foto Apollo 11 NASA); empat bab sebagai kartu editorial berselang-seling (nomor besar, judul, deskripsi, foto 4:3, tombol "Buka Bab 0X") dengan foto NASA yang relevan; layar sinematik bertitik carousel dan daftar bab lama dihapus (satu sistem navigasi). Teks bab tetap dari content-data.json (Bab 4 tetap "antarbintang", bukan "antarplanet" seperti di brief, karena sumbernya).
+- **File:** `src/app/(site)/story/page.tsx`, `BabEditorial.tsx` (baru), `src/data/story.ts`, `public/images/story/bab-1-apollo-11-orbit.webp`; `CeritaSinematik.tsx` dihapus (juga memperbaiki galat removeChild).
+- **Hasil uji:** lint dan tsc lolos; desktop dan mobile dilihat di browser; tautan bab 1-4 dan "Mulai Perjalanan" ada dan benar; tanpa dependensi baru.
+- **Belum diuji:** tablet; klik tombol di browser sungguhan.
+- **Status:** Draft
+
+### [2026-11-15] Revisi halaman eksplorasi 3D: HUD minimalis, objek NASA, titik info di objek asli
+- **Tugas / klaim:** brief "Revisi total halaman eksplorasi 3D"
+- **Branch / PR:** `feat/refinement-pengalaman-museum` / belum ada PR
+- **Audit aset NASA (`NASA/NASA Assets`):** model: Apollo Lunar Module.glb, Landing Site.stl, Saturn V.glb, Voyager Probe (B).glb, (antenna).glb, Voyager_Twin_Spacecraft.glb. Foto Apollo 11 (11) dan Voyager (8), 7 video. **Tidak ada** model Spirit, Opportunity, Heat Shield, dan Golden Record (hanya foto).
+- **Yang dikerjakan:**
+  - HUD disederhanakan: deretan tombol panel diganti satu tombol **Info** (isi Fakta/Misi/Galeri/Sumber jadi tab di dalam panel kaca); kartu narasi diringkas (2 baris); label Titik Info hanya muncul saat hover/fokus/terpilih.
+  - Objek NASA di scene (`scene/objects.ts`): Lunar Module di Moon (diletakkan di tanah lewat raycast), Voyager 1 dan 2 (model umum yang sama, melayang) di Deep Space. Mars tidak diberi objek pengganti; tampil catatan "Objek 3D belum tersedia".
+  - `HotspotLayer`: titik info mengikuti posisi dunia objek lewat `worldToScreen`; pilih titik = kamera berputar halus ke objek (`focusOn`, GSAP) dan kartu data terbuka; pilih lagi = tutup dan kamera kembali.
+  - Mars: model resmi NASA `MER_static.glb` (11,9 MB, diunduh dari science.nasa.gov dengan izin user, disimpan utuh di `NASA/NASA Assets/3D models`) ternyata **satu mesh satu rover**, bukan dua file; dikompres jadi 0,7 MB (gltf-transform: Draco + WebP 1024 px) di `public/models/objek/mer-rover.glb` dan dipasang dua kali untuk Spirit dan Opportunity (kembar). Heat Shield Rock belum punya model.
+  - Tata letak HUD dirapikan agar tengah layar bebas untuk objek: dok bab/kategori diringkas dan di tengah bawah, tombol kontrol scene jadi kolom di kiri bawah, kartu narasi diperkecil, kartu data di kanan atas berhenti di atas dok; setelah fokus, objek berada sedikit di atas tengah layar.
+  - Pengumpulan aset NASA resmi (laporan: `NASA/NASA_ASSET_COLLECTION_REPORT.md`): 4 foto Apollo 11 (EASEP, bendera), 9 citra Mars (Spirit, Opportunity, Heat Shield Rock), 7 citra Voyager dan 3 gambar sampul Golden Record, model Opportunity (MER-B) dan Voyager Probe (A). Opportunity kini memakai model MER-B. Foto Golden Record 115 gambar tidak diunduh (hak cipta). Galeri tiga lingkungan diperbarui.
+  - Scene dilengkapi titik info: Moon 5 titik (Lunar Module, plakat, bendera, seismometer, retroreflektor; tiga terakhir tanpa model, berupa penanda di tanah dengan catatan "posisi perkiraan, belum ada model 3D"), Mars 3 (Spirit, Opportunity, Heat Shield Rock yang juga penanda), Deep Space 3 (Voyager 1 dengan Probe B, Voyager 2 dengan Probe A, Golden Record di badan pesawat). Benda tambahan Moon (seismometer, retroreflektor) disalin dari NASA History/04_Artefak.md ke `src/data/benda-tambahan.ts` (cek ulang bersama Dhika). Kamera awal membidik tengah semua objek bermodel.
+  - Gerak kamera: seret vertikal dan geser dua jari sudah memutar atas-bawah (diuji: seret ke bawah memiringkan pandangan ke atas); yang hanya kiri-kanan adalah gerak ikut mouse. Kini gerak ikut mouse juga atas-bawah (parallax 5 derajat) dan petunjuk di kartu narasi menyebut seret untuk melihat ke segala arah.
+  - Daftar resmi NASA (github.com/nasa/NASA-3D-Resources, 227 model) tidak memuat bendera Apollo, seismometer, retroreflektor, atau Heat Shield Rock; yang ada terkait: Astronaut, Saturn V, Curiosity, Perseverance, Ingenuity. Penanda tanpa model tetap penanda.
+  - Benda tanpa model NASA (bendera, seismometer, retroreflektor, Heat Shield Rock) kini tampil sebagai pelat foto NASA berbingkai emas di scene (`Pelat3D`, foto dari folder NASA Assets/Images), bukan model; kartu data menyebut itu. Terlihat di Moon.
+  - Gerak kamera dihaluskan: input (seret, geser dua jari, roda, tombol, fokus, reset) kini menulis target dan tampilan mengejar target dengan easing (sekitar 80 ms), plus luncuran singkat setelah seret dilepas; saat jeda gerak (reduced-motion) langsung ke target. Kode di `SceneRenderer.tsx` (`su/sp/sz`, `vYaw/vPitch`).
+  - Galeri: 10 foto Apollo 11 (Moon) dan 8 foto Voyager (Deep Space) dari folder NASA jadi isi panel Galeri (Story dan Resources), `GALERI_FOTO` di `src/data/media.ts`. Mars belum punya foto.
+  - Kamera otomatis mendekat ke objek utama 2,4 dtk setelah scene siap; kartu data tidak lagi menimpa dok dan kontrol.
+  - Perbaikan: objek tertempel di posisi salah karena kotak batas model dihitung di dalam grup yang sudah dipindah; kini diukur sendirian.
+  - Kartu Data Benda: foto pendukung NASA (bukan model), catatan "model umum", tombol Tutup. Data media di `src/data/media.ts`.
+- **File:** `src/components/hud/{HalamanImersif,Panel,KartuNarasi,KartuDataBenda,ScenePlaceholder}.tsx`, `src/components/three/scene/{HotspotLayer,objects,SceneRenderer,SceneCanvas,scene-context}.ts(x)`, dua halaman imersif, `src/data/{media,index}.ts`, aset di `public/models/objek` dan `public/images/objek`.
+- **Belum diuji / perlu mata:** posisi, arah hadap, dan skala objek (angka awal di `objects.ts`), posisi titik di LM (plakat), kamera fokus, mobile. Browser pane tertahan saat uji.
+- **Aset belum ada:** model Spirit, Opportunity, Heat Shield (Mars); Golden Record 3D; Landing Site STL belum dipakai (normal nol, 7 MB).
+- **Untuk Zhafran:** HalamanImersif, Panel, KartuNarasi, KartuDataBenda disentuh; kontrak `useImersif` tidak berubah.
+- **Status:** Draft
+
 ### [2026-11-15] Refinement pengalaman museum: GSAP, hero parallax, muncul saat scroll (Phase 1-6)
 - **Tugas / klaim:** brief refinement website (audit, hero parallax, animasi)
 - **Branch / PR:** `feat/refinement-pengalaman-museum` / belum ada PR, belum di-push
