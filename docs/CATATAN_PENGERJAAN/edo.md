@@ -4,6 +4,23 @@ Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 
 ## Entri
 
+### [2026-11-15] Refinement pengalaman museum: GSAP, hero parallax, muncul saat scroll (Phase 1-6)
+- **Tugas / klaim:** brief refinement website (audit, hero parallax, animasi)
+- **Branch / PR:** `feat/refinement-pengalaman-museum` / belum ada PR, belum di-push
+- **Yang dikerjakan:**
+  - Audit Phase 1: struktur, deps, halaman, aset. Animasi lama murni CSS; tidak ada pustaka animasi.
+  - Dependensi baru: `gsap` (disetujui user), dipakai hanya untuk parallax hero (ScrollTrigger) dan cerita sinematik berikutnya.
+  - `ParallaxLatar` (gambar hero bergeser lebih lambat dari scroll, mati saat prefers-reduced-motion) dan `Muncul` (naik + memudar saat masuk layar, IntersectionObserver, tanpa kedipan untuk elemen yang sudah di layar).
+  - Latar Beranda: satu foto lengkung Bumi dari orbit (`latar-bumi-orbit.webp`, kredit TBD di Sumber), menempel di layar (fixed) dengan geseran pelan dan gradasi gelap tipis; foto bulan dan latar Bima Sakti lama dihapus (ada di git). Kartu Pilih Lingkungan bergaya kaca gelap (navy 65%, blur 12, hover cyan).
+  - Phase 4: `CeritaSinematik` di `/story` (layar penuh yang menempel, empat bab bergantian lewat crossfade, GSAP ScrollTrigger; aria-hidden, disembunyikan saat reduced-motion; daftar bab tetap di bawahnya).
+  - Phase 5 Peta Perjalanan: penanda terangkat dan membesar saat hover/fokus, penanda terpilih berdenyut; detail destinasi dan panel misi masuk dengan fade-slide saat berganti. Tidak ada garis rute (peta simbolis, bukan rute).
+  - Phase 6 Sumber: filter dan metadata sudah ada; teks kredit model 3D diperbarui (Moon v5 beserta ukuran, status uji render). Isi TBD tidak diubah.
+  - Dipasang di Beranda (hero, pengantar, tiga kartu lingkungan) dan Cerita (daftar bab).
+- **File dibuat/diubah:** `src/components/ui/ParallaxLatar.tsx`, `Muncul.tsx`, `CeritaSinematik.tsx`, `PenandaDestinasi.tsx`, `DetailDestinasi.tsx`, `src/data/source.ts`, `index.ts`, `src/app/(site)/page.tsx`, `src/app/(site)/story/page.tsx`, `package.json`, lock.
+- **Hasil uji:** lint dan build lolos. Efek gerak belum dilihat langsung: pane browser tertahan (rAF mati), perlu dicek mata di browser biasa.
+- **Untuk Pace:** dua halaman milikmu (Beranda, Cerita) disentuh; perubahan hanya membungkus elemen yang ada.
+- **Status:** Draft
+
 ### [2026-11-15] Integrasi SceneCanvas ke HUD, gerak kamera bebas, perbaikan NaN
 - **Tugas / klaim:** pasang SceneCanvas di slot `scene` halaman imersif; kontrol kamera
 - **Branch / PR:** `feat/scene-integrasi` (dibuat dari `zhafran-dev` + `feat/scene-canvas`) / belum ada PR, belum di-push

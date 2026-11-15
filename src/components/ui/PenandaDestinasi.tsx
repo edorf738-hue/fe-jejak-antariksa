@@ -22,14 +22,22 @@ export function PenandaDestinasi({ label, href, gambar, terpilih = false, classN
       aria-current={terpilih ? "page" : undefined}
       className={`group flex flex-col items-center gap-4 p-[9px] ${className}`}
     >
-      <span
-        className={`relative block size-[120px] overflow-hidden rounded-full ring-2 transition-shadow duration-150 ${
-          terpilih
-            ? "ring-4 ring-aksen-informasi-normal"
-            : "ring-archive-slate-normal group-hover:ring-text-primary-normal"
-        }`}
-      >
-        <Image src={gambar} alt="" fill sizes="120px" className="object-cover" />
+      <span className="relative block size-[120px] transition-transform duration-300 ease-out group-hover:-translate-y-1 group-hover:scale-105 group-focus-visible:scale-105">
+        {terpilih && (
+          <span
+            aria-hidden="true"
+            className="hud-denyut pointer-events-none absolute inset-0 rounded-full ring-2 ring-aksen-informasi-normal [--denyut-delay:0s]"
+          />
+        )}
+        <span
+          className={`relative block size-full overflow-hidden rounded-full ring-2 transition-shadow duration-150 ${
+            terpilih
+              ? "ring-4 ring-aksen-informasi-normal"
+              : "ring-archive-slate-normal group-hover:ring-text-primary-normal"
+          }`}
+        >
+          <Image src={gambar} alt="" fill sizes="120px" className="object-cover" />
+        </span>
       </span>
       <span
         className={`text-button-label ${terpilih ? "text-aksen-informasi-normal" : "text-text-primary-normal"}`}

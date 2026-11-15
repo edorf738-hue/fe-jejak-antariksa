@@ -11,7 +11,7 @@ export function DetailDestinasi({ tujuan }: { tujuan: JourneyTujuan }) {
   const misiAktif = misi[dipilih];
 
   return (
-    <>
+    <div className="hud-masuk flex flex-col gap-10 [--hud-dy:24px] md:gap-12 lg:gap-14">
       <div className="flex flex-col gap-10 lg:flex-row lg:items-start lg:gap-12">
         <section aria-labelledby="judul-misi-terkait" className="flex w-full shrink-0 flex-col gap-5 lg:w-[420px]">
           <h2 id="judul-misi-terkait" className="text-heading-card text-text-primary-normal">
@@ -30,7 +30,8 @@ export function DetailDestinasi({ tujuan }: { tujuan: JourneyTujuan }) {
           ))}
         </section>
         <PanelBaris
-          className="w-full lg:flex-1"
+          key={dipilih}
+          className="hud-masuk w-full [--hud-dur:0.35s] [--hud-dy:8px] lg:flex-1"
           eyebrow={JOURNEY_COPY.detail.eyebrow}
           judul={misiAktif?.nama ?? "TBD"}
           baris={detail[dipilih]}
@@ -51,6 +52,6 @@ export function DetailDestinasi({ tujuan }: { tujuan: JourneyTujuan }) {
           <ItemSumber key={s.url} {...s} />
         ))}
       </section>
-    </>
+    </div>
   );
 }

@@ -6,7 +6,7 @@ import { Icon } from "./Icon";
  * Kartu Lingkungan (FIGMA_HANDOFF bagian 3): `Judul`, `Deskripsi`, `Tautan`,
  * gambar. Seluruh kartu adalah satu tautan ke halaman Resources. State Figma:
  * Default, Hover, Selected, Focus (Selected belum dipakai di Beranda).
- * Radius 24, gambar 240 px, konten padding 24/28/28 dengan gap 12.
+ * Gaya kaca gelap (navy 65% + blur 12 px + garis putih tipis; hover: naik, garis cyan). Radius 24, gambar 240 px, konten padding 24/28/28 dengan gap 12.
  */
 type KartuLingkunganProps = {
   judul: string;
@@ -32,7 +32,7 @@ export function KartuLingkungan({
   return (
     <Link
       href={href}
-      className={`group relative flex flex-col overflow-hidden rounded-card bg-bg-secondary-normal after:pointer-events-none after:absolute after:inset-0 after:rounded-card after:ring-1 after:ring-inset after:ring-archive-slate-normal after:transition-shadow after:duration-150 after:content-[''] hover:after:ring-aksen-informasi-dark focus-visible:outline-offset-4 ${className}`}
+      className={`group relative flex flex-col overflow-hidden rounded-card border border-white/10 bg-[rgba(15,23,42,0.65)] shadow-[0_8px_32px_rgba(0,0,0,0.35)] backdrop-blur-[12px] transition-[transform,background-color,border-color,box-shadow] duration-300 ease-out hover:-translate-y-1.5 hover:border-cyan-400/60 hover:bg-[rgba(15,23,42,0.5)] hover:shadow-[0_16px_48px_rgba(0,0,0,0.45),0_0_28px_rgba(34,211,238,0.14)] focus-visible:-translate-y-1.5 focus-visible:border-cyan-400/60 focus-visible:outline-offset-4 ${className}`}
     >
       <div className="relative h-60 w-full shrink-0">
         <Image

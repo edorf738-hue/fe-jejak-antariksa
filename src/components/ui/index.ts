@@ -1,4 +1,5 @@
 export { Button, type ButtonProps } from "./Button";
+export { CeritaSinematik, type LayarCerita } from "./CeritaSinematik";
 export { Container } from "./Container";
 export { EntriSumber } from "./EntriSumber";
 export { Icon, ICON_NAMES, type IconName } from "./Icon";
@@ -10,7 +11,9 @@ export { KartuMisi } from "./KartuMisi";
 export { LatarBerulang } from "./LatarBerulang";
 export { Logo } from "./Logo";
 export { Navbar, NAV_ITEMS } from "./Navbar";
+export { Muncul } from "./Muncul";
 export { PageHeader } from "./PageHeader";
+export { ParallaxLatar } from "./ParallaxLatar";
 export { PanelBaris } from "./PanelBaris";
 export { PanelStatus } from "./PanelStatus";
 export { PenandaDestinasi } from "./PenandaDestinasi";

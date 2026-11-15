@@ -67,6 +67,15 @@ const KREDIT_GAMBAR: EntriSumber[] = [
     url: "URL halaman sumber: TBD",
     atribusi: KETENTUAN_GAMBAR,
   },
+  {
+    id: "gambar-latar-beranda",
+    kategori: "gambar",
+    labelKategori: "GAMBAR",
+    judul: "Foto lengkung Bumi dari orbit, latar Beranda (latar-bumi-orbit.webp)",
+    meta: "Kredit: TBD (asal foto dari tim, belum dicatat) · Diakses: TBD",
+    url: "URL halaman sumber: TBD",
+    atribusi: KETENTUAN_GAMBAR,
+  },
 ];
 
 const KREDIT_MODEL3D: EntriSumber[] = [
@@ -78,17 +87,17 @@ const KREDIT_MODEL3D: EntriSumber[] = [
     meta: "Pembuat: TBD · Lisensi: TBD",
     url: "Sumber file: repo proyek › NASA 3D Resources/Mars Environment",
     atribusi:
-      "GLB 4,6 MB (Draco), 3 kamera. Dibuat di Blender lewat skrip build; asal tekstur: TBD. Belum diuji di GPU atau perangkat nyata.",
+      "GLB 4,6 MB (Draco), 3 kamera. Dibuat di Blender lewat skrip build; asal tekstur: TBD. Sudah dirender di browser lewat React Three Fiber; belum diuji di GPU atau perangkat nyata.",
   },
   {
     id: "model-moon",
     kategori: "model3d",
     labelKategori: "MODEL 3D",
-    judul: "Model environment Moon v4 (lunar_environment_v4.glb + _tablet + _mobile)",
+    judul: "Model environment Moon v5 (lunar_environment_v5.glb + _tablet + _mobile)",
     meta: "Pembuat: TBD · Lisensi: TBD",
     url: "Sumber file: repo proyek › NASA 3D Resources/Lunar Environment dn Earthrise",
     atribusi:
-      "GLB per perangkat: 3,7 MB, 2,1 MB, 1,0 MB (Draco). Medan prosedural, bukan data DEM asli. Bumi berupa garis besar sederhana, bukan geografi asli. Belum diuji di WebGL.",
+      "GLB per perangkat: 5,15 MB, 1,85 MB, 1,04 MB (Draco). Medan prosedural, bukan data DEM asli. Bumi berupa garis besar sederhana, bukan geografi asli. Sudah dirender di browser lewat React Three Fiber; belum diuji di perangkat nyata.",
   },
   {
     id: "model-deep-space",
@@ -98,7 +107,7 @@ const KREDIT_MODEL3D: EntriSumber[] = [
     meta: "Pembuat: TBD · Lisensi: TBD",
     url: "Sumber file: repo proyek › NASA 3D Resources/Deep Space Environment",
     atribusi:
-      "GLB 2,8 MB (tanpa Draco), 46 ribu segitiga. Tekstur prosedural, bukan data astronomi. Diuji di Three.js (headless), belum di GPU nyata.",
+      "GLB 2,8 MB (tanpa Draco), 46 ribu segitiga. Tekstur prosedural, bukan data astronomi. Sudah dirender di browser lewat React Three Fiber; belum diuji di GPU atau perangkat nyata.",
   },
 ];
 
