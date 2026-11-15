@@ -4,6 +4,29 @@ Aturan dan format entri ada di [README.md](README.md). Entri terbaru di atas.
 
 ## Entri
 
+### [2026-11-15] Data ke JSON, bersih-bersih rute (404/galat), Navbar Ringkas kaca
+- **Tugas / klaim:** Tugas A (data), B (rute), C (Navbar Ringkas) dari brief lanjutan sebelum scene 3D dipasang
+- **Branch / PR:** `pace-dev` (sudah memuat merge `origin/zhafran-dev`, tanpa konflik) / belum dibuka
+- **Yang dikerjakan:**
+  - **A. Data:** kredit gambar dan kredit model 3D dipindah dari `src/data/source.ts` ke `docs/content-data.json` (field baru `kredit.gambar` dan `kredit.model3d`, teks persis sama); `source.ts` membacanya lewat `getKredit()` di `content.ts`. Ditambah `resources.galeriMars: []` (kosong; panel Galeri Mars tetap "Belum ada data."). Bab 1 ternyata sudah memakai `bab[0]` di content-data.json (narasi, hotspot, data benda); tidak ada fakta baru. `INDEKS_SUMBER` dan `BAB_KATEGORI` diberi komentar "usulan, menunggu konfirmasi tim konten". Judul Kronologi tidak diubah.
+  - **B. Rute:** `/ui-kit` dihapus (kini 404, tidak ada di daftar rute build). Ditambah `src/app/not-found.tsx` (PanelStatus varian Kosong + tombol ke Beranda), `src/app/error.tsx` dan `src/app/global-error.tsx` (PanelStatus Galat + Coba Lagi; `error.tsx` juga punya tombol Beranda; `global-error.tsx` hanya Coba Lagi karena router mungkin ikut rusak). 404 berada di luar route group `(site)`, jadi tanpa Navbar (juga untuk `/story/9`, `/resources/xx`). Copy draf ada di `src/data/status.ts` (`tidakDitemukan`, `halamanGalat`).
+  - **C. Navbar Ringkas:** panel menu terbuka kini memakai `kaca-tepi` + bayangan dalam yang sama dengan pill (hanya di bawah `lg` lewat `max-lg:`), ditambah fill gelap 80% agar teks tetap terbaca di atas hero. Pill sudah berkaca sejak commit Zhafran. Geometri tidak diubah (72, padding, logo 44); aksesibilitas (tombol 44, Escape, fokus kembali, aria-expanded) tidak disentuh.
+- **File dibuat/diubah:** `docs/content-data.json` (**file bersama**: tambah `kredit`, `resources.galeriMars`; tidak ada nilai lain berubah), `src/data/{content,source,journey,imersif,status}.ts`, `src/app/{not-found,error,global-error}.tsx`, `src/app/(site)/ui-kit/` (dihapus), `src/components/ui/{Navbar,Icon}.tsx` (Icon: hanya komentar). Titik sambung 3D milik Zhafran tidak disentuh (hanya komentar di `imersif.ts` pada `BAB_KATEGORI`).
+- **Cara menguji:** `npm run lint`, `npm run build`, `npm start`; cek `/`, `/story`, `/story/1..4`, `/journey-map/*`, `/source`, `/resources/*`, `/ui-kit`, `/story/9`; buka/tutup menu Navbar Ringkas dengan klik, Escape.
+- **Hasil uji:** lint bersih; build lolos, rute `/ui-kit` tidak ada; semua rute di atas 200, `/ui-kit`, `/story/9`, `/resources/xx` 404. Halaman 404 dicek visual di 1440, 768, 390 (tanpa scroll horizontal). Menu Navbar Ringkas dicek di 390 (buka, tutup lewat Escape, fokus kembali ke tombol, `aria-expanded`) dan 768 (buka); 1440 tidak berubah. Klik sungguhan di `/story/1` (1440): tombol Misi Terkait, Escape menutup dan fokus kembali, Titik Info membuka Kartu Data Benda dan Escape mengembalikan fokus ke titik, Jeda Gerak beralih. Cek scroll horizontal di 390 untuk `/`, `/story`, `/story/3`, `/journey-map`, `/journey-map/mars`, `/source`, `/resources/mars`: aman. Halaman Source memuat kredit sama seperti sebelumnya.
+  - **Belum diuji:** `global-error.tsx` dan `error.tsx` (tidak dipicu paksa; hanya lolos tipe dan build); tampilan 768 untuk sebagian besar halaman dan seluruh halaman di 1440 selain yang disebut; perbandingan dengan Figma (Figma MCP belum diotorisasi di sesi ini); perangkat nyata.
+- **Keputusan teknis & alasan:**
+  - Error boundary memakai `retry` (API Next 16.4, lihat docs `error.md`), bukan `reset`. `journey-map/[kategori]/error.tsx` milik lama masih memakai `reset` dan tidak diubah.
+  - 404 memakai varian **Kosong** (bukan Galat seperti di brief) agar tidak menjadi `role="alert"` pada halaman statis; galat runtime memakai varian Galat.
+  - `global-error.tsx` mengimpor `globals.css` sendiri dan tidak memuat font web (jatuh ke font sistem); layout.tsx tidak disentuh.
+  - Fill gelap 80% pada panel menu adalah tambahan agar kontras terbaca: tanpa fill, teks hero tembus ke tautan menu.
+- **Belum selesai / catatan untuk orang lain:**
+  - **Zhafran:** komponen Figma **91:97 (Navbar Ringkas)** perlu diperbarui agar sama (panel menu berkaca + fill gelap 80%); sekarang kode menyimpang dari Figma. Copy 404/galat (`status.ts`) berupa **draf**, menunggu persetujuan Zhafran/Dhika.
+  - **Dhika (konten):** (1) `INDEKS_SUMBER` (`journey.ts`) pemetaan sumber per tujuan hanyalah usulan menurut topik; (2) Bab 1 memakai panel Moon untuk fakta, misi, sumber, galeri: data panel Bab 1 sendiri TBD; (3) galeri Mars kosong, `resources.galeriMars` siap diisi; (4) kredit gambar/model masih banyak TBD; (5) keputusan tombol Kembali dari halaman imersif (Story -> `/story`, Resources -> `/`) adalah usulan tim dan tidak diubah, menunggu keputusan Dhika.
+  - Tugas opsional D (Jeda Gerak menghentikan animasi placeholder), E (frame Figma "5 Transition" 89:102, perlu Figma MCP), dan F (animasi Beranda) **belum dikerjakan**.
+  - `npm install` memodifikasi `package-lock.json`; perubahan itu dibatalkan dan tidak ikut di-commit.
+- **Status:** Review
+
 ### [2026-11-15] Aksesibilitas dan responsif (audit dan perbaikan)
 - **Tugas / klaim:** Responsif dan aksesibilitas (PEMBAGIAN_TUGAS bagian 4, Pace nomor 9)
 - **Branch / PR:** `pace-dev` (semua pekerjaan Pace bertumpuk di satu branch; sebelumnya `feat/ui-animasi`) / belum dibuka
