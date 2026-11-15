@@ -358,6 +358,28 @@ body {
     translate: 70px 14px;
   }
 }
+/* Latar Bumi Beranda (Pilih Lingkungan): melayang dan memperbesar pelan (siklus 36 dtk); pendar biru atmosfer
+   dan pendar hangat awan bernapas bergantian. Tepi atas/bawah memudar lewat mask (hero ke latar tanpa garis). */
+@keyframes bumi-melayang {
+  0%,
+  100% {
+    scale: 1.04;
+    translate: 0 0;
+  }
+  50% {
+    scale: 1.13;
+    translate: -1.6% 1.2%;
+  }
+}
+@keyframes bumi-pendar {
+  0%,
+  100% {
+    opacity: 0.35;
+  }
+  50% {
+    opacity: 1;
+  }
+}
 @keyframes kerangka-napas {
   0%,
   100% {
@@ -395,6 +417,19 @@ body {
 }
 @utility bima-geser {
   animation: bima-geser 16s ease-in-out infinite;
+}
+@utility bumi-melayang {
+  transform-origin: 18% 42%;
+  animation: bumi-melayang 36s ease-in-out infinite;
+}
+@utility bumi-pendar {
+  animation: bumi-pendar 9s ease-in-out infinite;
+}
+@utility bumi-pendar-hangat {
+  animation: bumi-pendar 9s ease-in-out -4.5s infinite;
+}
+@utility bumi-mask {
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 22%, #000 92%, transparent 100%);
 }
 @utility kerangka-napas {
   animation: kerangka-napas 1.6s ease-in-out infinite;

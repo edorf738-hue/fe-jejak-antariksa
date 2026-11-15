@@ -39,6 +39,8 @@ export type KartuLingkunganData = {
   slug: KategoriSlug;
   judul: string;
   deskripsi: string;
+  /** Satu kalimat ringkasan dari content-data.json (`resources.<kategori>.ringkasan`). */
+  ringkasan: string;
   gambar: string;
   /** Halaman Resources imersif (dikerjakan di PR terpisah). */
   href: string;
@@ -46,11 +48,12 @@ export type KartuLingkunganData = {
 
 export function getKartuLingkungan(): KartuLingkunganData[] {
   return KATEGORI_SLUGS.map((slug) => {
-    const { nama } = getKategori(slug);
+    const { nama, ringkasan } = getKategori(slug);
     return {
       slug,
       judul: nama,
       deskripsi: `Jelajahi lingkungan 3D ${nama}.`,
+      ringkasan,
       gambar: GAMBAR_KARTU[slug],
       href: `/resources/${slug}`,
     };

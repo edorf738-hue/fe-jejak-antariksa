@@ -1,14 +1,17 @@
 import Image from "next/image";
-import { Button, Container, KartuLingkungan } from "@/components/ui";
-import { getKartuLingkungan, HOME_COPY } from "@/data";
+import { Button, Container, hitungKata, KartuPlanet, reveal, revealKata, revealKataMuat, revealMuat, SplitText, type JenisPlanet } from "@/components/ui";
+import { getKartuLingkungan, HOME_COPY, type KategoriSlug } from "@/data";
 
 /**
  * Beranda. Sumber desain: Figma halaman Prototype, frame `Home — Desktop`
  * (1440), `Home — Tablet` (768), `Home — Mobile` (390). Isi: hero, pengantar,
  * kartu Pilih Lingkungan. Latar Bima Sakti hanya ada di frame desktop.
  */
+/** Jenis planet per lingkungan: Mars, Bulan (tekstur NASA), dan raksasa es bercincin untuk Deep Space (Voyager). */
+const PLANET: Record<KategoriSlug, JenisPlanet> = { mars: "mars", moon: "bulan", "deep-space": "raksasa" };
+
 export default function Home() {
-  const { hero, pengantar, lingkungan } = HOME_COPY;
+  const { hero, lingkungan } = HOME_COPY;
   const kartu = getKartuLingkungan();
 
   return (
@@ -34,28 +37,35 @@ export default function Home() {
         <Container className="relative mt-auto pb-14 md:pb-[72px] lg:mt-0 lg:pb-0 lg:pt-[318px]">
           <div className="flex flex-col items-center gap-4 text-center lg:gap-9">
             <div className="flex flex-col items-center gap-4 lg:gap-1">
-              <p className="text-eyebrow-15 uppercase text-text-primary-normal md:text-eyebrow-20">
+              {/* Urutan masuk hero: eyebrow, judul per kata, deskripsi, tombol (jeda bertahap ala nakala.digital). */}
+              <p
+                className="text-eyebrow-15 uppercase text-text-primary-normal md:text-eyebrow-20"
+                {...revealMuat(0)}
+              >
                 {hero.eyebrow}
               </p>
               <h1
                 id="judul-hero"
                 className="text-hero-36 uppercase text-text-primary-normal md:text-hero-70 lg:text-hero-90"
+                {...revealKataMuat(120)}
               >
-                {hero.headline.map((baris) => (
+                {hero.headline.map((baris, i) => (
                   <span key={baris} className="lg:block">
-                    {baris}{" "}
+                    <SplitText mulai={hero.headline.slice(0, i).reduce((n, b) => n + hitungKata(b), 0)}>{baris}</SplitText>{" "}
                   </span>
                 ))}
               </h1>
             </div>
 
-            <p className="text-body-large max-w-[640px] text-text-primary-normal">
+            <p className="text-body-large max-w-[640px] text-text-primary-normal" {...revealMuat(560)}>
               {hero.deskripsi}
             </p>
 
-            <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row lg:gap-5">
-              <Button href={hero.ctaUtama.href}>{hero.ctaUtama.label}</Button>
-              <Button href={hero.ctaSekunder.href} variant="secondary">
+            <div className="flex w-full flex-col gap-4 md:w-auto md:flex-row lg:gap-5" {...revealMuat(700)}>
+              <Button href={hero.ctaUtama.href} sinyal>
+                {hero.ctaUtama.label}
+              </Button>
+              <Button href={hero.ctaSekunder.href} variant="secondary" specular>
                 {hero.ctaSekunder.label}
               </Button>
             </div>
@@ -63,58 +73,49 @@ export default function Home() {
         </Container>
       </section>
 
-      {/* Latar Bima Sakti (desktop saja, 1440x1021 di bawah hero). */}
-      <div className="relative bg-bg-primary-normal">
-        {/* CSS background (bukan next/image) agar berkas tidak diunduh di tablet/mobile. Digeser pelan
-            (70, 14) px selama 16 dtk; diperbesar 1,1x agar tepinya tidak terbuka saat bergeser. */}
+      {/* Latar Bumi dari orbit untuk Pilih Lingkungan. Mengalir dari hero: tepi atasnya memudar ke warna
+          latar hero (#10131b) dan tepi bawahnya memudar kembali, jadi tidak ada garis pemisah. CSS background (bukan
+          next/image) agar tidak ikut ke bundel; memenuhi seluruh tinggi bagian ini. */}
+      <div className="relative overflow-hidden bg-bg-primary-normal bg-[linear-gradient(to_bottom,#10131b_0,var(--color-bg-primary-normal)_220px)] bg-no-repeat">
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute inset-x-0 top-0 hidden h-[1021px] overflow-hidden lg:block"
+          className="bumi-mask pointer-events-none absolute inset-0"
         >
-          <div className="bima-geser absolute inset-0 scale-110 bg-[url('/images/home/latar-bima-sakti.webp')] bg-cover bg-top bg-no-repeat" />
-        </div>
-
-        <section
-          aria-labelledby="judul-pengantar"
-          className="relative px-page py-14 md:py-[72px] lg:pb-0 lg:pt-20"
-        >
-          <div className="mx-auto flex max-w-[760px] flex-col items-center gap-5 text-center">
-            <h2
-              id="judul-pengantar"
-              className="text-heading-card text-text-primary-normal md:text-heading-section"
-            >
-              {pengantar.judul}
-            </h2>
-            <p className="text-body-large text-text-secondary-normal">{pengantar.isi}</p>
+          {/* Lapisan bergerak: melayang dan memperbesar pelan; pendar atmosfer ikut di dalamnya agar tetap di lengkung. */}
+          <div className="bumi-melayang absolute inset-0 bg-[url('/images/home/latar-bumi.webp')] bg-cover bg-top bg-no-repeat">
+            <div className="bumi-pendar absolute left-[-5%] top-[24%] hidden h-[14%] w-[100%] -rotate-[9deg] bg-[radial-gradient(ellipse_at_center,rgba(96,176,255,0.55),transparent_68%)] blur-2xl lg:block" />
+            <div className="bumi-pendar-hangat absolute -left-[4%] top-[44%] hidden h-[22%] w-[38%] bg-[radial-gradient(ellipse_at_center,rgba(255,196,140,0.35),transparent_70%)] blur-2xl lg:block" />
           </div>
-        </section>
+        </div>
 
         <section
           aria-labelledby="judul-lingkungan"
           className="relative py-14 md:py-[72px] lg:pb-[120px] lg:pt-[125px]"
         >
           <Container className="flex flex-col items-center gap-8 lg:gap-12">
-            <div className="flex flex-col items-center gap-4 text-center">
+            <div className="flex flex-col items-center gap-4 text-center [text-shadow:0_1px_16px_rgba(8,11,18,0.95)]">
               <h2
                 id="judul-lingkungan"
                 className="text-heading-card text-text-primary-normal md:text-heading-section"
+                {...revealKata(0)}
               >
-                {lingkungan.judul}
+                <SplitText>{lingkungan.judul}</SplitText>
               </h2>
-              <p className="text-body-large text-text-secondary-normal">
+              <p className="text-body-large text-text-secondary-normal" {...reveal(200)}>
                 {lingkungan.subjudul}
               </p>
             </div>
 
-            <div className="grid w-full items-start gap-5 md:grid-cols-2 lg:grid-cols-3 lg:gap-7">
-              {kartu.map((k) => (
-                <KartuLingkungan
+            {/* Tiga planet beranimasi sejajar (Mars, Bulan, Deep Space), masing-masing pintu ke lingkungan 3D-nya. */}
+            <div className="grid w-full items-start justify-items-center gap-x-6 gap-y-12 md:grid-cols-3 lg:gap-x-10">
+              {kartu.map((k, i) => (
+                <KartuPlanet
                   key={k.slug}
+                  jenis={PLANET[k.slug]}
+                  delay={i * 140}
                   judul={k.judul}
-                  deskripsi={k.deskripsi}
-                  tautan={lingkungan.tautan}
+                  ringkasan={k.ringkasan}
                   href={k.href}
-                  gambar={k.gambar}
                 />
               ))}
             </div>
