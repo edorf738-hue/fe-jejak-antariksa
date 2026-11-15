@@ -6,17 +6,30 @@ import "./globals.css";
 
 /**
  * Galat di root layout: menggantikan seluruh dokumen, jadi memuat globals.css sendiri.
- * Font web (next/font) tidak dimuat di sini (jatuh ke font sistem). Hanya tombol Coba Lagi
- * (tanpa next/link, karena router mungkin ikut rusak). Copy: draf, lihat status.ts.
+ * Font web (next/font) tidak dimuat di sini (jatuh ke font sistem).
+ * Copy: draf, lihat status.ts.
  */
 export default function GlobalError({ retry }: { error: unknown; retry: () => void }) {
-  const { judul, isi, coba } = STATUS_COPY.halamanGalat;
+  const { judul, isi, coba, kembali } = STATUS_COPY.halamanGalat;
   return (
     <html lang="id" className="h-full antialiased">
       <body className="flex min-h-full flex-col">
+        <title>Wayang Antariksa</title>
         <main className="flex flex-1 items-center py-24">
           <Container>
-            <PanelStatus varian="galat" judul={judul} isi={isi} aksi={<Button onClick={() => retry()}>{coba}</Button>} />
+            <PanelStatus
+              varian="galat"
+              judul={judul}
+              isi={isi}
+              aksi={
+                <div className="flex flex-wrap justify-center gap-4">
+                  <Button onClick={() => retry()}>{coba}</Button>
+                  <Button href="/" variant="secondary">
+                    {kembali}
+                  </Button>
+                </div>
+              }
+            />
           </Container>
         </main>
       </body>
