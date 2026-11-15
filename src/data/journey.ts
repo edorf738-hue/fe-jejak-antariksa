@@ -28,7 +28,17 @@ type DetailTambahan = {
   faktaMenarik?: string;
 };
 
+type DetailUtama = {
+  wahana: string;
+  peluncuran: string;
+  tiba: string;
+  tujuan: string;
+  status: string;
+  temuan: string;
+};
+
 type RawJourney = {
+  detailMisi: Record<"Bulan" | "Mars" | "Deep Space", DetailUtama>;
   detailMisiTambahan: Record<"Bulan" | "Mars" | "Deep Space", DetailTambahan>;
   kronologi: Record<"Bulan" | "Mars" | "Deep Space", [string, string][]>;
 };
@@ -73,14 +83,21 @@ export type JourneyTujuan = {
 
 const TBD = "TBD";
 
-function detailMisi(m: Misi | null, tambahan: DetailTambahan | undefined, sumber: Sumber | undefined): BarisDetail[] {
+function detailMisi(
+  m: Misi | null,
+  utama: DetailUtama | undefined,
+  tambahan: DetailTambahan | undefined,
+  sumber: Sumber | undefined,
+): BarisDetail[] {
+  // Misi pertama tiap tujuan memakai teks rinci (`detailMisi` di content-data.json, sama dengan Figma);
+  // misi lain memakai field di `misi`.
   const baris: BarisDetail[] = [
-    { label: "Wahana", nilai: m?.wahana ?? TBD },
-    { label: "Tanggal peluncuran", nilai: m?.peluncuran ?? TBD },
-    { label: "Tanggal tiba / landing", nilai: m?.tiba ?? TBD },
-    { label: "Tujuan misi", nilai: m?.tujuan ?? TBD },
-    { label: "Status misi", nilai: m?.status ?? TBD },
-    { label: "Temuan penting", nilai: m?.temuan ?? TBD },
+    { label: "Wahana", nilai: utama?.wahana ?? m?.wahana ?? TBD },
+    { label: "Tanggal peluncuran", nilai: utama?.peluncuran ?? m?.peluncuran ?? TBD },
+    { label: "Tanggal tiba / landing", nilai: utama?.tiba ?? m?.tiba ?? TBD },
+    { label: "Tujuan misi", nilai: utama?.tujuan ?? m?.tujuan ?? TBD },
+    { label: "Status misi", nilai: utama?.status ?? m?.status ?? TBD },
+    { label: "Temuan penting", nilai: utama?.temuan ?? m?.temuan ?? TBD },
   ];
   if (tambahan) {
     baris.push({ label: "Lokasi", nilai: tambahan.lokasi ?? TBD });
@@ -102,7 +119,12 @@ export function getJourneyTujuan(slug: KategoriSlug): JourneyTujuan {
     kategori,
     misi,
     detail: misi.map((m, i) =>
-      detailMisi(m, i === 0 ? data.detailMisiTambahan[key] : undefined, sumber[0]),
+      detailMisi(
+        m,
+        i === 0 ? data.detailMisi[key] : undefined,
+        i === 0 ? data.detailMisiTambahan[key] : undefined,
+        sumber[0],
+      ),
     ),
     judulKronologi: JUDUL_KRONOLOGI[slug],
     kronologi: data.kronologi[key].map(([label, nilai]) => ({ label, nilai })),

@@ -36,10 +36,10 @@ export function KartuMisi({
       <span className="text-body-large text-text-secondary-normal">Status: {status}</span>
     </>
   );
-  const kelas = `flex w-full flex-col items-start gap-3 break-words rounded-card p-7 text-left transition-colors duration-150 ${
+  const kelas = `flex w-full flex-col items-start gap-3 break-words rounded-card p-7 text-left transition-shadow duration-150 ${
     terpilih
-      ? "border-2 border-aksen-informasi-normal-hover bg-archive-slate-normal"
-      : "border border-archive-slate-normal bg-bg-secondary-normal hover:border-aksen-informasi-dark"
+      ? "bg-archive-slate-normal ring-2 ring-inset ring-aksen-informasi-normal-hover"
+      : "bg-bg-secondary-normal ring-1 ring-inset ring-archive-slate-normal hover:ring-aksen-informasi-dark"
   } ${className}`;
 
   if (onPilih) {

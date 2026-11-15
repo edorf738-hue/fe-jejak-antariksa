@@ -263,6 +263,29 @@ body {
   -webkit-backdrop-filter: blur(12px);
 }
 
+/*
+ * Efek Glass Figma pada Navbar dan pill aktifnya (radius 4, refraksi 0,8, kedalaman 20, sudut cahaya -45°,
+ * intensitas 0,8; fill putih 0%). Dibuat ulang dengan CSS: blur 4 px untuk latar, bayangan dalam gelap untuk
+ * kedalaman di tepi lengkung, dan cincin 1 px bergradasi (`::before`, dikosongkan di tengah lewat mask) untuk
+ * pantulan cahaya di tepi. Gradasi cincin bisa diganti lewat `--rim`. Elemen harus punya `position`.
+ */
+@utility kaca-tepi {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    pointer-events: none;
+    background: var(--rim, linear-gradient(100deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.3) 35%, rgba(255, 255, 255, 0.45) 100%));
+    -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+    mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+  }
+}
+
 /* Jarak antar-section mengikuti breakpoint (40 / 48 / 56) */
 @utility gap-section {
   gap: var(--section-gap);
@@ -344,6 +367,15 @@ body {
     opacity: 0.5;
   }
 }
+/* Bilah kemajuan scene 3D tanpa nilai pasti: isi (40% lebar) meluncur melintasi jalur. */
+@keyframes progres-luncur {
+  from {
+    translate: -100% 0;
+  }
+  to {
+    translate: 250% 0;
+  }
+}
 
 /* Variabel: --hud-delay, --hud-dur, --hud-dx, --hud-dy (set lewat kelas [--hud-delay:0.3s]) */
 @utility hud-masuk {
@@ -366,6 +398,9 @@ body {
 }
 @utility kerangka-napas {
   animation: kerangka-napas 1.6s ease-in-out infinite;
+}
+@utility progres-luncur {
+  animation: progres-luncur 1.4s ease-in-out infinite;
 }
 
 /* Gerak dimatikan bila pengguna memilih prefers-reduced-motion */

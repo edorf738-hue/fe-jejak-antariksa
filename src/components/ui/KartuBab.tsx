@@ -18,7 +18,7 @@ export function KartuBab({ nomor, judul, ringkasan, href, className = "" }: Kart
   return (
     <Link
       href={href}
-      className={`flex items-center gap-3 rounded-card border border-archive-slate-normal bg-bg-secondary-normal p-5 transition-colors duration-150 hover:border-aksen-informasi-dark md:gap-8 md:px-10 md:py-7 ${className}`}
+      className={`flex items-center gap-3 rounded-card bg-bg-secondary-normal p-5 ring-1 ring-inset ring-archive-slate-normal transition-shadow duration-150 hover:ring-aksen-informasi-dark md:gap-8 md:px-10 md:py-7 ${className}`}
     >
       <span
         aria-hidden="true"

@@ -17,7 +17,7 @@ export function PanelBaris({ eyebrow, judul, baris, className = "" }: PanelBaris
     >
       <p className="text-eyebrow-15 text-aksen-warisan-normal">{eyebrow}</p>
       <h2 className="text-heading-card text-text-primary-normal md:text-heading-section">{judul}</h2>
-      <dl>
+      <dl className="flex flex-col gap-5">
         {baris.map((b, i) => (
           <div
             key={`${b.label}-${i}`}

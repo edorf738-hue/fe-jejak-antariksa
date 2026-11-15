@@ -13,7 +13,8 @@
       "misi.status": 50,
       "catatan": "Batas dari ukuran kartu di Figma (mobile 342 px). Lebih panjang dari ini akan menambah tinggi kartu dan bisa menutup hotspot."
     },
-    "catatanStruktur": "Cerita terdiri dari 4 bab. Bab 5 dihapus dari desain."
+    "catatanStruktur": "Cerita terdiri dari 4 bab. Bab 5 dihapus dari desain.",
+    "detailMisi": "Teks baris Panel Detail Misi (Journey Map) untuk misi pertama tiap tujuan; sama dengan Figma. Misi lain memakai field di bagian misi."
   },
   "bab": [
     {
@@ -501,5 +502,31 @@
         "Voyager 2 memasuki ruang antarbintang"
       ]
     ]
+  },
+  "detailMisi": {
+    "Bulan": {
+      "wahana": "Columbia (modul komando), Eagle (pendarat), roket Saturn V",
+      "peluncuran": "16 Juli 1969",
+      "tiba": "20 Juli 1969 (waktu Amerika), Sea of Tranquility",
+      "tujuan": "Mendaratkan manusia di Bulan dan membawanya kembali ke Bumi",
+      "status": "Selesai · diverifikasi: NASA Mission Overview",
+      "temuan": "Membawa pulang 21,55 kg sampel batuan dan tanah Bulan"
+    },
+    "Mars": {
+      "wahana": "Rover Spirit",
+      "peluncuran": "10 Juni 2003 (roket Delta II)",
+      "tiba": "3 Januari 2004, Gusev Crater",
+      "tujuan": "Mencari jejak air di Mars",
+      "status": "Nonaktif · komunikasi terakhir 22 Maret 2010; pemulihan berakhir 25 Mei 2011",
+      "temuan": "Mineral goethite dan tanah 90 persen silika, berkaitan dengan air"
+    },
+    "Deep Space": {
+      "wahana": "Voyager 1 (massa 721,9 kg)",
+      "peluncuran": "5 September 1977",
+      "tiba": "Masuk ruang antarbintang Agustus 2012",
+      "tujuan": "TBD",
+      "status": "Masih beroperasi · diverifikasi: tabel NASA 17 April 2026",
+      "temuan": "Membawa Golden Record: salam 55 bahasa, 115 gambar"
+    }
   }
 }

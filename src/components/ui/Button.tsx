@@ -63,13 +63,9 @@ const VARIANTS: Record<ButtonVariant, { enabled: string; disabled: string }> = {
   },
 };
 
+/** Spinner Loading (Figma): ikon Memuat 20 px (busur 3/4 lingkaran) yang berputar. */
 function Spinner() {
-  return (
-    <span
-      aria-hidden="true"
-      className="size-5 shrink-0 animate-spin rounded-full border-2 border-current border-t-transparent"
-    />
-  );
+  return <Icon name="memuat" size={20} className="shrink-0 animate-spin" />;
 }
 
 export function Button({

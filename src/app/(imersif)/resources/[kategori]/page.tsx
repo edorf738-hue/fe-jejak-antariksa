@@ -31,6 +31,8 @@ export default async function ResourcesPage(props: PageProps<"/resources/[katego
         kembali={{ href: "/", label: "Kembali ke Beranda" }}
         narasi={data.narasi}
         benda={data.benda}
+        posisiTitik={data.posisiTitik}
+        fokusGambar={data.fokusGambar}
         jenisPanel={["fakta", "misi", "galeri", "sumber"]}
         panelKonten={{
           fakta: <PanelFakta fakta={data.panel.fakta} />,

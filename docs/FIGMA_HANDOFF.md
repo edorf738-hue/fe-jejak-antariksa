@@ -53,7 +53,7 @@ Ukuran bertanda "usulan" belum disetujui designer.
 ## 3. Komponen (section **Komponen**)
 | Komponen | Varian | Properti teks |
 |---|---|---|
-| Navbar | `Aktif` = Beranda, Cerita, Peta Perjalanan, Sumber (1268×100, efek glass) | label tetap |
+| Navbar | `Aktif` = Beranda, Cerita, Peta Perjalanan, Sumber (1268×80, efek glass, teks tautan 16 px; Active Button = lebar teks + 26 px, tinggi 40, di tengah pill; logo 58×60) | label tetap |
 | Navbar Ringkas | `Menu` = Tertutup, Terbuka (tablet/mobile; lebar diatur di instance) | label tetap |
 | Button | `Tipe` Primary/Secondary × `State` Default, Hover, Active, Focus, Disabled, Loading | `Label` |
 | Kartu Lingkungan | `State` Default, Hover, Selected, Focus | `Judul`, `Deskripsi`, `Tautan`; gambar = fill `Gambar` |

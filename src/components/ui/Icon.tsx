@@ -1,7 +1,7 @@
 import type { ReactNode, SVGProps } from "react";
 
 /**
- * Set ikon (FIGMA_HANDOFF bagian 3): grid 24 px, garis 1,5 px, ujung dan
+ * Set ikon (FIGMA_HANDOFF bagian 3; jalur SVG sama dengan komponen Ikon di Figma, 19 ikon): grid 24 px, garis 1,5 px, ujung dan
  * sambungan membulat. Warna mengikuti `currentColor` (default Text Primary).
  */
 const ICONS = {
@@ -17,34 +17,36 @@ const ICONS = {
   info: (
     <>
       <circle cx="12" cy="12" r="9" />
-      <path d="M12 11v5M12 8h.01" />
+      <path d="M12 11v5M12 7.5h.01" />
     </>
   ),
-  peringatan: <path d="M12 4l9 16H3zM12 10v4M12 17h.01" />,
+  peringatan: (
+    <>
+      <path d="M12 3.5l9.5 16.5h-19z" />
+      <path d="M12 10v4.5M12 17.5h.01" />
+    </>
+  ),
   cari: (
     <>
-      <circle cx="11" cy="11" r="6" />
-      <path d="M20 20l-4.2-4.2" />
+      <circle cx="10.5" cy="10.5" r="6.5" />
+      <path d="M15.5 15.5L20 20" />
     </>
   ),
-  "setel-ulang-kamera": <path d="M3.5 12a8.5 8.5 0 1 0 2.6-6.1M3.5 4.5V9H8" />,
-  "layar-penuh": <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />,
+  "setel-ulang-kamera": <path d="M20 12a8 8 0 1 1-2.34-5.66M20 4v5h-5" />,
+  "layar-penuh": <path d="M4 9V4h5M15 4h5v5M20 15v5h-5M9 20H4v-5" />,
   putar: <path d="M8 5l11 7-11 7z" />,
   jeda: <path d="M8 5v14M16 5v14" />,
-  misi: (
-    <>
-      <path d="M12 3c3 2.5 4.5 6 4.5 9.5L12 17l-4.5-4.5C7.5 9 9 5.5 12 3zM7.5 12.5L5 15l2 1M16.5 12.5L19 15l-2 1M10 19.5l2 2 2-2" />
-      <circle cx="12" cy="10" r="1.5" />
-    </>
-  ),
-  sumber: <path d="M6 4h9l3 3v13H6zM15 4v3h3M9 12h6M9 16h6" />,
+  misi: <path d="M5 21V4M5 4h11l-2 4 2 4H5" />,
+  sumber: <path d="M6 3h9l4 4v14H6zM15 3v4h4M9 12h6M9 16h6" />,
   galeri: (
     <>
-      <rect x="4" y="5" width="16" height="14" rx="1" />
+      <rect x="3" y="4" width="18" height="16" rx="2" />
       <circle cx="9" cy="10" r="1.5" />
-      <path d="M4 17l5-5 4 4 3-3 4 4" />
+      <path d="M3 17l5-5 4 4 3-3 6 6" />
     </>
   ),
+  "model-3d": <path d="M12 3l8 4.5v9L12 21l-8-4.5v-9zM4 7.5l8 4.5 8-4.5M12 12v9" />,
+  memuat: <path d="M12 3a9 9 0 1 0 9 9" />,
 } satisfies Record<string, ReactNode>;
 
 export type IconName = keyof typeof ICONS;

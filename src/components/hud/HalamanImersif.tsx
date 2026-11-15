@@ -1,21 +1,39 @@
 "use client";
 
-import { useEffect, useRef, useState, useSyncExternalStore, type KeyboardEvent, type ReactNode } from "react";
-import type { DataBenda } from "@/data";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+  useSyncExternalStore,
+  type CSSProperties,
+  type KeyboardEvent,
+  type ReactNode,
+} from "react";
+import type { DataBenda, FokusGambar, PosisiTitik } from "@/data";
 import { IMERSIF_COPY } from "@/data";
+import { ImersifContext, type ImersifState, type StatusScene } from "./ImersifContext";
 import { KartuDataBenda } from "./KartuDataBenda";
 import { KartuNarasi } from "./KartuNarasi";
 import { KontrolScene } from "./KontrolScene";
 import { Panel } from "./Panel";
 import { LatarScene, Objek3DPlaceholder, PenandaPlaceholder, TitikInfoPlaceholder } from "./ScenePlaceholder";
+import { OverlayMemuat3D, PesanFallback3D } from "./StatusScene";
 import { TombolKembali } from "./TombolKembali";
 import { PANEL_META, TombolPanel, type PanelJenis } from "./TombolPanel";
 
 /**
  * Kerangka halaman imersif (Story Bab 1-4 dan Resources): scene 3D memenuhi layar
  * (lapisan 0), gradien keterbacaan (lapisan 1), lalu HUD (kembali, narasi, tombol panel,
- * kontrol scene, dok) dan panel. Scene, hotspot, dan objek 3D dipasang tim 3D di
- * tempat `LatarScene`, `TitikInfoPlaceholder`, dan `Objek3DPlaceholder`.
+ * kontrol scene, dok) dan panel.
+ *
+ * Slot 3D (opsional; tanpa slot, yang tampil adalah placeholder gambar dan titik statis):
+ *  - `scene`: kanvas scene (Edo), menggantikan gambar latar; gradien HUD tetap di atasnya.
+ *  - `hotspots`: lapisan Titik Info (Zhafran), menggantikan titik statis.
+ *  - `objek`: pratinjau benda terpilih (Zhafran), menggantikan "Pratinjau model 3D".
+ * Komponen di slot itu membaca state HUD lewat `useImersif()` dan menyambungkan tombol
+ * Setel Ulang Kamera lewat `useResetKamera()` (lihat ImersifContext.tsx).
  *
  * Tata letak mengikuti Figma: desktop 1440x900 (posisi mutlak dari tepi konten),
  * tablet 768x1024 dan mobile 390x844 (HUD menumpuk di bawah; panel penuh layar).
@@ -29,19 +47,41 @@ type HalamanImersifProps = {
   kembali: { href: string; label: string };
   narasi: { eyebrow: string; judul: string; isi: string };
   benda: DataBenda[];
+  /** Posisi Titik Info dari frame Figma (ilustrasi; menunggu proyeksi 3D). */
+  posisiTitik: PosisiTitik;
+  /** Fokus horizontal gambar latar per ukuran layar (crop Figma). */
+  fokusGambar: FokusGambar;
   jenisPanel: PanelJenis[];
   /** Isi tiap panel (dirender server dari data). */
   panelKonten: Partial<Record<PanelJenis, ReactNode>>;
   /** Dok bawah: Dok Navigasi Bab (Story) atau Dok Kategori (Resources). */
   dok: ReactNode;
+  /** Slot scene 3D (Edo): menggantikan gambar latar `gambar`. */
+  scene?: ReactNode;
+  /** Slot lapisan Titik Info (Zhafran): menggantikan titik statis `posisiTitik`. */
+  hotspots?: ReactNode;
+  /** Slot pratinjau benda terpilih (Zhafran): menggantikan placeholder "Pratinjau model 3D". */
+  objek?: ReactNode;
 };
 
-/** Posisi ilustrasi Titik Info (persen dari scene): mobile / tablet / desktop. */
-const POSISI_TITIK = [
-  "left-[44%] top-[35%] md:left-[34%] md:top-[31%] lg:left-[71.7%] lg:top-[27%]",
-  "left-[28%] top-[38%] md:left-[21%] md:top-[46%] lg:left-[62%] lg:top-[78%]",
-  "left-[61%] top-[40%] md:left-[47.5%] md:top-[52.5%] lg:left-[22.5%] lg:top-[71.2%]",
-];
+/** Kelas posisi Titik Info; nilainya dari variabel CSS per ukuran layar (lihat `gayaTitik`). */
+const KELAS_POSISI_TITIK =
+  "left-[var(--lm)] top-[var(--tm)] md:left-[var(--lt)] md:top-[var(--tt)] lg:left-[var(--ld)] lg:top-[var(--td)]";
+
+/** Ukuran frame Figma (lebar x tinggi) untuk mobile, tablet, desktop: dasar konversi piksel ke persen. */
+const FRAME: Record<keyof PosisiTitik, readonly [number, number]> = { m: [390, 844], t: [768, 1024], d: [1440, 900] };
+
+/** Posisi Titik ke-`i` (piksel Figma) sebagai variabel CSS persen: --lm/--tm (mobile), --lt/--tt, --ld/--td. */
+function gayaTitik(posisi: PosisiTitik, i: number): CSSProperties {
+  const gaya: Record<string, string> = {};
+  for (const k of ["m", "t", "d"] as const) {
+    const p = posisi[k][i];
+    if (!p) continue;
+    gaya[`--l${k}`] = `${((p[0] / FRAME[k][0]) * 100).toFixed(3)}%`;
+    gaya[`--t${k}`] = `${((p[1] / FRAME[k][1]) * 100).toFixed(3)}%`;
+  }
+  return gaya as CSSProperties;
+}
 
 const QUERY_GERAK = "(prefers-reduced-motion: reduce)";
 
@@ -68,9 +108,14 @@ export function HalamanImersif({
   kembali,
   narasi,
   benda,
+  posisiTitik,
+  fokusGambar,
   jenisPanel,
   panelKonten,
   dok,
+  scene,
+  hotspots,
+  objek,
 }: HalamanImersifProps) {
   const [panel, setPanel] = useState<PanelJenis | null>(null);
   const [bendaIdx, setBendaIdx] = useState<number | null>(null);
@@ -83,6 +128,48 @@ export function HalamanImersif({
   const pemicu = useRef<PanelJenis | null>(null);
   const bendaAktif = bendaIdx === null ? null : benda[bendaIdx];
   const story = varian === "story";
+
+  // Fungsi reset kamera milik scene (didaftarkan lewat `useResetKamera`); null bila belum ada scene.
+  const resetKamera = useRef<(() => void) | null>(null);
+  const daftarkanReset = useCallback((fn: () => void) => {
+    resetKamera.current = fn;
+    return () => {
+      if (resetKamera.current === fn) resetKamera.current = null;
+    };
+  }, []);
+
+  // Status scene (State 3D Figma): dengan slot `scene`, mulai dari "memuat" sampai scene melapor.
+  const adaScene = scene !== undefined && scene !== null;
+  const [statusScene, setStatus] = useState<StatusScene>(adaScene ? "memuat" : "siap");
+  const [progres, setProgres] = useState<number | null>(null);
+  // Naik saat Coba Lagi: slot `scene` dipasang ulang dari awal.
+  const [percobaan, setPercobaan] = useState(0);
+  // "Lanjut tanpa 3D": tetap pada gambar statis dan titik statis.
+  const [tanpa3d, setTanpa3d] = useState(false);
+  const setStatusScene = useCallback((status: StatusScene, nilai?: number) => {
+    setStatus(status);
+    setProgres(status === "memuat" ? (nilai ?? null) : null);
+  }, []);
+  const fallback = statusScene === "fallback" && !tanpa3d;
+  const modeStatis = tanpa3d || statusScene === "fallback";
+  const memuat = !modeStatis && statusScene === "memuat";
+  // Titik dan objek: slot 3D hanya bila scene siap; mode statis memakai placeholder; saat memuat tidak ada.
+  const pakaiSlot = !modeStatis;
+
+  function cobaLagi() {
+    setPercobaan((n) => n + 1);
+    setStatusScene("memuat");
+  }
+
+  const konteks: ImersifState = {
+    benda,
+    bendaIdx,
+    pilihBenda: setBendaIdx,
+    paused,
+    daftarkanReset,
+    statusScene,
+    setStatusScene,
+  };
 
   // Fokus: ke panel saat dibuka, kembali ke tombol pemicu saat ditutup.
   useEffect(() => {
@@ -137,43 +224,65 @@ export function HalamanImersif({
       className="hud-masuk [--hud-delay:0s] [--hud-dur:0.5s] [--hud-dy:20px] lg:hidden"
     />
   ) : (
-    <KartuNarasi {...narasi} className="hud-masuk [--hud-delay:0.3s] [--hud-dur:0.7s] [--hud-dy:40px] lg:hidden" />
+    // mb-1: jarak narasi ke dok 16 px (kartu data benda 12 px), sesuai Figma.
+    <KartuNarasi {...narasi} className="hud-masuk mb-1 [--hud-delay:0.3s] [--hud-dur:0.7s] [--hud-dy:40px] lg:hidden" />
   );
 
   return (
+    <ImersifContext.Provider value={konteks}>
     <div
       ref={akar}
       onKeyDown={onKeyDown}
       className="relative h-dvh min-h-[640px] w-full overflow-hidden bg-bg-primary-normal"
     >
-      <LatarScene gambar={gambar} />
+      <LatarScene gambar={gambar} fokus={fokusGambar}>
+        {/* Fallback / tanpa 3D: scene dilepas, gambar statis tampil. `key` memasang ulang scene saat Coba Lagi. */}
+        {modeStatis ? null : <Fragment key={percobaan}>{scene}</Fragment>}
+      </LatarScene>
 
-      {bendaAktif && (
+      {/* Saat scene memuat, objek dan titik 3D belum ada. */}
+      {bendaAktif && !memuat && (
         <div className="absolute left-1/2 top-[30%] z-[5] -translate-x-1/2 -translate-y-1/2 lg:top-[47%]">
           {/* Dibungkus terpisah: animasi memakai properti translate yang sama dengan pemusatan di atas. */}
           <div key={bendaAktif.id} className="hud-masuk [--hud-delay:0.3s] [--hud-dur:0.5s]">
-            <Objek3DPlaceholder
-              judul={IMERSIF_COPY.placeholderModel.judul}
-              status={IMERSIF_COPY.placeholderModel.status}
-            />
+            {(pakaiSlot && objek) || (
+              <Objek3DPlaceholder
+                judul={IMERSIF_COPY.placeholderModel.judul}
+                status={IMERSIF_COPY.placeholderModel.status}
+              />
+            )}
           </div>
         </div>
       )}
 
-      {benda.slice(0, 3).map((b, i) => (
-        <TitikInfoPlaceholder
-          key={b.id}
-          label={b.hotspot}
-          aktif={bendaIdx === i}
-          urutan={i}
-          onClick={() => setBendaIdx(bendaIdx === i ? null : i)}
-          className={`z-10 ${POSISI_TITIK[i]}`}
+      {!memuat &&
+        ((pakaiSlot && hotspots) ||
+          benda.slice(0, 3).map((b, i) => (
+            <TitikInfoPlaceholder
+              key={b.id}
+              label={b.hotspot}
+              aktif={bendaIdx === i}
+              urutan={i}
+              onClick={() => setBendaIdx(bendaIdx === i ? null : i)}
+              style={gayaTitik(posisiTitik, i)}
+              className={`z-10 ${KELAS_POSISI_TITIK}`}
+            />
+          )))}
+
+      {memuat && <OverlayMemuat3D progres={progres} className="absolute inset-0 z-[15]" />}
+      {fallback && (
+        <PesanFallback3D
+          onCobaLagi={cobaLagi}
+          onLanjut={() => setTanpa3d(true)}
+          // Di atas HUD (z-20): pesan galat tidak boleh tertimpa kartu narasi.
+          className="absolute inset-0 z-[25]"
         />
-      ))}
+      )}
 
       {/* Lapisan HUD: selaras dengan konten halaman (padding 24/40/86, lebar maksimum 1440). */}
-      <div className="pointer-events-none absolute inset-0 z-20 mx-auto max-w-page px-page [&>*]:pointer-events-auto">
-        <div className="relative h-full">
+      {/* Lapisan ini dan pembungkusnya tidak menangkap pointer: hanya elemen HUD di dalamnya (`[&>*]`), supaya kanvas scene dan hotspot di bawahnya tetap bisa diklik/diputar. */}
+      <div className="pointer-events-none absolute inset-0 z-20 mx-auto max-w-page px-page">
+        <div className="pointer-events-none relative h-full [&>*]:pointer-events-auto">
           <TombolKembali
             href={kembali.href}
             label={kembali.label}
@@ -204,7 +313,7 @@ export function HalamanImersif({
 
           {!panel && (
             <div
-              className={`hud-masuk absolute left-0 top-20 flex w-full flex-wrap gap-2.5 [--hud-delay:0.5s] [--hud-dx:30px] max-lg:[--hud-dx:0px] max-lg:[--hud-dy:-20px] lg:left-auto lg:right-0 lg:top-[57px] lg:w-auto lg:gap-3 ${
+              className={`pointer-events-none! hud-masuk absolute left-0 top-20 flex w-full flex-wrap gap-2.5 [&>*]:pointer-events-auto [--hud-delay:0.5s] [--hud-dx:30px] max-lg:[--hud-dx:0px] max-lg:[--hud-dy:-20px] lg:left-auto lg:right-0 lg:top-[57px] lg:w-auto lg:gap-3 ${
                 story ? "lg:flex-col lg:items-end" : "lg:flex-row"
               }`}
             >
@@ -216,23 +325,22 @@ export function HalamanImersif({
 
           <KontrolScene
             paused={paused}
+            onResetCamera={() => resetKamera.current?.()}
             onTogglePause={() => setJedaPengguna(!paused)}
             onToggleFullscreen={toggleFullscreen}
             className={`hud-masuk absolute right-0 [--hud-delay:1.4s] ${
-              story ? "top-[191px]" : "top-[218px]"
-            } md:top-[152px] lg:bottom-40 lg:top-auto ${panel ? "max-lg:hidden lg:right-[456px]" : ""}`}
+              story ? "top-[146px] md:top-[146px]" : "top-[218px] md:top-[152px]"
+            } lg:bottom-[164px] lg:top-auto ${panel ? "max-lg:hidden lg:right-[456px]" : ""}`}
           />
 
           {/* Tumpukan bawah (tablet/mobile): kartu narasi atau data benda, lalu dok. */}
-          <div className="absolute inset-x-0 bottom-6 flex flex-col gap-5 lg:hidden">
+          <div className="absolute inset-x-0 bottom-5 flex flex-col gap-3 lg:hidden">
             {kartuBawah}
             <div className="hud-masuk [--hud-delay:0.6s] [--hud-dy:40px]">{dok}</div>
           </div>
-          {/* Dok desktop. */}
-          <div
-            className={`absolute inset-x-0 hidden justify-center lg:flex ${story ? "bottom-[52px]" : "bottom-[30px]"}`}
-          >
-            <div className="hud-masuk w-full [--hud-delay:0.6s] [--hud-dy:40px] lg:flex lg:justify-center">{dok}</div>
+          {/* Dok desktop: 36 px dari tepi bawah (Figma: dok y 752 + 112 dari 900; Resources y 774 + 90). */}
+          <div className="pointer-events-none! absolute inset-x-0 bottom-9 hidden justify-center lg:flex">
+            <div className="hud-masuk pointer-events-none w-full [&>*]:pointer-events-auto [--hud-delay:0.6s] [--hud-dy:40px] lg:flex lg:justify-center">{dok}</div>
           </div>
 
           {panel && (
@@ -248,5 +356,6 @@ export function HalamanImersif({
         </div>
       </div>
     </div>
+    </ImersifContext.Provider>
   );
 }

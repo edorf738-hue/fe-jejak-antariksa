@@ -39,6 +39,8 @@ export default async function StoryBabPage(props: PageProps<"/story/[bab]">) {
         kembali={{ href: "/story", label: "Kembali ke Cerita" }}
         narasi={data.narasi}
         benda={data.benda}
+        posisiTitik={data.posisiTitik}
+        fokusGambar={data.fokusGambar}
         jenisPanel={["misi", "sumber"]}
         panelKonten={{
           misi: <PanelMisi misi={data.panel.misi} />,
@@ -50,6 +52,7 @@ export default async function StoryBabPage(props: PageProps<"/story/[bab]">) {
             label={data.labelBab}
             hrefBab={(n) => `/story/${n}`}
             hrefSebelumnya={id > 1 ? `/story/${id - 1}` : undefined}
+            labelSebelumnya={`Bab ${id - 1}`}
             hrefBerikutnya={terakhir ? "/story" : `/story/${id + 1}`}
             labelBerikutnya={terakhir ? "Daftar Bab" : `Bab ${id + 1}`}
           />

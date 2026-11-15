@@ -8,7 +8,7 @@ import { IconButton } from "./IconButton";
 import { Logo } from "./Logo";
 
 /**
- * Navbar (desktop, 1268x100, tanpa fill, garis tipis; logo di kiri, tautan mulai dari
+ * Navbar (desktop, 1268x80, kaca tipis (blur) dengan garis tipis, tautan 16 px; logo di kiri, tautan mulai dari
  * garis tengah navbar seperti di Figma pada lebar >= 1280, rata kanan di 1024-1279) dan Navbar Ringkas (tablet/mobile,
  * varian Menu Tertutup/Terbuka). Satu komponen: daftar tautan dirender sekali dan
  * berubah menjadi menu turun di bawah breakpoint `lg` (1024).
@@ -60,13 +60,13 @@ export function Navbar() {
     >
       <Container>
         <div className="relative">
-          {/* Pill: Figma tanpa fill (rgba 255,255,255,0), hanya garis tipis di atas hero. */}
+          {/* Pill: efek Glass Figma (fill putih 0%): blur 4, bayangan dalam, dan cincin cahaya di tepi (utility `kaca-tepi`). */}
           <div
             aria-hidden="true"
-            className="absolute inset-0 rounded-pill shadow-[0_0_0_1.5px_var(--color-archive-slate-normal)]"
+            className="kaca-tepi absolute inset-0 rounded-pill shadow-[inset_0_0_24px_rgba(8,11,18,0.5)]"
           />
-          <div className="relative flex h-[72px] items-center justify-between gap-4 px-4 lg:grid lg:h-[100px] lg:grid-cols-[auto_1fr] lg:gap-0 lg:px-8 xl:grid-cols-2">
-            <Logo />
+          <div className="relative flex h-[72px] items-center justify-between gap-4 px-4 lg:grid lg:h-[80px] lg:grid-cols-[auto_1fr] lg:gap-0 lg:px-8 xl:grid-cols-2">
+            <Logo className="xl:ml-[142px] xl:justify-self-start" />
 
             <nav
               id="navigasi-utama"
@@ -89,11 +89,11 @@ export function Navbar() {
                         href={item.href}
                         aria-current={active ? "page" : undefined}
                         className={[
-                          "flex min-h-11 items-center whitespace-nowrap rounded-pill px-[13px] transition-colors duration-150 max-lg:px-5",
-                          // Fill pill aktif: #0067b2 @ 20% (belum menjadi token di Figma).
+                          "relative flex min-h-11 items-center lg:min-h-10 lg:text-[16px] whitespace-nowrap rounded-pill px-[13px] transition-colors duration-150 max-lg:px-5",
+                          // Fill pill aktif: #0067b2 @ 20% + efek Glass Figma (belum menjadi token di Figma).
                           active
-                            ? "text-nav-link-active bg-[#0067b2]/20 text-text-primary-normal"
-                            : "text-nav-link text-text-secondary-normal hover:text-text-primary-normal",
+                            ? "kaca-tepi text-nav-link-active bg-[#0067b2]/20 text-text-primary-normal shadow-[inset_0_0_10px_rgba(8,11,18,0.45)] [--rim:linear-gradient(135deg,rgba(255,255,255,0.5),rgba(140,190,255,0.14)_50%,rgba(255,255,255,0.45))]"
+                            : "text-nav-link text-text-primary-normal hover:bg-white/10",
                         ].join(" ")}
                       >
                         {item.label}

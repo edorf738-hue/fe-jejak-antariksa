@@ -32,7 +32,7 @@ export function KartuLingkungan({
   return (
     <Link
       href={href}
-      className={`group flex flex-col overflow-hidden rounded-card border border-archive-slate-normal bg-bg-secondary-normal transition-colors duration-150 hover:border-aksen-informasi-dark focus-visible:outline-offset-4 ${className}`}
+      className={`group relative flex flex-col overflow-hidden rounded-card bg-bg-secondary-normal after:pointer-events-none after:absolute after:inset-0 after:rounded-card after:ring-1 after:ring-inset after:ring-archive-slate-normal after:transition-shadow after:duration-150 after:content-[''] hover:after:ring-aksen-informasi-dark focus-visible:outline-offset-4 ${className}`}
     >
       <div className="relative h-60 w-full shrink-0">
         <Image
@@ -44,7 +44,7 @@ export function KartuLingkungan({
           className="object-cover transition-transform duration-300 group-hover:scale-[1.03]"
         />
       </div>
-      <div className="flex flex-col items-start gap-3 px-7 pb-7 pt-6">
+      <div className="flex flex-col items-start gap-3 pb-7 pl-7 pr-6 pt-6">
         <h3 className="text-heading-card text-text-primary-normal">{judul}</h3>
         <p className="text-body-large text-text-secondary-normal">{deskripsi}</p>
         <span className="text-button-label inline-flex items-center gap-2 text-aksen-informasi-normal">
